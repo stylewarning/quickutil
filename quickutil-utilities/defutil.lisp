@@ -152,6 +152,13 @@ pairs."
   (topological-sort (generate-util-dependency-table :registry registry)))
 
 (defun flatten-progn (code)
+  "Flatten PROGN forms at depth 1. That is, flatten
+
+    (PROGN (PROGN A) (PROGN B))
+
+to
+
+    (PROGN A B)."
   (labels ((append-progn (a b)
              `(progn ,@(append (cdr a)
                                (cdr b))))
