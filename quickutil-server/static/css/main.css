@@ -1,6 +1,28 @@
 @charset "UTF-8";
 
 body {
-  margin: 0 150px;
+  margin: 3em auto;
+  width: 35em;
   line-height: 150%;
+  font-family: "Optima", "Nu Sans", Baskerville, "Times New Roman", "Arial", sans-serif;
+}
+
+#header h1 {
+  font-family: Baskerville, "Baskerville Win95BT", "Times New Roman", Times, serif;
+}
+
+#footer {
+  margin-top: 20px;
+  clear: both;
+  font-size: 70%;
+  color: #888;
+  text-align: center;
+}
+
+input {
+  border: 1px solid #ccc;
+}
+
+.search-form input[name="name"] {
+  width: 200px;
 }
