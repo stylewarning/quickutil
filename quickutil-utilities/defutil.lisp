@@ -87,8 +87,10 @@
                      "Detected circular dependency. The cycles are ~S."
                      (circular-dependency-error-cycles condition)))))
 
-;;; FIXME TODO: The topological sorting can be improved when there are
-;;; circular dependencies. As it stands, if we have
+;;; 29 October 2012, 1:00 PM CST
+;;; 
+;;; The topological sorting can be improved when there are circular
+;;; dependencies. As it stands, if we have
 ;;; 
 ;;;   A -> B
 ;;;   B -> C
@@ -100,6 +102,12 @@
 ;;;  (C <-> D), B, A.
 ;;; 
 ;;; By not doing this, we will get incorrect load orders.
+;;; 
+;;; 
+;;; 29 October 2012, 3:00 PM
+;;; 
+;;; This issue seems to be resolved, but the ordering can still be improved.
+
 (defun topological-sort (dag)
   "Topologically sort the dag DAG represented as a list of
 
