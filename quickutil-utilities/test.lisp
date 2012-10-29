@@ -13,9 +13,9 @@
     (quux)))
 
 (defutil :quux (:version (1 . 0)
-                :depends-on (:baz))
+                :depends-on (:baz :even?))
   (defun quux ()
-    *baz*))
+    (even? *baz*)))
 
 (defutil :baz (:version (1 . 0)
                :depends-on ())
