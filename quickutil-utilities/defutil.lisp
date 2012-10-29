@@ -77,6 +77,29 @@
                     (enqueue deps-left new-dep))))
           :finally (return deps))))
 
+(define-condition circular-dependency-error (error)
+  ((cycles :initarg :cycles
+           :reader circular-dependency-error-cycles)
+   (sorted-order :initarg :sorted-order
+                 :reader circular-dependency-error-sorted-order))
+  (:report (lambda (condition stream)
+             (format stream
+                     "Detected circular dependency. The cycles are ~S."
+                     (circular-dependency-error-cycles condition)))))
+
+;;; FIXME TODO: The topological sorting can be improved when there are
+;;; circular dependencies. As it stands, if we have
+;;; 
+;;;   A -> B
+;;;   B -> C
+;;;   C -> D
+;;;   D -> C
+;;; 
+;;; the entire graph won't be sorted at all, when we could pare it down so we have
+;;; 
+;;;  (C <-> D), B, A.
+;;; 
+;;; By not doing this, we will get incorrect load orders.
 (defun topological-sort (dag)
   "Topologically sort the dag DAG represented as a list of
 
@@ -118,9 +141,19 @@ pairs."
                                  
                                  ;; Our DAG isn't empty but has no
                                  ;; sinks. It must be cyclic!
-                                 (error "Cannot sort a cyclic graph. ~
-                                       The cycles are ~S." dag)))))))
+                                 (error 'circular-dependency-error
+                                        :cycles dag
+                                        :sorted-order (nreverse sorted))))))))
 
+(defun sort-dependencies (dag)
+  "Topologically sort the dependencies, with error handling."
+  (handler-case (topological-sort dag)
+    (circular-dependency-error (c)
+      (let ((sorted (circular-dependency-error-sorted-order c))
+            (cycles (circular-dependency-error-cycles c)))
+        (warn "Circular dependency detected. Choosing arbitrary ordering: ~S"
+              cycles)
+        (append (mapcar #'car cycles) sorted)))))
 
 ;;; This could be a lot more efficient I'm sure.
 (defun generate-util-dependency-table (&key utility
@@ -140,7 +173,7 @@ pairs."
 
 (defun compute-load-order (name &optional (registry *utility-registry*))
   "Compute the load order for the utility named NAME."
-  (let ((sorted (topological-sort
+  (let ((sorted (sort-dependencies
                  (generate-util-dependency-table :utility name
                                                  :registry registry))))
     (if (member name sorted)
@@ -149,7 +182,7 @@ pairs."
 
 (defun compute-total-load-order (&optional (registry *utility-registry*))
   "Compute the order in which the utilities must be loaded."
-  (topological-sort (generate-util-dependency-table :registry registry)))
+  (sort-dependencies (generate-util-dependency-table :registry registry)))
 
 (defun flatten-progn (code)
   "Flatten PROGN forms at depth 1. That is, flatten
