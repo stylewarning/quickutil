@@ -6,5 +6,6 @@
   :author "Robert Smith <quad@symbo1ics.com>"
   ;; :license "???"
   :components ((:file "package")
+               (:file "queue")
                (:file "defutil")))
 
