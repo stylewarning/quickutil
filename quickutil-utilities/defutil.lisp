@@ -78,6 +78,11 @@
           :finally (return deps))))
 
 (defun topological-sort (dag)
+  "Topologically sort the dag DAG represented as a list of
+
+    (vertex . dependency-list)
+
+pairs."
   (labels ((list-sinks (dag)
              (loop :for (node . deps) :in dag
                    :when (null deps)
@@ -159,8 +164,11 @@
       
       (t (reduce #'append-progn (cdr code))))))
 
-(defun emit-all-utility-code (&optional (registry *utility-registry*))
-  (let ((load-order (compute-total-load-order registry)))
+(defun emit-utility-code (&key utility
+                               (registry *utility-registry*))
+  "Emit all of the source code for the utility UTILITY in order to use
+it. If UTILITY is NIL, then emit all utility source code."
+  (let ((load-order (compute-load-order utility registry)))
     (loop :for name :in load-order
           :for util := (lookup-util name)
           :when util
