@@ -140,8 +140,12 @@ pairs."
 
 (defun compute-load-order (name &optional (registry *utility-registry*))
   "Compute the load order for the utility named NAME."
-  (topological-sort (generate-util-dependency-table :utility name
-                                                    :registry registry)))
+  (let ((sorted (topological-sort
+                 (generate-util-dependency-table :utility name
+                                                 :registry registry))))
+    (if (member name sorted)
+        sorted
+        (append sorted (list name)))))
 
 (defun compute-total-load-order (&optional (registry *utility-registry*))
   "Compute the order in which the utilities must be loaded."
