@@ -2,16 +2,46 @@
 (defpackage quickutil-server.controller
   (:use :cl)
   (:import-from :quickutil-server.app
-                :*app*)
+                :*web*
+                :*api*)
+  (:import-from :clack.response
+                :headers)
   (:import-from :ningle
-                :route))
+                :route
+                :next-route
+                :*request*
+                :*response*)
+  (:import-from :yason
+                :encode))
 (in-package :quickutil-server.controller)
 
 (cl-syntax:use-syntax :annot)
 
-(setf (route *app* "/")
+;;
+;; for Web interface
+
+;; http://**/
+(setf (route *web* "/")
       #'(lambda (params)
           (declare (ignore params))
           (merge-pathnames #p"templates/index.html"
                            (asdf:component-pathname
                             (asdf:find-system :quickutil-server)))))
+
+;;
+;; for API
+
+(setf (route *api* "*")
+      #'(lambda (params)
+          (declare (ignore params))
+          (setf (headers *response* :content-type)
+                "application/json")
+          (next-route)))
+
+(setf (route *api* "/")
+      #'(lambda (params)
+          (declare (ignore params))
+          (with-output-to-string (s)
+            ;; just for testing
+            (yason:encode '(1 2 3 4 5) s)
+            s)))

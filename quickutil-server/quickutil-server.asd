@@ -9,7 +9,8 @@
   :depends-on (:ningle
                :cl-syntax
                :cl-syntax-annot
-               :cl-ppcre)
+               :cl-ppcre
+               :yason)
   :components ((:module "src"
                 :components
                 ((:file "app")
