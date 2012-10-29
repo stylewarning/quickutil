@@ -145,15 +145,49 @@ pairs."
                                         :cycles dag
                                         :sorted-order (nreverse sorted))))))))
 
+(defun reverse-arrows (dag)
+  "Given a dag DAG, reverse the arrows."
+  (loop :with table := (make-hash-table)
+        :for (vertex . deps) :in dag
+        :do (progn
+              ;; Reverse dependencies
+              (dolist (dep deps)
+                (push vertex (gethash dep table)))
+              
+              ;; Make sure VERTEX exists in the table
+              (unless (nth-value 1 (gethash vertex table))
+                (setf (gethash vertex table) nil)))
+        :finally (return
+                   (loop :for k :being :the :hash-keys :in table
+                         :collect (cons k (gethash k table))))))
+
+(defun prune-and-sort-cycles (cyclic-dag)
+  "Sort the cyclic dag CYCLIC-DAG, pruning off branches and putting
+them in proper sorted order, leaving just cycles."
+  (handler-case (topological-sort (reverse-arrows cyclic-dag))
+    (circular-dependency-error (c)
+      (let ((sorted (circular-dependency-error-sorted-order c))
+            (cycles (mapcar #'car (circular-dependency-error-cycles c))))
+        #+#:debug
+        (format t "SORTED: ~S~%~
+                   CYCLES: ~S~%"
+                sorted cycles)
+        (warn "Circular dependency detected. Choosing arbitrary ordering: ~S"
+              cycles)
+        (nreverse (append sorted cycles))))))
+
 (defun sort-dependencies (dag)
   "Topologically sort the dependencies, with error handling."
   (handler-case (topological-sort dag)
     (circular-dependency-error (c)
       (let ((sorted (circular-dependency-error-sorted-order c))
-            (cycles (circular-dependency-error-cycles c)))
-        (warn "Circular dependency detected. Choosing arbitrary ordering: ~S"
-              cycles)
-        (append (mapcar #'car cycles) sorted)))))
+            (sorted-cycles
+              (prune-and-sort-cycles (circular-dependency-error-cycles c))))
+        #+#:debug
+        (format t "SORTED*: ~S~%~
+                   CYCLES*: ~S~%"
+                sorted sorted-cycles)
+        (append sorted sorted-cycles)))))
 
 ;;; This could be a lot more efficient I'm sure.
 (defun generate-util-dependency-table (&key utility
