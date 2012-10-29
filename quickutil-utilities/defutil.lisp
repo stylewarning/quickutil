@@ -107,6 +107,20 @@
 ;;; 29 October 2012, 3:00 PM
 ;;; 
 ;;; This issue seems to be resolved, but the ordering can still be improved.
+;;; 
+;;; Ordering could be improved by localizing cycles. For example,
+;;; 
+;;;   A -> B
+;;;   B -> A
+;;; 
+;;;   A -> C
+;;; 
+;;;   C -> D
+;;;   D -> C
+;;; 
+;;; could keep A,B together and C,D together. Perhaps the optimal is
+;;; 
+;;;  D C A B.
 
 (defun topological-sort (dag)
   "Topologically sort the dag DAG represented as a list of
