@@ -59,3 +59,20 @@ number."
     "Return [1, ..., N]."
     (assert (>= n 1))
     (range 1 (1+ n))))
+
+
+;;; Circular dependency
+
+(defutil :even? (:version (1 . 0)
+                 :depends-on (:odd?))
+  (defun even? (n)
+    (if (plusp n)
+        (odd? (1- n))
+        t)))
+
+(defutil :odd? (:version (1 . 0)
+                 :depends-on (:even?))
+  (defun odd? (n)
+    (if (plusp n)
+        (even? (1- n))
+        nil)))
