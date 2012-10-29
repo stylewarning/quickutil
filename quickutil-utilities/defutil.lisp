@@ -77,23 +77,13 @@
                     (enqueue deps-left new-dep))))
           :finally (return deps))))
 
-
-
-(defun compute-total-load-order (&optional (registry *utility-registry*))
-  "Compute the order in which the utilities must be loaded."
+(defun topological-sort (dag)
   (labels ((list-sinks (dag)
              (loop :for (node . deps) :in dag
                    :when (null deps)
                      :collect node :into nodes
-                   :finally (return (copy-tree nodes))))
-           
-           (generate-util-dependency-table ()
-             (loop :for k :being :the :hash-key :in registry
-                   :for v := (gethash k registry)
-                   :collect (cons k (util.dependencies v)))))
-    
-    (let* ((dag    (generate-util-dependency-table))
-           (sorted nil)                   ; Final sorted list.
+                   :finally (return (copy-tree nodes)))))
+    (let* ((sorted nil)                   ; Final sorted list.
            (sinks  (list-sinks dag)))     ; Sinks in the graph.
       (loop :while (not (null sinks))
             :do (progn
@@ -125,6 +115,32 @@
                                  ;; sinks. It must be cyclic!
                                  (error "Cannot sort a cyclic graph. ~
                                        The cycles are ~S." dag)))))))
+
+
+;;; This could be a lot more efficient I'm sure.
+(defun generate-util-dependency-table (&key utility
+                                            (registry *utility-registry*))
+  "Generate dependency table for the utility named UTILITY. If UTILITY is NIL,
+  generate complete dependency table."
+  (labels ((complete-table ()
+             (loop :for k :being :the :hash-key :in registry
+                   :for v := (gethash k registry)
+                   :collect (cons k (util.dependencies v)))))
+    (if (null utility)
+        (complete-table)
+        (loop :with deps := (all-dependencies utility)
+              :for node :in (complete-table)
+              :when (member (car node) deps)
+                :collect node))))
+
+(defun compute-load-order (name &optional (registry *utility-registry*))
+  "Compute the load order for the utility named NAME."
+  (topological-sort (generate-util-dependency-table :utility name
+                                                    :registry registry)))
+
+(defun compute-total-load-order (&optional (registry *utility-registry*))
+  "Compute the order in which the utilities must be loaded."
+  (topological-sort (generate-util-dependency-table :registry registry)))
 
 (defun flatten-progn (code)
   (labels ((append-progn (a b)
