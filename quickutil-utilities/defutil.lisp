@@ -52,6 +52,33 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;; Dependency Resolution ;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defun dependencies (name)
+  "Get the first-order dependencies for the utility named NAME."
+  (util.dependencies (lookup-util name)))
+
+(defun all-dependencies (name)
+  "Get all of the dependencies for the utility named NAME."
+  (let ((deps nil)
+        (deps-left (make-queue)))
+    
+    ;; Initial dependencies
+    (dolist (dep (dependencies name))
+      (enqueue deps-left dep))
+    
+    (loop :until (queue-empty-p deps-left)
+          :do (let ((next-node (dequeue deps-left)))        
+                
+                (unless (member next-node deps)
+                  ;; Add new dependency.
+                  (push next-node deps)
+                  
+                  ;; Enqueue all sub-dependencies.
+                  (dolist (new-dep (dependencies next-node))
+                    (enqueue deps-left new-dep))))
+          :finally (return deps))))
+
+
+
 (defun compute-total-load-order (&optional (registry *utility-registry*))
   "Compute the order in which the utilities must be loaded."
   (labels ((list-sinks (dag)
