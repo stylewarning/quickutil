@@ -40,7 +40,7 @@
 (defmacro defutil (name (&key version depends-on) &body utility-code)
   "Define a new utility."
   (check-type name symbol)
-  (check-type version (cons integer integer))
+  (check-type version util-version)
   
   `(progn
      (setf (gethash ,name *utility-registry*)
