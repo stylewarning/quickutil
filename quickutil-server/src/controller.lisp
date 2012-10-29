@@ -1,6 +1,8 @@
 (in-package :cl-user)
 (defpackage quickutil-server.controller
   (:use :cl)
+  (:import-from :quickutil-utilities
+                :*utility-registry*)
   (:import-from :quickutil-server.app
                 :*web*
                 :*api*)
@@ -43,5 +45,8 @@
           (declare (ignore params))
           (with-output-to-string (s)
             ;; just for testing
-            (yason:encode '(1 2 3 4 5) s)
+            (yason:encode
+              (loop for key being the hash-keys in *utility-registry*
+                    collect (string key))
+             s)
             s)))

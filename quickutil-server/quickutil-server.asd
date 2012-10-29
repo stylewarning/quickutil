@@ -10,7 +10,8 @@
                :cl-syntax
                :cl-syntax-annot
                :cl-ppcre
-               :yason)
+               :yason
+               :quickutil-utilities)
   :components ((:module "src"
                 :components
                 ((:file "app")
