@@ -9,6 +9,8 @@
   <link type="text/css" rel="stylesheet" href="/css/sunburst.css" />
   <script type="text/javascript" src="/js/prettify.js"></script>
   <script type="text/javascript" src="/js/lang-lisp.js"></script>
+  <script type="text/javascript" src="/js/jquery-1.8.2.min.js"></script>
+  <script type="text/javascript" src="/js/quickutil.js"></script>
 </head>
 <body onload="prettyPrint()">
 <div id="header">
@@ -16,13 +18,16 @@
 </div>
 
 <div id="main">
-  <p>There are <strong><%= (length (getf env :utilities)) %></strong> utilities.</p>
+  <input type="text" class="filter" placeholder="Filter below utilities" />
+  <p class="filter-result-description">There are <strong class="count"><%= (length (getf env :utilities)) %></strong> utilities.</p>
   <dl>
 <% @loop utilities %>
+  <div class="utility" data-utility-name="<% @var name %>">
     <dt><% @var name %><span class="version">v<% @var version %></span></dt>
     <dd><pre class="prettyprint lang-lisp"><% @loop code %><%
         %><% (quickutil-utilities::pretty-print-utility-code env *standard-output*) %><%
     %><% @endloop %></pre></dd>
+  </div>
 <% @endloop %>
   </dl>
 </div>
