@@ -280,7 +280,7 @@ it. If UTILITY is NIL, then emit all utility source code."
 
 (defun pretty-print-utility-code (code &optional stream)
   "Pretty print utility code CODE to stream STREAM."
-  (let ((*package* (find-package '#:quickutil-utilities)))
+  (let ((*package* (find-package '#:quickutil)))
     (if (not (typep code '(cons (eql progn))))
         (pprint code stream)
         (progn

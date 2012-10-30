@@ -1,4 +1,4 @@
-(in-package #:quickutil-utilities)
+(in-package #:quickutil)
 
 (defutil :positivep (:version (1 . 0)
                      :depends-on ())
