@@ -52,9 +52,7 @@
 
 (defmacro defutil (name (&key version
                               depends-on
-                              category
-                              
-                              )
+                              category)
                    &body utility-code)
   "Define a new utility."
   (check-type name symbol)
