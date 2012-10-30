@@ -41,21 +41,23 @@
           (merge-pathnames #p"index.html"
                            *template-path*)))
 
-(setf (route *web* "/list")
+(setf (route *web* "/list/?:category?")
       #'(lambda (params)
-          (declare (ignore params))
           (let ((*print-case* :downcase)
                 (emb:*escape-type* :html))
             (execute-emb (merge-pathnames #p"list.html"
                                           *template-path*)
-                         :env `(:utilities
+                         :env `(:category ,(getf params :category)
+                                :utilities
                                 ,(loop for name being the hash-keys in *utility-registry* using (hash-value utility)
+                                       if (or (not (getf params :category))
+                                              (member (getf params :category) (util.categories utility) :test #'string-equal))
                                        collect
                                        `(:name ,(string-downcase name)
                                          :version ,(format nil "~A.~A"
                                                     (car (util.version utility))
                                                     (cdr (util.version utility)))
-                                         :categories ,(princ-to-string (util.categories utility))
+                                         :categories ,(util.categories utility)
                                          :code ,(cdr (util.code utility)))))))))
 
 ;;

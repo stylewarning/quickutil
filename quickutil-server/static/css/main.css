@@ -37,6 +37,11 @@ input {
   font-size: 90%;
 }
 
+.utility .categories .category {
+  display: inline-block;
+  margin: 0 3px;
+}
+
 .utility .version {
   display: inline-block;
   margin-left: 15px;
