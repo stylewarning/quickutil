@@ -23,7 +23,7 @@
   <dl>
 <% @loop utilities %>
   <div class="utility" data-utility-name="<% @var name %>">
-    <dt><% @var name %><span class="version">v<% @var version %></span></dt>
+    <dt><% @var name %><span class="categories"><% @var categories %></span><span class="version">v<% @var version %></span></dt>
     <dd><pre class="prettyprint lang-lisp"><% @loop code %><%
         %><% (quickutil-utilities::pretty-print-utility-code env *standard-output*) %><%
     %><% @endloop %></pre></dd>

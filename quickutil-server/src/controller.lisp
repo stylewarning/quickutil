@@ -6,6 +6,7 @@
                 :emit-utility-code
                 :pretty-print-utility-code
                 :util.version
+                :util.categories
                 :util.code)
   (:import-from :quickutil-server.app
                 :*web*
@@ -54,6 +55,7 @@
                                          :version ,(format nil "~A.~A"
                                                     (car (util.version utility))
                                                     (cdr (util.version utility)))
+                                         :categories ,(princ-to-string (util.categories utility))
                                          :code ,(cdr (util.code utility)))))))))
 
 ;;
