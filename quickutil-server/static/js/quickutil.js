@@ -10,7 +10,7 @@ Quickutil.init.done(function() {
         var word = $(this).val();
         var i = 0;
         $('.utility').each(function() {
-            if (new RegExp(word).test($(this).attr('data-utility-name'))) {
+            if ($(this).attr('data-utility-name').indexOf(word) >= 0) {
                 $(this).show();
                 ++i;
             }
