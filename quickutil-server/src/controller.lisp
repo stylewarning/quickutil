@@ -2,7 +2,8 @@
 (defpackage quickutil-server.controller
   (:use :cl)
   (:import-from :quickutil-utilities
-                :*utility-registry*)
+                :*utility-registry*
+                :emit-utility-code)
   (:import-from :quickutil-server.app
                 :*web*
                 :*api*)
@@ -50,3 +51,11 @@
                     collect (string key))
              s)
             s)))
+
+(setf (route *api* "/emit-utility-code.lisp")
+      #'(lambda (params)
+          `(200
+            (:content-type "text/plain")
+            (,(princ-to-string
+               (emit-utility-code
+                :utility (intern (string-upcase (getf params :|utility|)) :keyword)))))))
