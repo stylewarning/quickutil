@@ -286,8 +286,8 @@ it. If UTILITY is NIL, then emit all utility source code."
         (progn
           (princ "(PROGN                                                ; toplevel"
                  stream)
-          (loop :for form :in (cdr code)
-                :do (progn
-                      (pprint form stream)
-                      (terpri stream))
-                :finally (princ ")" stream))))))
+          (dolist (form (cdr code))
+            (pprint form stream)
+            (terpri stream))
+          (princ ")" stream)))
+    nil))
