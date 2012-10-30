@@ -11,7 +11,8 @@
                :cl-syntax-annot
                :cl-ppcre
                :yason
-               :quickutil-utilities)
+               :quickutil-utilities
+               :cl-emb)
   :components ((:module "src"
                 :components
                 ((:file "app")

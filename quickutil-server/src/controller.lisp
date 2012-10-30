@@ -4,7 +4,9 @@
   (:import-from :quickutil-utilities
                 :*utility-registry*
                 :emit-utility-code
-                :pretty-print-utility-code)
+                :pretty-print-utility-code
+                :util.version
+                :util.code)
   (:import-from :quickutil-server.app
                 :*web*
                 :*api*)
@@ -15,11 +17,18 @@
                 :next-route
                 :*request*
                 :*response*)
+  (:import-from :emb
+                :execute-emb)
   (:import-from :yason
                 :encode))
 (in-package :quickutil-server.controller)
 
 (cl-syntax:use-syntax :annot)
+
+(defvar *template-path*
+    (merge-pathnames #p"templates/"
+                     (asdf:component-pathname
+                      (asdf:find-system :quickutil-server))))
 
 ;;
 ;; for Web interface
@@ -28,9 +37,24 @@
 (setf (route *web* "/")
       #'(lambda (params)
           (declare (ignore params))
-          (merge-pathnames #p"templates/index.html"
-                           (asdf:component-pathname
-                            (asdf:find-system :quickutil-server)))))
+          (merge-pathnames #p"index.html"
+                           *template-path*)))
+
+(setf (route *web* "/list")
+      #'(lambda (params)
+          (declare (ignore params))
+          (let ((*print-case* :downcase)
+                (emb:*escape-type* :html))
+            (execute-emb (merge-pathnames #p"list.html"
+                                          *template-path*)
+                         :env `(:utilities
+                                ,(loop for name being the hash-keys in *utility-registry* using (hash-value utility)
+                                       collect
+                                       `(:name ,(string-downcase name)
+                                         :version ,(format nil "~A.~A"
+                                                    (car (util.version utility))
+                                                    (cdr (util.version utility)))
+                                         :code ,(cdr (util.code utility)))))))))
 
 ;;
 ;; for API

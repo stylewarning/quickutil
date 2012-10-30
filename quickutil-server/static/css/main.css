@@ -26,3 +26,11 @@ input {
 .search-form input[name="name"] {
   width: 200px;
 }
+
+.version {
+  display: inline-block;
+  margin-left: 15px;
+  color: #aaa;
+  font-style: italic;
+  font-size: 90%;
+}
