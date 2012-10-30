@@ -22,7 +22,7 @@
   <% @if category %>
   <div class="filter-category">Category: <strong><% @var category %></strong> (<a href="/list">Show all categories</a>)</div>
   <% @endif %>
-  <input type="text" class="filter" placeholder="Filter below utilities" />
+  <input type="text" class="filter" placeholder="Filter below utilities" value="<% @var q %>" />
   <p class="filter-result-description">There are <strong class="count"><%= (length (getf env :utilities)) %></strong> utilities.</p>
   <dl>
 <% @loop utilities %>

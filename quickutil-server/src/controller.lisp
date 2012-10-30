@@ -48,6 +48,7 @@
             (execute-emb (merge-pathnames #p"list.html"
                                           *template-path*)
                          :env `(:category ,(getf params :category)
+                                :q ,(getf params :|q|)
                                 :utilities
                                 ,(loop for name being the hash-keys in *utility-registry* using (hash-value utility)
                                        if (or (not (getf params :category))
