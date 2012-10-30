@@ -274,3 +274,15 @@ it. If UTILITY is NIL, then emit all utility source code."
           :when util
             :collect (util.code util) :into code
           :finally (return (flatten-progn `(progn ,@code))))))
+
+(defun pretty-print-utility-code (code &optional stream)
+  (if (not (typep code '(cons (eql progn))))
+      (pprint code stream)
+      (progn
+        (princ "(PROGN                                                ; toplevel"
+               stream)
+        (loop :for form :in (cdr code)
+              :do (progn
+                    (pprint form stream)
+                    (terpri stream))
+              :finally (princ ")" stream)))))
