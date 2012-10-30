@@ -54,7 +54,7 @@
 
 (defun dependencies (name)
   "Get the first-order dependencies for the utility named NAME."
-  (util.dependencies (lookup-util name)))
+  (copy-list (util.dependencies (lookup-util name))))
 
 (defun all-dependencies (name)
   "Get all of the dependencies for the utility named NAME."
