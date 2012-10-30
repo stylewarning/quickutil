@@ -10,6 +10,7 @@
 (defstruct (util (:conc-name util.))
   (version '(1 . 0) :type util-version) ; (major . minor)
   dependencies
+  categories
   code)
 
 (defun util-major-version (util)
@@ -37,20 +38,35 @@
   (check-type name symbol)
   (gethash name *utility-registry*))
 
+(defun ensure-list (x)
+  "Ensure that X is a list."
+  (if (listp x) x (list x)))
+
+(defun ensure-keyword (x)
+  "Ensure that the symbol X is in the keyword package."
+  (if (keywordp x) x (intern (symbol-name x) :keyword)))
+
+(defun ensure-keyword-list (x)
+  "Ensure that X is a list of keywords."
+  (mapcar #'ensure-keyword (ensure-list x)))
+
 (defmacro defutil (name (&key version
                               depends-on
-                              (registry *utility-registry*))
+                              category
+                              
+                              )
                    &body utility-code)
   "Define a new utility."
   (check-type name symbol)
   (check-type version util-version)
   
   `(progn
-     (setf (gethash ,name *utility-registry*)
+     (setf (gethash ',(ensure-keyword name) *utility-registry*)
            (make-util :version ',version
-                      :dependencies ',depends-on
+                      :dependencies ',(ensure-keyword-list depends-on)
+                      :categories ',(ensure-keyword-list category)
                       :code '(progn ,@utility-code)))
-     ,name))
+     ',name))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;; Dependency Resolution ;;;;;;;;;;;;;;;;;;;;;;;;
