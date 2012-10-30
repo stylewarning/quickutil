@@ -3,7 +3,8 @@
   (:use :cl)
   (:import-from :quickutil-utilities
                 :*utility-registry*
-                :emit-utility-code)
+                :emit-utility-code
+                :pretty-print-utility-code)
   (:import-from :quickutil-server.app
                 :*web*
                 :*api*)
@@ -56,6 +57,11 @@
       #'(lambda (params)
           `(200
             (:content-type "text/plain")
-            (,(princ-to-string
-               (emit-utility-code
-                :utility (intern (string-upcase (getf params :|utility|)) :keyword)))))))
+            (,(handler-case
+                  (with-output-to-string (s)
+                    (pretty-print-utility-code
+                     (emit-utility-code
+                      :utility (intern (string-upcase (getf params :|utility|)) :keyword))
+                     s)
+                    s)
+                (type-error () nil))))))
