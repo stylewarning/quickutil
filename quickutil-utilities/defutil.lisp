@@ -37,7 +37,10 @@
   (check-type name symbol)
   (gethash name *utility-registry*))
 
-(defmacro defutil (name (&key version depends-on) &body utility-code)
+(defmacro defutil (name (&key version
+                              depends-on
+                              (registry *utility-registry*))
+                   &body utility-code)
   "Define a new utility."
   (check-type name symbol)
   (check-type version util-version)
@@ -277,13 +280,14 @@ it. If UTILITY is NIL, then emit all utility source code."
 
 (defun pretty-print-utility-code (code &optional stream)
   "Pretty print utility code CODE to stream STREAM."
-  (if (not (typep code '(cons (eql progn))))
-      (pprint code stream)
-      (progn
-        (princ "(PROGN                                                ; toplevel"
-               stream)
-        (loop :for form :in (cdr code)
-              :do (progn
-                    (pprint form stream)
-                    (terpri stream))
-              :finally (princ ")" stream)))))
+  (let ((*package* (find-package '#:quickutil-utilities)))
+    (if (not (typep code '(cons (eql progn))))
+        (pprint code stream)
+        (progn
+          (princ "(PROGN                                                ; toplevel"
+                 stream)
+          (loop :for form :in (cdr code)
+                :do (progn
+                      (pprint form stream)
+                      (terpri stream))
+                :finally (princ ")" stream))))))
