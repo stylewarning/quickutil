@@ -276,6 +276,7 @@ it. If UTILITY is NIL, then emit all utility source code."
           :finally (return (flatten-progn `(progn ,@code))))))
 
 (defun pretty-print-utility-code (code &optional stream)
+  "Pretty print utility code CODE to stream STREAM."
   (if (not (typep code '(cons (eql progn))))
       (pprint code stream)
       (progn
