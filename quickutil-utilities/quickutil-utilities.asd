@@ -7,5 +7,10 @@
   ;; :license "???"
   :components ((:file "package")
                (:file "queue")
-               (:file "defutil")))
+               (:file "defutil")
+               
+               (:module utilities
+                :serial t
+                :components ((:file "arithmetic")
+                             (:file "lists")))))
 

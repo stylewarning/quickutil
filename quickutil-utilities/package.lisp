@@ -2,5 +2,7 @@
 ;;;; Copyright (c) 2012 Robert Smith
 
 (defpackage #:quickutil-utilities
-  (:use #:cl))
+  (:use #:cl)
+  (:nicknames #:qtl-utl)
+  (:export #:defutil))
 
