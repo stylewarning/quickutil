@@ -1,9 +1,11 @@
 ;;;; package.lisp
 
 (defpackage #:quickutil-client
-  (:use #:cl))
+  (:use #:cl)
+  (:export #:quickload))
 
-(unless (find-package #:quickutil)
+(unless (find-package "QUICKUTIL")
   (defpackage #:quickutil
+    (:nicknames #:qtl)
     (:use #:cl)))
 
