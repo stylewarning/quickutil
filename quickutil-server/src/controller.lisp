@@ -65,3 +65,12 @@
                      s)
                     s)
                 (type-error () nil))))))
+
+;;
+;; page not found
+
+(setf (route *web* "*")
+      #'(lambda (params)
+          (declare (ignore params))
+          (or (next-route)
+              '(404 nil ("page not found")))))
