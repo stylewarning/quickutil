@@ -11,6 +11,11 @@ body {
   font-family: Baskerville, "Baskerville Win95BT", "Times New Roman", Times, serif;
 }
 
+#header h1 a {
+  color: black;
+  text-decoration: none;
+}
+
 #footer {
   margin-top: 20px;
   clear: both;
