@@ -28,13 +28,14 @@ body {
 }
 #header ul.menu li {
   float: left;
+  margin-left: 5px;
 }
 
 #header ul.menu li a {
   display: inline-block;
   height: 25px;
-  width: 80px;
-  border-radius: 20px;
+  padding: 0 15px;
+  border-radius: 15px;
   font-size: 80%;
   background-color: gray;
   color: white;
