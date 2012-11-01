@@ -26,16 +26,7 @@
   <p class="filter-result-description">There are <strong class="count"><%= (length (getf env :utilities)) %></strong> utilities.</p>
   <dl>
 <% @loop utilities %>
-  <div class="utility" data-utility-name="<% @var name %>">
-    <dt>
-      <% @var name %>
-      <span class="categories">(<% @loop categories %><a href="/list/<%= env %>" class="category"><%= env %></a><% @endloop %>)</span>
-      <span class="version">v<% @var version %></span>
-    </dt>
-    <dd><pre class="prettyprint lang-lisp"><% @loop code %><%
-        %><% (quickutil-utilities::pretty-print-utility-code env *standard-output*) %><%
-    %><% @endloop %></pre></dd>
-  </div>
+  <% @include _utility.html %>
 <% @endloop %>
   </dl>
 </div>

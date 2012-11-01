@@ -3,7 +3,8 @@
   (:use :cl
         :clack
         :clack.builder
-        :clack.middleware.static)
+        :clack.middleware.static
+        :clack.middleware.session)
   (:shadow :stop)
   (:import-from :quickutil-server.app
                 :*app*)
@@ -25,6 +26,7 @@
     :root (merge-pathnames #p"static/"
                            (asdf:component-pathname
                             (asdf:find-system :quickutil-server))))
+   <clack-middleware-session>
    app))
 
 @export

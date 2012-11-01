@@ -1,6 +1,7 @@
 (in-package :cl-user)
 (defpackage quickutil-server.controller
-  (:use :cl)
+  (:use :cl
+        :ningle)
   (:import-from :quickutil-utilities
                 :*utility-registry*
                 :emit-utility-code
@@ -11,13 +12,10 @@
   (:import-from :quickutil-server.app
                 :*web*
                 :*api*)
+  (:import-from :quickutil-server.error
+                :quickutil-server-api-error)
   (:import-from :clack.response
                 :headers)
-  (:import-from :ningle
-                :route
-                :next-route
-                :*request*
-                :*response*)
   (:import-from :emb
                 :execute-emb)
   (:import-from :yason
@@ -30,6 +28,20 @@
     (merge-pathnames #p"templates/"
                      (asdf:component-pathname
                       (asdf:find-system :quickutil-server))))
+
+;;
+;; Functions
+
+(defun utility-plists (utilities)
+  (loop for (name . utility) in utilities
+        if utility
+        collect
+        `(:name ,(string-downcase name)
+          :version ,(format nil "~A.~A"
+                     (car (util.version utility))
+                     (cdr (util.version utility)))
+          :categories ,(util.categories utility)
+          :code ,(cdr (util.code utility)))))
 
 ;;
 ;; for Web interface
@@ -50,16 +62,23 @@
                          :env `(:category ,(getf params :category)
                                 :q ,(getf params :|q|)
                                 :utilities
-                                ,(loop for name being the hash-keys in *utility-registry* using (hash-value utility)
-                                       if (or (not (getf params :category))
-                                              (member (getf params :category) (util.categories utility) :test #'string-equal))
-                                       collect
-                                       `(:name ,(string-downcase name)
-                                         :version ,(format nil "~A.~A"
-                                                    (car (util.version utility))
-                                                    (cdr (util.version utility)))
-                                         :categories ,(util.categories utility)
-                                         :code ,(cdr (util.code utility)))))))))
+                                ,(utility-plists
+                                  (loop for name being the hash-keys in *utility-registry* using (hash-value utility)
+                                                       if (or (not (getf params :category))
+                                                              (member (getf params :category) (util.categories utility) :test #'string-equal))
+                                                         collect (cons name utility))))))))
+
+(setf (route *web* "/favorites")
+      #'(lambda (params)
+          (declare (ignore params))
+
+          (let ((*print-case* :downcase)
+                (emb:*escape-type* :html))
+            (execute-emb (merge-pathnames #p"favorites.html" *template-path*)
+                         :env `(:favorites
+                                ,(utility-plists (loop for name in (gethash :favorites *session*)
+                                                       ;; XXX: how to do if nothing is found
+                                                       collect (cons name (gethash (intern (string-upcase name) :keyword) *utility-registry*)))))))))
 
 ;;
 ;; for API
@@ -70,6 +89,15 @@
           (setf (headers *response* :content-type)
                 "application/json")
           (next-route)))
+
+(setf (route *api* "*")
+      #'(lambda (params)
+          (declare (ignore params))
+          (handler-case (next-route)
+            (quickutil-server-api-error (c)
+              (yason:encode-plist
+               `(:|success| 0
+                 :|message| ,(princ-to-string c)))))))
 
 (setf (route *api* "/")
       #'(lambda (params)
@@ -94,6 +122,31 @@
                      s)
                     s)
                 (type-error () nil))))))
+
+(setf (route *api* "/favorite.json" :method :post)
+      #'(lambda (params)
+          (unless (getf params :|utility|)
+            (error 'quickutil-server-api-error
+                   :format-control "`utility' is required to favorite."))
+
+          (pushnew (getf params :|utility|) (gethash :favorites *session*))
+
+          (with-output-to-string (s)
+            (yason:encode-plist '(:|success| 1) s))))
+
+(setf (route *api* "/unfavorite.json" :method :post)
+      #'(lambda (params)
+          (unless (getf params :|utility|)
+            (error 'quickutil-server-api-error
+                   :format-control "`utility' is required to unfavorite."))
+
+          (symbol-macrolet ((favorites (gethash :favorites *session*)))
+            (setf favorites (remove (getf params :|utility|)
+                                    favorites
+                                    :test #'string=)))
+
+          (with-output-to-string (s)
+            (yason:encode-plist '(:|success| 1) s))))
 
 ;;
 ;; page not found
