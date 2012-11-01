@@ -2,22 +2,16 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <% @include _html_header.html %>
   <title>Quickutil</title>
-  <link rel="stylesheet" href="/static/css/main.css" type="text/css" media="screen, tv, print" charset="UTF-8" />
   <link type="text/css" rel="stylesheet" href="/css/prettify.css" />
   <link type="text/css" rel="stylesheet" href="/css/sunburst.css" />
   <link type="text/css" rel="stylesheet" href="/css/LigatureSymbols/style.css" />
   <script type="text/javascript" src="/js/prettify.js"></script>
   <script type="text/javascript" src="/js/lang-lisp.js"></script>
-  <script type="text/javascript" src="/js/jquery-1.8.2.min.js"></script>
-  <script type="text/javascript" src="/js/underscore-min.js"></script>
-  <script type="text/javascript" src="/js/quickutil.js"></script>
 </head>
 <body onload="prettyPrint()">
-<div id="header">
-  <h1><a href="/">Quickutil</a></h1>
-</div>
+<% @include _header.html %>
 
 <div id="main">
   <% @if category %>
@@ -32,8 +26,6 @@
   </dl>
 </div>
 
-<div id="footer">
-  Authored by Robert Smith &amp; Eitarow Fukamachi.
-</div>
+<% @include _footer.html %>
 </body>
 </html>

@@ -52,8 +52,9 @@
 (setf (route *web* "/")
       #'(lambda (params)
           (declare (ignore params))
-          (merge-pathnames #p"index.html"
-                           *template-path*)))
+
+          (execute-emb (merge-pathnames #p"index.html"
+                                        *template-path*))))
 
 (setf (route *web* "/list/?:category?")
       #'(lambda (params)
