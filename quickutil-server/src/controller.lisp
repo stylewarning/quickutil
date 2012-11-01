@@ -33,13 +33,15 @@
 ;; Functions
 
 (defun utility-plists (utilities)
-  (loop for (name . utility) in utilities
+  (loop with favorites = (gethash :favorites *session*)
+        for (name . utility) in utilities
         if utility
         collect
         `(:name ,(string-downcase name)
           :version ,(format nil "~A.~A"
                      (car (util.version utility))
                      (cdr (util.version utility)))
+          :favoritep ,(not (null (member name favorites :test #'string-equal)))
           :categories ,(util.categories utility)
           :code ,(cdr (util.code utility)))))
 
