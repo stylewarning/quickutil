@@ -7,6 +7,10 @@ body {
   font-family: "Optima", "Nu Sans", Baskerville, "Times New Roman", "Arial", sans-serif;
 }
 
+#header {
+  position: relative;
+}
+
 #header h1 {
   font-family: Baskerville, "Baskerville Win95BT", "Times New Roman", Times, serif;
 }
@@ -14,6 +18,32 @@ body {
 #header h1 a {
   color: black;
   text-decoration: none;
+}
+
+#header ul.menu {
+  list-style: none;
+  position: absolute;
+  top: -15px;
+  right: 0;
+}
+#header ul.menu li {
+  float: left;
+}
+
+#header ul.menu li a {
+  display: inline-block;
+  height: 25px;
+  width: 80px;
+  border-radius: 20px;
+  font-size: 80%;
+  background-color: gray;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+}
+
+#header ul.menu li a:hover {
+  background-color: black;
 }
 
 #footer {
