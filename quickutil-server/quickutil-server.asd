@@ -17,5 +17,6 @@
                 :components
                 ((:file "app")
                  (:file "core" :depends-on ("app"))
-                 (:file "controller" :depends-on ("app" "error"))
+                 (:file "controller/web" :depends-on ("app"))
+                 (:file "controller/api" :depends-on ("app" "error"))
                  (:file "error")))))

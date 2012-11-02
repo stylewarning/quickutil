@@ -1,26 +1,17 @@
 (in-package :cl-user)
-(defpackage quickutil-server.controller
+(defpackage quickutil-server.controller.web
   (:use :cl
         :ningle)
   (:import-from :quickutil-utilities
                 :*utility-registry*
-                :emit-utility-code
-                :pretty-print-utility-code
                 :util.version
                 :util.categories
                 :util.code)
   (:import-from :quickutil-server.app
-                :*web*
-                :*api*)
-  (:import-from :quickutil-server.error
-                :quickutil-server-api-error)
-  (:import-from :clack.response
-                :headers)
+                :*web*)
   (:import-from :emb
-                :execute-emb)
-  (:import-from :yason
-                :encode))
-(in-package :quickutil-server.controller)
+                :execute-emb))
+(in-package :quickutil-server.controller.web)
 
 (cl-syntax:use-syntax :annot)
 
@@ -48,7 +39,6 @@
 ;;
 ;; for Web interface
 
-;; http://**/
 (setf (route *web* "/")
       #'(lambda (params)
           (declare (ignore params))
@@ -82,74 +72,6 @@
                                 ,(utility-plists (loop for name in (gethash :favorites *session*)
                                                        ;; XXX: how to do if nothing is found
                                                        collect (cons name (gethash (intern (string-upcase name) :keyword) *utility-registry*)))))))))
-
-;;
-;; for API
-
-(setf (route *api* "*")
-      #'(lambda (params)
-          (declare (ignore params))
-          (setf (headers *response* :content-type)
-                "application/json")
-          (next-route)))
-
-(setf (route *api* "*")
-      #'(lambda (params)
-          (declare (ignore params))
-          (handler-case (next-route)
-            (quickutil-server-api-error (c)
-              (yason:encode-plist
-               `(:|success| 0
-                 :|message| ,(princ-to-string c)))))))
-
-(setf (route *api* "/")
-      #'(lambda (params)
-          (declare (ignore params))
-          (with-output-to-string (s)
-            ;; just for testing
-            (yason:encode
-              (loop for key being the hash-keys in *utility-registry*
-                    collect (string key))
-             s)
-            s)))
-
-(setf (route *api* "/emit-utility-code.lisp")
-      #'(lambda (params)
-          `(200
-            (:content-type "text/plain")
-            (,(handler-case
-                  (with-output-to-string (s)
-                    (pretty-print-utility-code
-                     (emit-utility-code
-                      :utility (intern (string-upcase (getf params :|utility|)) :keyword))
-                     s)
-                    s)
-                (type-error () nil))))))
-
-(setf (route *api* "/favorite.json" :method :post)
-      #'(lambda (params)
-          (unless (getf params :|utility|)
-            (error 'quickutil-server-api-error
-                   :format-control "`utility' is required to favorite."))
-
-          (pushnew (getf params :|utility|) (gethash :favorites *session*))
-
-          (with-output-to-string (s)
-            (yason:encode-plist '(:|success| 1) s))))
-
-(setf (route *api* "/unfavorite.json" :method :post)
-      #'(lambda (params)
-          (unless (getf params :|utility|)
-            (error 'quickutil-server-api-error
-                   :format-control "`utility' is required to unfavorite."))
-
-          (symbol-macrolet ((favorites (gethash :favorites *session*)))
-            (setf favorites (remove (getf params :|utility|)
-                                    favorites
-                                    :test #'string=)))
-
-          (with-output-to-string (s)
-            (yason:encode-plist '(:|success| 1) s))))
 
 ;;
 ;; page not found
