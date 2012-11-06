@@ -53,8 +53,13 @@ body {
 }
 
 #header ul.menu li a:hover {
+  color: white;
   border-radius: 15px;
-  background-color: #eee;
+  background-color: #888;
+  -moz-box-shadow: inset 0px 0px 10px 0px #aaa;
+  -webkit-box-shadow: inset 0px 0px 10px 0px #aaa;
+  box-shadow: inset 0px 0px 10px 0px #aaa;
+  filter: progid:DXImageTransform.Microsoft.Shadow(color='#aaa', Direction=145, Strength=6)
 }
 
 #header ul.menu li a:active,
@@ -62,11 +67,7 @@ body {
   color: white;
   border-radius: 15px;
   background-color: #aaa;
-  -moz-box-shadow: inset 0px 5px 8px 0px #888;
-  -webkit-box-shadow: inset 0px 5px 8px 0px #888;
-  box-shadow: inset 0px 5px 8px 0px #888;
-  filter: progid:DXImageTransform.Microsoft.Shadow(color='#888888', Direction=145, Strength=6)
-  padding-top: 3px;
+  background: -webkit-gradient(linear,0 0,0 100%,from(rgba(0,0,0,.8)),color-stop(.1,rgba(0,0,0,0)),to(rgba(0,0,0,0))),-webkit-gradient(linear,0 0,0 100%,from(rgba(0,0,0,.2)),color-stop(.3,rgba(0,0,0,0)),color-stop(.7,rgba(0,0,0,0)),to(rgba(0,0,0,.2))),-webkit-gradient(linear,0 0,100% 0,from(rgba(0,0,0,.2)),color-stop(.2,rgba(0,0,0,0)),color-stop(.8,rgba(0,0,0,0)),to(rgba(0,0,0,.2))),-webkit-gradient(linear,0 0,0 100%,from(rgba(47,47,47,1)),color-stop(0.97,rgba(75,75,75,1)),color-stop(0.97,rgba(0,0,0,0)),to(rgba(0,0,0,.45)));
 }
 
 #main {

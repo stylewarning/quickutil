@@ -27,6 +27,10 @@ Quickutil.init.done(function() {
         $('.menu li').removeClass('current');
         target.closest('li').addClass('current');
     });
+    $('#header h1').on('click', function() {
+        $('.menu li').removeClass('current');
+        $('.menu li a[href="/"]').parent().addClass('current');
+    });
 
     $(document).on('pjax:success', function() { prettyPrint(); });
 
