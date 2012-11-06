@@ -139,3 +139,10 @@ input.filter {
   font-size: 150%;
   cursor: pointer;
 }
+
+/* message */
+.inactive-message {
+  text-align: center;
+  color: #888;
+  padding: 15px;
+}

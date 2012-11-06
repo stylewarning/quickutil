@@ -14,9 +14,13 @@
 <% @include _header.html %>
 
 <div id="main">
-  <% @loop favorites %>
-    <% @include _utility.html %>
-  <% @endloop %>
+  <% @if favorites %>
+    <% @loop favorites %>
+      <% @include _utility.html %>
+    <% @endloop %>
+  <% @else %>
+    <p class="inactive-message">There are no favorite utilities.</p>
+  <% @endif %>
 </div>
 
 <% @include _footer.html %>
