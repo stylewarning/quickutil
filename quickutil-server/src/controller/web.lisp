@@ -44,7 +44,8 @@
           (declare (ignore params))
 
           (execute-emb (merge-pathnames #p"index.html"
-                                        *template-path*))))
+                                        *template-path*)
+                       :env '(:current "index"))))
 
 (setf (route *web* "/list/?:category?")
       #'(lambda (params)

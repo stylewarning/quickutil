@@ -9,10 +9,19 @@
 <% @include _header.html %>
 
 <div id="main">
-  <form class="search-form" action="/list">
-    <input type="text" class="filter" name="q" value="" />
-    <input type="submit" value="Search" />
-  </form>
+  <h3>What's Quickutil?</h3>
+
+  <p>Quickutil is an application and library for distributing utilities, aiming to solve the "utility problem".</p>
+
+  <p>It is similar in spirit to Quicklisp, in that utilities can automatically be downloaded and installed to projects.</p>
+
+  <h3>Installation</h3>
+
+  <pre><code>(ql:quickload :quickutil-client)</code></pre>
+
+  <h3>Load an Utility</h3>
+
+  <pre><code>(qtl:quickload :iota)</code></pre>
 </div>
 
 <% @include _footer.html %>

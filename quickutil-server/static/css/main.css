@@ -35,6 +35,7 @@ body {
   list-style: none;
   padding-left: 0;
   float: right;
+  width: 140px;
 }
 
 #header ul.menu li {
@@ -44,9 +45,8 @@ body {
 #header ul.menu li a {
   color: black;
   display: inline-block;
-  min-width: 80px;
+  width: 100%;
   height: 25px;
-  padding: 0 15px;
   font-size: 80%;
   text-align: center;
   text-decoration: none;
@@ -96,7 +96,11 @@ input {
   border: 1px solid #ccc;
 }
 
-.search-form input[name="name"] {
+.search-form {
+  float: right;
+}
+
+.search-form input[name="q"] {
   width: 200px;
 }
 
