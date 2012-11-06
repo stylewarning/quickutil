@@ -1,9 +1,9 @@
 <div id="header">
   <h1><a href="/">Quickutil</a></h1>
   <ul class="menu">
-    <li<% (when (equal (getf env :current) "index") %> class="current"<% ) %>><a href="/">What's Quickutil?</a></li>
-    <li<% (when (equal (getf env :current) "list") %> class="current"<% ) %>><a href="/list">Find Utilities</a></li>
-    <li<% (when (equal (getf env :current) "favorites") %> class="current"<% ) %>><a href="/favorites">Favorites</a></li>
+    <li<% (when (equal (getf env :current) "index") %> class="current"<% ) %>><a href="/" data-pjax="#main">What's Quickutil?</a></li>
+    <li<% (when (equal (getf env :current) "list") %> class="current"<% ) %>><a href="/list" data-pjax="#main">Find Utilities</a></li>
+    <li<% (when (equal (getf env :current) "favorites") %> class="current"<% ) %>><a href="/favorites" data-pjax="#main">Favorites</a></li>
   </ul>
 </div>
 

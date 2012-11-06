@@ -1,7 +1,7 @@
 <div class="utility" data-utility-name="<% @var name %>">
   <dt>
     <% @var name %>
-    <span class="categories">(<% @loop categories %><a href="/list/<%= env %>" class="category"><%= env %></a><% @endloop %>)</span>
+    <span class="categories">(<% @loop categories %><a href="/list/<%= env %>" data-pjax="#main" class="category"><%= env %></a><% @endloop %>)</span>
     <span class="version">v<% @var version %></span>
     <span class="lsf <% @if favoritep %>unfavorite<% @else %>favorite<% @endif %>"><% @if favoritep %>star<% @else %>starempty<% @endif %></span>
   </dt>

@@ -2,20 +2,15 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
 <head>
-  <% @include _html_header.html %>
   <title>Quickutil</title>
-  <link type="text/css" rel="stylesheet" href="/css/prettify.css" />
-  <link type="text/css" rel="stylesheet" href="/css/sunburst.css" />
-  <link type="text/css" rel="stylesheet" href="/css/LigatureSymbols/style.css" />
-  <script type="text/javascript" src="/js/prettify.js"></script>
-  <script type="text/javascript" src="/js/lang-lisp.js"></script>
+  <% @include _html_header.html %>
 </head>
 <body onload="prettyPrint()">
 <% @include _header.html %>
 
 <div id="main">
   <% @if category %>
-  <div class="filter-category">Category: <strong><% @var category %></strong> (<a href="/list">Show all categories</a>)</div>
+  <div class="filter-category">Category: <strong><% @var category %></strong> (<a href="/list" data-pjax="#main">Show all categories</a>)</div>
   <% @endif %>
   <input type="text" class="filter" placeholder="Filter below utilities" value="<% @var q %>" />
   <p class="filter-result-description">There are <strong class="count"><%= (length (getf env :utilities)) %></strong> utilities.</p>
