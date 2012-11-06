@@ -21,6 +21,16 @@ body {
   text-decoration: none;
 }
 
+#header h1 a:before {
+  content: "";
+  opacity: 0.5;
+  background: url(/images/gradient-white.png) repeat-x;
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 37px;
+}
+
 #header ul.menu {
   list-style: none;
   padding-left: 0;
@@ -28,7 +38,7 @@ body {
 }
 
 #header ul.menu li {
-  margin-left: 5px;
+  margin: 3px 5px;
 }
 
 #header ul.menu li a {
