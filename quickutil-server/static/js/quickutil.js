@@ -54,18 +54,20 @@ Quickutil.init.done(function() {
     $(document).on('input', '.filter', updateFilter);
     $.proxy(updateFilter, $('.filter'))();
 
-    $(document).on('click', '.favorite, .unfavorite', function(e) {
-        var target = $(e.currentTarget);
-        var action = target.hasClass('favorite') ? 'favorite' : 'unfavorite';
-        var name = target.closest('.utility').attr('data-utility-name');
+    $(document).on('submit', '.favorite, .unfavorite', function(e) {
+        e.preventDefault();
+        var form = $(e.currentTarget);
+        var button = form.children('input[type="submit"]');
+        var isFavorite = form.hasClass('favorite');
         $.ajax({
             type: 'POST',
-            url: '/api/' + action + '.json',
-            data: { utility: name }
+            url: form.attr('data-action'),
+            data: form.serializeArray()
         });
 
-        target.text(action === 'favorite' ? 'star' : 'starempty');
-        target.toggleClass('favorite').toggleClass('unfavorite');
+        form.attr('data-action', '/api/' + (isFavorite ? 'favorite' : 'unfavorite') + '.json');
+        button.attr('value', isFavorite ? 'starempty' : 'star');
+        form.toggleClass('favorite').toggleClass('unfavorite');
     });
 });
 

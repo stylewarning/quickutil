@@ -3,7 +3,11 @@
     <% @var name %>
     <span class="categories">(<% @loop categories %><a href="/list/<%= env %>" data-pjax="#main" class="category"><%= env %></a><% @endloop %>)</span>
     <span class="version">v<% @var version %></span>
-    <span class="lsf <% @if favoritep %>unfavorite<% @else %>favorite<% @endif %>"><% @if favoritep %>star<% @else %>starempty<% @endif %></span>
+    <form type="POST" data-action="/api/<% @if favoritep %>unfavorite<% @else %>favorite<% @endif %>.json" class="<% @if favoritep %>favorite<% @else %>unfavorite<% @endif %>">
+      <%= (clack.middleware.csrf:csrf-html-tag ningle:*session*) %>
+      <input type="hidden" name="utility" value="<% @var name %>" />
+      <input class="lsf" type="submit" value="<% @if favoritep %>star<% @else %>starempty<% @endif %>" />
+    </form>
   </dt>
   <dd><pre class="prettyprint lang-lisp"><% @loop code %><%
       %><% (quickutil-utilities::pretty-print-utility-code env *standard-output*) %><%

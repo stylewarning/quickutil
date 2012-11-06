@@ -132,8 +132,16 @@ input.filter {
 .favorite, .unfavorite {
   display: inline-block;
   float: right;
-  font-size: 150%;
+}
+
+.favorite input[type="submit"],
+.unfavorite input[type="submit"] {
+  background: none;
+  border: none;
   cursor: pointer;
+  font-size: 150%;
+  margin: 0;
+  padding: 0;
 }
 
 /* message */
