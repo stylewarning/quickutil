@@ -7,6 +7,7 @@
   :version "0.1"
   :author "Eitarow Fukamachi"
   :depends-on (:ningle
+               :clack-middleware-csrf
                :cl-syntax
                :cl-syntax-annot
                :cl-ppcre

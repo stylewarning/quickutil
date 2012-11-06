@@ -4,6 +4,7 @@
         :clack
         :clack.builder
         :clack.middleware.static
+        :clack.middleware.csrf
         :clack.middleware.session)
   (:shadow :stop)
   (:import-from :quickutil-server.app
@@ -27,6 +28,7 @@
                            (asdf:component-pathname
                             (asdf:find-system :quickutil-server))))
    <clack-middleware-session>
+   <clack-middleware-csrf>
    app))
 
 @export
