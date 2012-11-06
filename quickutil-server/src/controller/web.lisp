@@ -52,7 +52,8 @@
                 (emb:*escape-type* :html))
             (execute-emb (merge-pathnames #p"list.html"
                                           *template-path*)
-                         :env `(:category ,(getf params :category)
+                         :env `(:current "list"
+                                :category ,(getf params :category)
                                 :q ,(getf params :|q|)
                                 :utilities
                                 ,(utility-plists
@@ -68,7 +69,8 @@
           (let ((*print-case* :downcase)
                 (emb:*escape-type* :html))
             (execute-emb (merge-pathnames #p"favorites.html" *template-path*)
-                         :env `(:favorites
+                         :env `(:current "favorites"
+                                :favorites
                                 ,(utility-plists (loop for name in (gethash :favorites *session*)
                                                        ;; XXX: how to do if nothing is found
                                                        collect (cons name (gethash (intern (string-upcase name) :keyword) *utility-registry*)))))))))

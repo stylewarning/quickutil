@@ -1,7 +1,7 @@
 <div id="header">
   <h1><a href="/">Quickutil</a></h1>
   <ul class="menu">
-    <li><a href="/list">All Utilities</a></li>
-    <li><a href="/favorites">Favorites</a></li>
+    <li<% (when (equal (getf env :current) "list") %> class="current"<% ) %>><a href="/list">All Utilities</a></li>
+    <li<% (when (equal (getf env :current) "favorites") %> class="current"<% ) %>><a href="/favorites">Favorites</a></li>
   </ul>
 </div>
