@@ -54,9 +54,7 @@ Quickutil.init.done(function() {
     $(document).on('input', '.filter', updateFilter);
     $.proxy(updateFilter, $('.filter'))();
 
-    $('.filter').focus();
-
-    $('.favorite, .unfavorite').on('click', function(e) {
+    $(document).on('click', '.favorite, .unfavorite', function(e) {
         var target = $(e.currentTarget);
         var action = target.hasClass('favorite') ? 'favorite' : 'unfavorite';
         var name = target.closest('.utility').attr('data-utility-name');
@@ -67,6 +65,7 @@ Quickutil.init.done(function() {
         });
 
         target.text(action === 'favorite' ? 'star' : 'starempty');
+        target.toggleClass('favorite').toggleClass('unfavorite');
     });
 });
 
