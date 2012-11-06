@@ -114,6 +114,10 @@ input {
   font-size: 90%;
 }
 
+.prettyprint.lang-lisp {
+  color: white;
+}
+
 input[type="text"] {
   border-radius: 15px;
   padding-left: 10px;
