@@ -132,9 +132,11 @@ input {
   margin-left: 20px;
 }
 
+/* Prettify */
 .prettyprint.lang-lisp {
   color: white;
 }
+.pun,.opn,.clo { color: #993; }
 
 input[type="text"] {
   border-radius: 15px;
