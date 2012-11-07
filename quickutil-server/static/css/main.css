@@ -59,7 +59,7 @@ body {
   -moz-box-shadow: inset 0px 0px 10px 0px #aaa;
   -webkit-box-shadow: inset 0px 0px 10px 0px #aaa;
   box-shadow: inset 0px 0px 10px 0px #aaa;
-  filter: progid:DXImageTransform.Microsoft.Shadow(color='#aaa', Direction=145, Strength=6)
+  filter: progid:DXImageTransform.Microsoft.Shadow(color='#aaa', Direction=145, Strength=6);
 }
 
 #header ul.menu li a:active,
@@ -67,7 +67,21 @@ body {
   color: white;
   border-radius: 15px;
   background-color: #aaa;
-  background: -webkit-gradient(linear,0 0,0 100%,from(rgba(0,0,0,.8)),color-stop(.1,rgba(0,0,0,0)),to(rgba(0,0,0,0))),-webkit-gradient(linear,0 0,0 100%,from(rgba(0,0,0,.2)),color-stop(.3,rgba(0,0,0,0)),color-stop(.7,rgba(0,0,0,0)),to(rgba(0,0,0,.2))),-webkit-gradient(linear,0 0,100% 0,from(rgba(0,0,0,.2)),color-stop(.2,rgba(0,0,0,0)),color-stop(.8,rgba(0,0,0,0)),to(rgba(0,0,0,.2))),-webkit-gradient(linear,0 0,0 100%,from(rgba(47,47,47,1)),color-stop(0.97,rgba(75,75,75,1)),color-stop(0.97,rgba(0,0,0,0)),to(rgba(0,0,0,.45)));
+  background:
+    -o-linear-gradient(top, rgba(0, 0, 0, .8) 0, rgba(0, 0, 0, 0) 10%, rgba(0, 0, 0, 0) 100%),
+    -o-linear-gradient(top, rgba(0, 0, 0, .2) 0, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0) 70%, rgba(0, 0, 0, .2) 100%),
+    -o-linear-gradient(left, rgba(0, 0, 0, .2) 0, rgba(0, 0, 0, 0) 20%, rgba(0, 0, 0, 0) 80%, rgba(0, 0, 0, .2) 100%),
+    -o-linear-gradient(top, rgba(30, 30, 30, 1) 0, rgba(75, 75, 75, 1) 97%, rgba(0, 0, 0, 0) 97%, rgba(0, 0, 0, .45) 100%);
+  background:
+    -moz-linear-gradient(top, rgba(0, 0, 0, .8) 0, rgba(0, 0, 0, 0) 10%, rgba(0, 0, 0, 0) 100%),
+    -moz-linear-gradient(top, rgba(0, 0, 0, .2) 0, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0) 70%, rgba(0, 0, 0, .2) 100%),
+    -moz-linear-gradient(left, rgba(0, 0, 0, .2) 0, rgba(0, 0, 0, 0) 20%, rgba(0, 0, 0, 0) 80%, rgba(0, 0, 0, .2) 100%),
+    -moz-linear-gradient(top, rgba(30, 30, 30, 1) 0, rgba(75, 75, 75, 1) 97%, rgba(0, 0, 0, 0) 97%, rgba(0, 0, 0, .45) 100%);
+  background:
+    -webkit-gradient(linear,0 0,0 100%,from(rgba(0,0,0,.8)),color-stop(.1,rgba(0,0,0,0)),to(rgba(0,0,0,0))),
+    -webkit-gradient(linear,0 0,0 100%,from(rgba(0,0,0,.2)),color-stop(.3,rgba(0,0,0,0)),color-stop(.7,rgba(0,0,0,0)),to(rgba(0,0,0,.2))),
+    -webkit-gradient(linear,0 0,100% 0,from(rgba(0,0,0,.2)),color-stop(.2,rgba(0,0,0,0)),color-stop(.8,rgba(0,0,0,0)),to(rgba(0,0,0,.2))),
+    -webkit-gradient(linear,0 0,0 100%,from(rgba(47,47,47,1)),color-stop(0.97,rgba(75,75,75,1)),color-stop(0.97,rgba(0,0,0,0)),to(rgba(0,0,0,.45)));
 }
 
 #main {
@@ -112,6 +126,10 @@ input {
   color: #aaa;
   font-style: italic;
   font-size: 90%;
+}
+
+.utility dd {
+  margin-left: 20px;
 }
 
 .prettyprint.lang-lisp {
