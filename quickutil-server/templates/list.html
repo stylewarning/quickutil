@@ -4,6 +4,7 @@
   {call wrapper}
     {param title: 'Find Utilities - Quickutil' /}
     {param current: 'list' /}
+    {param categories: $categories /}
     {param body}
       {if $category}
       <div class="filter-category">Category: <strong>{$category}</strong> (<a href="/list" data-pjax="#main">Show all categories</a>)</div>

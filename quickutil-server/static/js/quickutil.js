@@ -26,12 +26,12 @@ Quickutil.init.done(function() {
 
     $(document).on('click', '.menu li a', function(e) {
         var target = $(e.currentTarget);
-        $('.menu li').removeClass('current');
-        target.closest('li').addClass('current');
+        $('.menu li a').removeClass('current');
+        $('.menu li a[href="' + location.pathname + '"]').addClass('current');
     });
     $('#header h1').on('click', function() {
-        $('.menu li').removeClass('current');
-        $('.menu li a[href="/"]').parent().addClass('current');
+        $('.menu li a').removeClass('current');
+        $('.menu li a[href="/"]').addClass('current');
     });
 
     $(document)

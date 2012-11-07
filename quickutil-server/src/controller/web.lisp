@@ -49,7 +49,11 @@
 (setf (route *web* "/")
       #'(lambda (params)
           (declare (ignore params))
-          (render-index)))
+          (render-index
+           (list
+            ;; XXX: inefficient
+            :categories (remove-duplicates (loop for util in (utility-plists)
+                                                 append (getf util :categories)))))))
 
 (setf (route *web* "/list/?:category?")
       #'(lambda (params)
@@ -58,6 +62,9 @@
             (render-list
              (list
               :category category
+              ;; XXX: inefficient
+              :categories (remove-duplicates (loop for util in (utility-plists)
+                                                   append (getf util :categories)))
               :q (getf params :|q|)
               :utilities
               (utility-plists
@@ -79,6 +86,9 @@
                           #'(lambda (name utility)
                               (declare (ignore utility))
                               (member name favorites :test #'string-equal)))
+              ;; XXX: inefficient
+              :categories (remove-duplicates (loop for util in (utility-plists)
+                                                   append (getf util :categories)))
               :csrf-html-tag (clack.middleware.csrf:csrf-html-tag *session*))))))
 
 ;;

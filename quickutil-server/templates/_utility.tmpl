@@ -4,14 +4,20 @@
 <div class="utility" data-utility-name="{$utility.name}">
   <dt>
     {$utility.name}
-    <span class="categories">({foreach $category in $utility.categories}<a href="/list/{$category}" data-pjax="#main" class="category">{$category}</a>{/foreach})</span>
     <span class="version">v{$utility.version}</span>
+    <div class="categories">
+      {foreach $category in $utility.categories}
+      <a href="/list/{$category}" data-pjax="#main" class="category">{$category}</a>
+      {/foreach}
+    </div>
+  </dt>
+  <dd>
     <form type="POST" data-action="/api/{if $utility.favoritep}unfavorite{else}favorite{/if}.json" class="{if $utility.favoritep}favorite{else}unfavorite{/if}">
       {$csrfHtmlTag | noAutoescape}
       <input type="hidden" name="utility" value="{$utility.name}" />
       <input class="lsf" type="submit" value="{if $utility.favoritep}star{else}starempty{/if}" />
     </form>
-  </dt>
-  <dd><pre class="prettyprint lang-lisp">{foreach $sexp in $utility.code}{$sexp}{if not isLast($sexp)}<br/>{/if}{/foreach}</pre></dd>
+    <pre class="prettyprint lang-lisp">{foreach $sexp in $utility.code}{$sexp}{if not isLast($sexp)}<br/>{/if}{/foreach}</pre>
+  </dd>
 </div>
 {/template}
