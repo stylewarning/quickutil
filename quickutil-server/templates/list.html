@@ -1,26 +1,23 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
-<head>
-  <title>Find Utilities - Quickutil</title>
-  <% @include _html_header.html %>
-</head>
-<body onload="prettyPrint()">
-<% @include _header.html %>
+{namespace quickutil-server.view}
 
-<div id="main">
-  <% @if category %>
-  <div class="filter-category">Category: <strong><% @var category %></strong> (<a href="/list" data-pjax="#main">Show all categories</a>)</div>
-  <% @endif %>
-  <input type="text" class="filter" placeholder="Filter below utilities" value="<% @var q %>" />
-  <p class="filter-result-description">There are <strong class="count"><%= (length (getf env :utilities)) %></strong> utilities.</p>
-  <dl>
-<% @loop utilities %>
-  <% @include _utility.html %>
-<% @endloop %>
-  </dl>
-</div>
-
-<% @include _footer.html %>
-</body>
-</html>
+{template renderList}
+  {call wrapper}
+    {param title: 'Find Utilities - Quickutil' /}
+    {param current: 'list' /}
+    {param body}
+      {if $category}
+      <div class="filter-category">Category: <strong>{$category}</strong> (<a href="/list" data-pjax="#main">Show all categories</a>)</div>
+      {/if}
+      <input type="text" class="filter" placeholder="Filter below utilities" value="{$q}" />
+      <p class="filter-result-description">There are <strong class="count">{length($utilities)}</strong> utilities.</p>
+      <dl>
+        {foreach $utility in $utilities}
+          {call utility}
+            {param utility: $utility /}
+            {param csrfHtmlTag: $csrfHtmlTag /}
+          {/call}
+        {/foreach}
+      </dl>
+    {/param}
+  {/call}
+{/template}

@@ -13,11 +13,15 @@
                :cl-ppcre
                :yason
                :quickutil-utilities
-               :cl-emb)
+               :closure-template
+               :cl-fad)
   :components ((:module "src"
                 :components
                 ((:file "app")
                  (:file "core" :depends-on ("app"))
-                 (:file "controller/web" :depends-on ("app"))
-                 (:file "controller/api" :depends-on ("app" "error"))
+                 (:module "controller"
+                  :depends-on ("app" "core" "error")
+                  :components
+                  ((:file "web")
+                   (:file "api")))
                  (:file "error")))))

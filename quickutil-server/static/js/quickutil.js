@@ -6,6 +6,8 @@ if (Quickutil.init) return;
 Quickutil.init = $.Deferred(function () { $(this.resolve); });
 
 Quickutil.init.done(function() {
+    prettyPrint();
+
     $.pjax.defaults.timeout = 20 * 1000;
     $.pjax.defaults.contentType = 'text/html';
 

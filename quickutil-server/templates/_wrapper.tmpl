@@ -1,0 +1,47 @@
+{namespace quickutil-server.view}
+
+{template wrapper}
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+  <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>{$title}</title>
+  <link type="text/css" rel="stylesheet" href="/css/prettify.css" />
+  <link type="text/css" rel="stylesheet" href="/css/sunburst.css" />
+  <link type="text/css" rel="stylesheet" href="/css/LigatureSymbols/style.css" />
+  <link rel="stylesheet" href="/static/css/main.css" type="text/css" media="screen, tv, print" charset="UTF-8" />
+  <script type="text/javascript" src="/js/jquery-1.8.2.min.js"></script>
+  <script type="text/javascript" src="/js/jquery.pjax.js"></script>
+  <script type="text/javascript" src="/js/underscore-min.js"></script>
+  <script type="text/javascript" src="/js/prettify.js"></script>
+  <script type="text/javascript" src="/js/lang-lisp.js"></script>
+  <script type="text/javascript" src="/js/quickutil.js"></script>
+</head>
+<body>
+  <div id="header">
+    <h1><a href="/" data-pjax="#main">Quickutil</a></h1>
+    <ul class="menu">
+      <li{if $current == 'index'} class="current"{/if}><a href="/" data-pjax="#main">What's Quickutil?</a></li>
+      <li{if $current == 'list'} class="current"{/if}><a href="/list" data-pjax="#main">Find Utilities</a></li>
+      <li{if $current == 'favorites'} class="current"{/if}><a href="/favorites" data-pjax="#main">Favorites</a></li>
+    </ul>
+  </div>
+
+  <a href="https://github.com/tarballs-are-good/quickutil"><img style="position: absolute; top: 0; right: 0; border: 0; z-index: -1000" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+<div id="main">
+  {$body | noAutoescape}
+</div>
+
+<div id="footer">
+  <div class="github-buttons">
+    <iframe width="85" height="20" src="http://ghbtns.com/github-btn.html?user=tarballs-are-good&amp;repo=quickutil&amp;type=watch&amp;count=true" frameborder="0" scrolling="0" allowtransparency="true"></iframe>
+    <iframe width="85" height="20" src="http://ghbtns.com/github-btn.html?user=tarballs-are-good&amp;repo=quickutil&amp;type=fork&amp;count=true" frameborder="0" scrolling="0" allowtransparency="true"></iframe>
+  </div>
+
+  Authored by Robert Smith &amp; Eitarow Fukamachi.
+</div>
+</body>
+</html>
+{/template}

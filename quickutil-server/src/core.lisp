@@ -5,18 +5,29 @@
         :clack.builder
         :clack.middleware.static
         :clack.middleware.csrf
-        :clack.middleware.session)
+        :clack.middleware.session
+        :closure-template)
   (:shadow :stop)
   (:import-from :quickutil-server.app
                 :*app*)
   (:import-from :cl-ppcre
                 :scan
-                :regex-replace))
+                :regex-replace)
+  (:import-from :fad
+                :list-directory))
 (in-package :quickutil-server)
 
 (cl-syntax:use-syntax :annot)
 
 (defvar *handler* nil)
+
+@export
+(defvar *template-path*
+    (merge-pathnames #p"templates/"
+                     (asdf:component-pathname
+                      (asdf:find-system :quickutil-server))))
+
+(closure-template:compile-cl-templates (fad:list-directory *template-path*))
 
 (defun build (app)
   (builder

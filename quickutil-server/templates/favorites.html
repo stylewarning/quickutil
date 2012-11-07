@@ -1,24 +1,18 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
-<head>
-  <title>Favorites - Quickutil</title>
-  <% @include _html_header.html %>
-</head>
-<body>
-<% @include _header.html %>
+{namespace quickutil-server.view}
 
-<div id="main">
-  <% @if favorites %>
-    <% @loop favorites %>
-      <% @include _utility.html %>
-    <% @endloop %>
-  <% @else %>
-    <p class="inactive-message">There are no favorite utilities.</p>
-  <% @endif %>
-</div>
-
-<% @include _footer.html %>
-</body>
-</body>
-</html>
+{template renderFavorites}
+  {call wrapper}
+    {param title: 'Favorites - Quickutil' /}
+    {param current: 'favorites' /}
+    {param body}
+      {foreach $utility in $favorites}
+        {call utility}
+          {param utility: $utility /}
+          {param csrfHtmlTag: $csrfHtmlTag /}
+        {/call}
+      {ifempty}
+        <p class="inactive-message">There are no favorite utilities.</p>
+      {/foreach}
+    {/param}
+  {/call}
+{/template}
