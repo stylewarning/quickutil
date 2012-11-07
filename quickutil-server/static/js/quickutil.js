@@ -32,7 +32,10 @@ Quickutil.init.done(function() {
         $('.menu li a[href="/"]').parent().addClass('current');
     });
 
-    $(document).on('pjax:success', function() { prettyPrint(); });
+    $(document)
+        .on('pjax:start', function() { $('#main').css('opacity', 0.4); })
+        .on('pjax:end', function() { $('#main').animate({ opacity: 1 }, 'fast'); })
+        .on('pjax:success', function() { prettyPrint(); });
 
     var updateFilter = function() {
         if ($(this).length === 0) return;
