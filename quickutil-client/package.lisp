@@ -7,5 +7,8 @@
 (unless (find-package "QUICKUTIL")
   (defpackage #:quickutil
     (:nicknames #:qtl)
-    (:use #:cl)))
+    (:use #:cl)
+    (:import-from #:quickutil-client
+                  #:quickload)
+    (:export #:quickload)))
 

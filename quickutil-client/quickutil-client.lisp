@@ -2,7 +2,7 @@
 
 (in-package #:quickutil-client)
 
-;;; LOAD-FROM-URL, COMPILE-FILE-FROM-URL ?
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Internet ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun download-url (url)
   (let* ((temp-stream (temporary-file:open-temporary))
