@@ -20,6 +20,7 @@ body {
   width: 760px;
 }
 
-#main {
-  margin: 50px auto;
+.error-message {
+  font-size: 31px;
+  color: #888;
 }

@@ -98,4 +98,6 @@
       #'(lambda (params)
           (declare (ignore params))
           (or (next-route)
-              '(404 nil ("page not found")))))
+              (asdf:system-relative-pathname
+               :quickutil-server
+               #P"static/html/404.html"))))
