@@ -1,11 +1,11 @@
 {namespace quickutil-server.view}
 
 {template wrapper}
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-  <html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
-  <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <link rel="shortcut icon" href="/favicon.ico" />
   <title>{$title}</title>
   <link type="text/css" rel="stylesheet" href="/css/prettify.css" />
   <link type="text/css" rel="stylesheet" href="/css/sunburst.css" />
@@ -19,21 +19,23 @@
   <script type="text/javascript" src="/js/quickutil.js"></script>
 </head>
 <body>
-  <div id="header">
+  <header>
     <h1><a href="/" data-pjax="#main">Quickutil</a></h1>
-    <ul class="menu">
-      <li><a{if $current == 'index'} class="current"{/if} href="/" data-pjax="#main">What's Quickutil?</a></li>
-      <li>
-        <a{if $current == 'list'} class="current"{/if} href="/list" data-pjax="#main">Find Utilities</a>
-        <ul class="categories">
-          {foreach $category in $categories}
-          <li><a data-pjax="#main" href="/list/{$category}">{$category}</a></li>
-          {/foreach}
-        </ul>
-      </li>
-      <li><a{if $current == 'favorites'} class="current"{/if} href="/favorites" data-pjax="#main">Favorites</a></li>
-    </ul>
-  </div>
+    <nav>
+      <ul class="menu">
+        <li><a {if $current == 'index'}class="current"{/if} href="/" data-pjax="#main">What's Quickutil?</a></li>
+        <li>
+          <a {if $current == 'list'}class="current"{/if} href="/list" data-pjax="#main">Find Utilities</a>
+          <ul class="categories">
+            {foreach $category in $categories}
+            <li><a data-pjax="#main" href="/list/{$category}">{$category}</a></li>
+            {/foreach}
+          </ul>
+        </li>
+        <li><a {if $current == 'favorites'}class="current"{/if} href="/favorites" data-pjax="#main">Favorites</a></li>
+      </ul>
+    </nav>
+  </header>
 
   <a href="https://github.com/tarballs-are-good/quickutil"><img style="position: absolute; top: 0; right: 0; border: 0; z-index: -1000" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
 
@@ -41,14 +43,14 @@
   {$body | noAutoescape}
 </div>
 
-<div id="footer">
+<footer>
   <div class="github-buttons">
     <iframe width="85" height="20" src="http://ghbtns.com/github-btn.html?user=tarballs-are-good&amp;repo=quickutil&amp;type=watch&amp;count=true" frameborder="0" scrolling="0" allowtransparency="true"></iframe>
     <iframe width="85" height="20" src="http://ghbtns.com/github-btn.html?user=tarballs-are-good&amp;repo=quickutil&amp;type=fork&amp;count=true" frameborder="0" scrolling="0" allowtransparency="true"></iframe>
   </div>
 
-  Authored by Robert Smith &amp; Eitarow Fukamachi.
-</div>
+  <small>Authored by Robert Smith &amp; Eitarow Fukamachi.</small>
+</footer>
 </body>
 </html>
 {/template}

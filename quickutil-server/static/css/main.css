@@ -7,21 +7,21 @@ body {
   font-family: "Optima", "Nu Sans", Baskerville, "Times New Roman", "Arial", sans-serif;
 }
 
-#header {
+header {
   position: fixed;
 }
 
-#header h1 {
+header h1 {
   font-family: Baskerville, "Baskerville Win95BT", "Times New Roman", Times, serif;
   margin: 0;
 }
 
-#header h1 a {
+header h1 a {
   color: black;
   text-decoration: none;
 }
 
-#header h1 a:before {
+header h1 a:before {
   content: "";
   opacity: 0.5;
   background: url(/images/gradient-white.png) repeat-x;
@@ -31,18 +31,18 @@ body {
   height: 37px;
 }
 
-#header ul.menu {
+header ul.menu {
   list-style: none;
   padding-left: 0;
   float: right;
   width: 140px;
 }
 
-#header ul.menu li {
+header ul.menu li {
   margin: 3px 5px;
 }
 
-#header ul.menu li a {
+header ul.menu li a {
   color: black;
   display: inline-block;
   width: 100%;
@@ -52,7 +52,7 @@ body {
   text-decoration: none;
 }
 
-#header ul.menu li a:hover {
+header ul.menu li a:hover {
   color: white;
   border-radius: 15px;
   background-color: #888;
@@ -62,8 +62,8 @@ body {
   filter: progid:DXImageTransform.Microsoft.Shadow(color='#aaa', Direction=145, Strength=6);
 }
 
-#header ul.menu li a:active,
-#header ul.menu li a.current {
+header ul.menu li a:active,
+header ul.menu li a.current {
   color: white;
   border-radius: 15px;
   background-color: #aaa;
@@ -84,7 +84,7 @@ body {
     -webkit-gradient(linear,0 0,0 100%,from(rgba(47,47,47,1)),color-stop(0.97,rgba(75,75,75,1)),color-stop(0.97,rgba(0,0,0,0)),to(rgba(0,0,0,.45)));
 }
 
-#header ul.menu .categories li a {
+header .menu ul.categories li a {
   text-align: left;
   font-size: 70%;
 }
@@ -95,10 +95,9 @@ body {
   min-height: 300px;
 }
 
-#footer {
+footer {
   margin-top: 20px;
   clear: both;
-  font-size: 70%;
   color: #888;
   text-align: center;
 }
