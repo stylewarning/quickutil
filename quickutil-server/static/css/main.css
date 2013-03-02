@@ -96,10 +96,19 @@ header .menu ul.categories li a {
 }
 
 footer {
+  position: relative;
   margin-top: 20px;
   clear: both;
   color: #888;
   text-align: center;
+}
+
+footer .lisp-logo {
+  width: 150px;
+  height: 50px;
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 input {
