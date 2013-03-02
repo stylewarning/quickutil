@@ -1,0 +1,33 @@
+server {
+    listen  80;
+    server_name quickutil.org;
+    access_log  /var/log/nginx/quickutil_access.log;
+    error_log   /var/log/nginx/quickutil_error.log;
+
+    error_page 500 502 503 504 /html/50x.html;
+
+    location ~* ^/(css|images|html)/(.+)$ {
+        root /srv/www/quickutil/quickutil-server/static/;
+        access_log off;
+    }
+
+    location = /favicon.ico {
+        log_not_found off;
+        access_log off;
+        alias /srv/www/quickutil/quickutil-server/static/favicon.ico;
+    }
+
+    location = /robots.txt {
+        log_not_found off;
+        access_log off;
+        alias /srv/www/quickutil-server/static/robots.txt;
+    }
+
+    location ^~ /apple-touch-icon {
+        root /srv/www/quickutil-server/static;
+    }
+
+    location / {
+        proxy_pass http://127.0.0.1:8080;
+    }
+}

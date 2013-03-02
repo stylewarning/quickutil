@@ -1,0 +1,8 @@
+[program:quickutil]
+command=make -f /srv/www/quickutil/quickutil-server/Makefile SERVER_PORT=8080 SWANK_PORT=4005
+numprocs=1
+autostart=true
+autorestart=true
+user=quickutil
+redirect_stderr=true
+stdout_logfile=/var/log/supervisor/quickutil.log
