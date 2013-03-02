@@ -43,9 +43,9 @@
    app))
 
 @export
-(defun start (&key (debug t) (port 8080))
+(defun start (&rest args &key (debug t) (port 8080) &allow-other-keys)
   (setf *handler*
-        (clack:clackup (build *app*) :port port :debug debug)))
+        (apply #'clack:clackup (build *app*) args)))
 
 @export
 (defun stop ()
