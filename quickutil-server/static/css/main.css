@@ -4,24 +4,38 @@
 
 header {
   position: fixed;
+  width: 200px;
 }
 
-header ul.menu {
+header .subtitle {
+  margin-top: 0;
+  margin-left: 5px;
+  font-size: 80%;
+  color: #999;
+}
+
+header ul {
   list-style: none;
   padding-left: 0;
-  float: right;
-  width: 140px;
 }
 
-header ul.menu li {
-  margin: 3px 5px;
+h3 {
+  font-weight: bold;
+}
+
+header ul li {
+  width: 200px;
+  margin-bottom: 5px;
+  display: table;
 }
 
 header ul.menu li a {
-  color: black;
-  display: inline-block;
+  display: table-cell;
+  vertical-align: middle;
   width: 100%;
   height: 25px;
+  padding: 5px 0;
+  color: black;
   font-size: 80%;
   text-align: center;
   text-decoration: none;
@@ -29,7 +43,7 @@ header ul.menu li a {
 
 header ul.menu li a:hover {
   color: white;
-  border-radius: 15px;
+  border-radius: 4px;
   background-color: #888;
   -moz-box-shadow: inset 0px 0px 10px 0px #aaa;
   -webkit-box-shadow: inset 0px 0px 10px 0px #aaa;
@@ -40,7 +54,7 @@ header ul.menu li a:hover {
 header ul.menu li a:active,
 header ul.menu li a.current {
   color: white;
-  border-radius: 15px;
+  border-radius: 4px;
   background-color: #aaa;
   background:
     -o-linear-gradient(top, rgba(0, 0, 0, .8) 0, rgba(0, 0, 0, 0) 10%, rgba(0, 0, 0, 0) 100%),
@@ -59,14 +73,9 @@ header ul.menu li a.current {
     -webkit-gradient(linear,0 0,0 100%,from(rgba(47,47,47,1)),color-stop(0.97,rgba(75,75,75,1)),color-stop(0.97,rgba(0,0,0,0)),to(rgba(0,0,0,.45)));
 }
 
-header .menu ul.categories li a {
-  text-align: left;
-  font-size: 70%;
-}
-
 #main {
   width: 560px;
-  margin-left: 200px;
+  margin-left: 260px;
   min-height: 300px;
 }
 
@@ -84,6 +93,11 @@ input {
 
 .utility {
   position: relative;
+  margin-top: 25px;
+}
+
+.utility .symbol-name {
+  font-size: 18px;
 }
 
 .utility .categories {
@@ -129,9 +143,22 @@ input {
 }
 .pun,.opn,.clo { color: #993; }
 
+.filter-box {
+  position: relative;
+}
+
+.filter-box .filter-icon {
+  position: absolute;
+  top: 2px;
+  left: 7px;
+  color: #777;
+}
+
 input[type="text"] {
-  border-radius: 15px;
-  padding-left: 10px;
+  border-radius: 3px;
+  padding-left: 21px;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
 }
 
 input[type="text"]:focus {
@@ -141,7 +168,7 @@ input[type="text"]:focus {
 
 input.filter {
   width: 100%;
-  height: 2em;
+  height: 2.4em;
 }
 
 .favorite, .unfavorite {
@@ -166,4 +193,9 @@ input.filter {
   text-align: center;
   color: #888;
   padding: 15px;
+}
+
+/* footer */
+footer {
+  margin-top: 60px;
 }

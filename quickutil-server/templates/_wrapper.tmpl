@@ -21,17 +21,11 @@
 <body>
   <header>
     <h1 class="logo"><a href="/" data-pjax="#main">Quickutil</a></h1>
+    <p class="subtitle">Lisp utilities on demand</p>
     <nav>
       <ul class="menu">
         <li><a {if $current == 'index'}class="current"{/if} href="/" data-pjax="#main">What's Quickutil?</a></li>
-        <li>
-          <a {if $current == 'list'}class="current"{/if} href="/list" data-pjax="#main">Find Utilities</a>
-          <ul class="categories">
-            {foreach $category in $categories}
-            <li><a data-pjax="#main" href="/list/{$category}">{$category}</a></li>
-            {/foreach}
-          </ul>
-        </li>
+        <li><a {if $current == 'list'}class="current"{/if} href="/list" data-pjax="#main">Find utilities</a></li>
         <li><a {if $current == 'favorites'}class="current"{/if} href="/favorites" data-pjax="#main">Favorites</a></li>
       </ul>
     </nav>

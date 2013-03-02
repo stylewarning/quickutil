@@ -2,14 +2,16 @@
 
 {template renderList}
   {call wrapper}
-    {param title: 'Find Utilities - Quickutil' /}
+    {param title: 'Utilities | Quickutil' /}
     {param current: 'list' /}
-    {param categories: $categories /}
     {param body}
       {if $category}
       <div class="filter-category">Category: <strong>{$category}</strong> (<a href="/list" data-pjax="#main">Show all categories</a>)</div>
       {/if}
-      <input type="text" class="filter" placeholder="Filter below utilities" value="{$q}" />
+      <div class="filter-box">
+        <span class="lsf filter-icon">search</span>
+        <input type="text" class="filter" placeholder="Filter below utilities" value="{$q}" />
+      </div>
       <p class="filter-result-description">There are <strong class="count">{length($utilities)}</strong> utilities.</p>
       <dl>
         {foreach $utility in $utilities}

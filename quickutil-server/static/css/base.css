@@ -2,7 +2,7 @@
 
 body {
   margin: 3em auto;
-  width: 760px;
+  width: 820px;
   line-height: 150%;
   font-family: "Optima", "Nu Sans", Baskerville, "Times New Roman", "Arial", sans-serif;
 }
@@ -45,4 +45,16 @@ footer .lisp-logo {
   position: absolute;
   top: 0;
   right: 0;
+}
+
+pre.prettyprint {
+  border-radius: 4px !important;
+}
+
+a {
+  text-decoration: none;
+}
+
+code {
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
 }
