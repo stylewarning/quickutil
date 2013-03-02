@@ -114,7 +114,8 @@
 ;;;   C -> D
 ;;;   D -> C
 ;;; 
-;;; the entire graph won't be sorted at all, when we could pare it down so we have
+;;; the entire graph won't be sorted at all, when we could pare it
+;;; down so we have
 ;;; 
 ;;;  (C <-> D), B, A.
 ;;; 
@@ -123,7 +124,8 @@
 ;;; 
 ;;; 29 October 2012, 3:00 PM
 ;;; 
-;;; This issue seems to be resolved, but the ordering can still be improved.
+;;; This issue seems to be resolved, but the ordering can still be
+;;; improved.
 ;;; 
 ;;; Ordering could be improved by localizing cycles. For example,
 ;;; 
@@ -281,6 +283,7 @@ to
       
       (t (reduce #'append-progn (cdr code))))))
 
+;;; XXX: Do we want a WITH-COMPILATION-UNIT?
 (defun emit-utility-code (&key utility
                                (registry *utility-registry*))
   "Emit all of the source code for the utility UTILITY in order to use
