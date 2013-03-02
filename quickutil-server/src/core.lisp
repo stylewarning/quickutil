@@ -33,8 +33,8 @@
   (builder
    (<clack-middleware-static>
     :path (lambda (path)
-            (when (ppcre:scan "^(?:/static/|/images/|/css/|/js/|/robot\\.txt$|/favicon.ico$)" path)
-              (ppcre:regex-replace "^/static" path "")))
+            (when (ppcre:scan "^(?:/images/|/css/|/js/|/html/|/robot\\.txt$|/favicon.ico$)" path)
+              path))
     :root (merge-pathnames #p"static/"
                            (asdf:component-pathname
                             (asdf:find-system :quickutil-server))))

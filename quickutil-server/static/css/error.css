@@ -1,0 +1,25 @@
+@charset "UTF-8";
+
+@import "/css/base.css";
+
+html,
+body {
+  height: 100%;
+}
+body {
+  display: table;
+  height: 100%;
+  margin: 0 auto;
+}
+
+#container {
+  display: table-cell;
+  vertical-align: middle;
+  margin: 0 auto;
+  text-align: center;
+  width: 760px;
+}
+
+#main {
+  margin: 50px auto;
+}
