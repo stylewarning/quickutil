@@ -5,7 +5,7 @@
         :clack.builder
         :clack.middleware.static
         :clack.middleware.csrf
-        :clack.middleware.session
+        :clack.middleware.session.cookie
         :closure-template)
   (:shadow :stop)
   (:import-from :quickutil-server.app
@@ -38,7 +38,7 @@
     :root (merge-pathnames #p"static/"
                            (asdf:component-pathname
                             (asdf:find-system :quickutil-server))))
-   <clack-middleware-session>
+   <clack-middleware-session-cookie>
    <clack-middleware-csrf>
    app))
 
