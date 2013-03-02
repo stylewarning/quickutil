@@ -8,3 +8,7 @@
     (quickutil-server:start :port 8080)
     
     (quickutil-server:stop)
+
+## Production use
+
+    $ make start SERVER_PORT=8080 SWANK_PORT=4005
