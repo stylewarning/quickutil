@@ -2,7 +2,7 @@ LISP=sbcl
 SERVER_PORT=8080
 SWANK_PORT=4005
 PROJECT_ROOT=$(abspath $(dir $(lastword $(MAKEFILE_LIST))))
-ASDF_PATH=$(abspath $(dir $(shell find .. -name "*.asd")))
+ASDF_PATH=$(abspath $(dir $(shell find $(PROJECT_ROOT)/.. -name "*.asd")))
 
 all: start
 
