@@ -1,0 +1,5 @@
+from fabric.api import env
+env.hosts = ['yourquickutil.org']
+env.user = 'quickutil'
+default_project_name = 'quickutil'
+env.directory = '/home/quickutil/quickutil'
