@@ -1,0 +1,3 @@
+[submodule "quickutil-server/modules/less.js"]
+	path = quickutil-server/modules/less.js
+	url = git://github.com/suzak/less.js
