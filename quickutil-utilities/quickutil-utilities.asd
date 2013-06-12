@@ -12,5 +12,13 @@
                (:module utilities
                 :serial t
                 :components ((:file "arithmetic")
-                             (:file "lists")))))
-
+                             (:file "lists")
+                             (:file "combinators")
+                             (:file "arrays")
+                             (:file "instrumentation")
+                             (:file "trees")
+                             (:file "symbols")
+                             (:file "language")
+                             (:file "constants")
+                             (:file "control")
+                             (:file "hash-tables")))))
