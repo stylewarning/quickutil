@@ -12,6 +12,7 @@
                (:module utilities
                 :serial t
                 :components ((:file "arithmetic")
+                             (:file "trigonometry")
                              (:file "lists")
                              (:file "combinators")
                              (:file "arrays")
