@@ -1,9 +1,9 @@
 (in-package #:quickutil)
 
-(defutil listify (:version (1 . 0)
+(defutil ensure-list (:version (1 . 0)
                   :category lists)
   #1="If X is a list, return it. Otherwise, wrap it."
-  (defun listify (x)
+  (defun ensure-list (x)
     #1#
     (if (listp x) x (list x))))
 
@@ -103,12 +103,12 @@ FILL."
       :collect (list j i))))
   
 (defutil flatten-once (:version (1 . 0)
-                       :depends-on listify
+                       :depends-on ensure-list
                        :category lists)
   #1="Flatten LIST once."
   (defun flatten-once (list)
     #1#
-    (reduce #'append list :key #'listify)))
+    (reduce #'append list :key #'ensure-list)))
 
 (defutil flatten (:version (1 . 0)
                   :category lists)
