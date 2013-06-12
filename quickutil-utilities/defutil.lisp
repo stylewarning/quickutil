@@ -285,9 +285,14 @@ them in proper sorted order, leaving just cycles."
 to
 
     (PROGN A B)."
-  (labels ((append-progn (a b)
-             `(progn ,@(append (cdr a)
-                               (cdr b))))
+  (labels ((ensure-progn (x)
+             (if (progn? x)
+                 x
+                 `(progn ,x)))
+           
+           (append-progn (a b)
+             `(progn ,@(append (cdr (ensure-progn a))
+                               (cdr (ensure-progn b)))))
            
            (progn? (code)
              (and (listp code)
@@ -311,7 +316,12 @@ it. If UTILITY is NIL, then emit all utility source code."
           :for util := (lookup-util name)
           :when util
             :collect (util.code util) :into code
-          :finally (return (flatten-progn `(progn ,@code))))))
+          :finally (return
+                     (flatten-progn
+                      `(progn
+                         ,@code
+                         (export ',(mapcar #'symbol-name load-order)
+                                 (find-package '#:quickutil))))))))
 
 (defun pretty-print-utility-code (code &optional stream)
   "Pretty print utility code CODE to stream STREAM."
@@ -319,10 +329,10 @@ it. If UTILITY is NIL, then emit all utility source code."
     (if (not (typep code '(cons (eql progn))))
         (pprint code stream)
         (progn
-          (princ "(PROGN                                                ; toplevel"
-                 stream)
+          (write-string "(PROGN                                                ; toplevel"
+                        stream)
           (dolist (form (cdr code))
             (pprint form stream)
             (terpri stream))
-          (princ ")" stream)))
+          (write-string ")" stream)))
     nil))
