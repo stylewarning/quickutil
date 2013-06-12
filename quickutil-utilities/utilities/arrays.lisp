@@ -26,7 +26,8 @@ function makes a copy of `array`."
 (defutil vector-range (:version (1 . 0)
                        :category vectors)
   #1="Compute the equivalent of `(coerce (range a b :step step) 'vector)`."
-  (defun vector-range (a b &key (step 1))
+  (defun vector-range (a b &key (step 1)
+                                (key #'identity))
     #1#
     (assert (< a b))
     (let* ((len (- b a))
