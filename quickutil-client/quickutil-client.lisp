@@ -1,4 +1,5 @@
 ;;;; quickutil-client.lisp
+;;;; Copyright (c) 2012-2013 Robert Smith
 
 (in-package #:quickutil-client)
 
@@ -7,8 +8,10 @@
 (defun download-url (url)
   (let* ((temp-stream (temporary-file:open-temporary))
          (temp (pathname temp-stream)))
+    (write-string (nth-value 0 (drakma:http-request url))
+                  temp-stream)
     (close temp-stream)
-    (nth-value 1 (ql-http:fetch url temp :quietly t))))
+    temp))
 
 (defun load-from-url (url)
   (load (download-url url)))
@@ -23,7 +26,12 @@
   "/api/emit-utility-code.lisp?utility=")
 
 (defun set-quickutil-host (hostname)
-  (setf *quickutil-query-url* hostname))
+  "Set the host from which Quickutil downloads from to
+HOSTNAME. HOSTNAME must be an HTTP host."
+  (let ((pos (search "http://" hostname :test #'char=)))
+    (if (and pos (zerop pos))
+        (setf *quickutil-query-url* hostname)
+        (setf *quickutil-query-url* (concatenate 'string "http://" hostname)))))
 
 (defun quickutil-query-url (util-name)
   (concatenate 'string
@@ -34,4 +42,5 @@
                                     util-name))))
 
 (defun quickload (util-name)
+  "Load the utility UTIL-NAME and its dependencies."
   (compile-and-load-from-url (quickutil-query-url util-name)))

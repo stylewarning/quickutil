@@ -7,4 +7,4 @@
   :author "Robert Smith <quad@symbo1ics.com>"
   :components ((:file "package")
                (:file "quickutil-client"))
-  :depends-on ("quicklisp" "temporary-file"))
+  :depends-on ("drakma" "temporary-file"))
