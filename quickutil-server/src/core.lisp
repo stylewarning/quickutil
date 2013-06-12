@@ -38,8 +38,9 @@
                     append (util.categories utility) into categories
                     finally
                  (return
-                   (mapcar #'string-downcase
-                           (remove-duplicates categories :test #'string-equal)))))
+                   (sort (mapcar #'string-downcase
+                                 (remove-duplicates categories :test #'string-equal))
+                         #'string<))))
 
 (defun build (app)
   (builder
