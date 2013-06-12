@@ -91,7 +91,7 @@ input {
 .utility {
   position: relative;
   margin-top: 15px;
-  padding: 10px 0;
+  padding: 10px 0 0;
   border-top: 1px solid #eee;
   .symbol-name {
     font-size: 16px;
@@ -126,7 +126,14 @@ input {
     font-size: 90%;
   }
   & > dd {
+    position: relative;
     margin-left: 0;
+    .show-source-code {
+      position: absolute;
+      right: 2px;
+      bottom: -4px;
+      font-size: 80%;
+    }
   }
   .documentation {
     font-size: 90%;

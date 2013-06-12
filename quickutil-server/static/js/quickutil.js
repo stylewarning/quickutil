@@ -89,6 +89,19 @@ Quickutil.init.done(function() {
         button.attr('value', isFavorite ? 'starempty' : 'star');
         form.toggleClass('favorite').toggleClass('unfavorite');
     });
+    $(document).on('click', '.show-source-code', function(e) {
+        e.preventDefault();
+        var target = $(e.target);
+        var source = target.closest('.utility').children('.source-code');
+        if (source.is(':visible')) {
+            target.text('Source Code');
+            source.slideUp();
+        }
+        else {
+            target.text('Hide Code');
+            source.slideDown();
+        }
+    });
 });
 
 })($, Quickutil);
