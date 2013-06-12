@@ -4,11 +4,14 @@
   :serial t
   :description "The utilities and backend to Quickutil."
   :author "Robert Smith <quad@symbo1ics.com>"
-  ;; :license "???"
-  :components ((:file "package")
+  :license "See LICENSE file."
+  :components (
+               ;; License: BSD 3-clause
+               (:file "package")
                (:file "queue")
                (:file "defutil")
                
+               ;; License: None. (Public Domain)
                (:module utilities
                 :serial t
                 :components ((:file "arithmetic")

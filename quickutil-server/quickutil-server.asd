@@ -5,7 +5,8 @@
 
 (defsystem quickutil-server
   :version "0.1"
-  :author "Eitarow Fukamachi"
+  :author "Eitarow Fukamachi <e.arrows@gmail.com>"
+  :license "BSD 3-clause. See LICENSE file."
   :depends-on (:ningle
                :clack-middleware-csrf
                :cl-syntax

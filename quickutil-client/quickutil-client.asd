@@ -5,6 +5,7 @@
   :serial t
   :description "The Quickutil client for downloading utility code."
   :author "Robert Smith <quad@symbo1ics.com>"
+  :license "BSD 3-clause. See LICENSE file."
   :components ((:file "package")
                (:file "quickutil-client")
                (:file "autoload"))
