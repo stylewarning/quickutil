@@ -15,7 +15,8 @@
   (:import-from :quickutil-server.view
                 :render-index
                 :render-list
-                :render-favorites)
+                :render-favorites
+                :render-benefits)
   (:import-from :quickutil-server.app
                 :*web*)
   (:import-from :clack.middleware.csrf
@@ -81,6 +82,12 @@
                        (member category (util.categories utility)
                                :test #'string-equal))))
               :csrf-html-tag (clack.middleware.csrf:csrf-html-tag *session*))))))
+
+(setf (route *web* "/benefits")
+      #'(lambda (params)
+          (declare (ignore params))
+          (render-benefits
+           (list :categories *categories*))))
 
 (setf (route *web* "/favorites")
       #'(lambda (params)
