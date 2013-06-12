@@ -2,23 +2,41 @@
 
 {template renderIndex}
   {call wrapper}
-    {param title: 'Quickutil - The solution to the Utility Library problem.' /}
+    {param title: 'Quickutil - The Solution to the Utility Library Problem.' /}
     {param current: 'index' /}
     {param categories: $categories /}
     {param body}
       <h2>What's Quickutil?</h2>
 
-      <p>Quickutil is an application and library for distributing Common Lisp utilities, aiming to solve the "utility problem".</p>
+      <p>Quickutil is an application and library for distributing Common Lisp utilities, aiming to solve the <em>utility problem</em>&mdash;everyone has their own utility library and <em>de facto</em> standard ones are too slowly moving. Quickutil is nimble, and only includes what you need.</p>
 
       <p>It is similar in spirit to <a href="http://www.quicklisp.org/">Quicklisp</a>, in that utilities can automatically be downloaded and installed to projects.</p>
 
       <h3>Installation</h3>
 
-      <pre class="prettyprint lang-lisp"><code>(ql:quickload :quickutil-client)</code></pre>
+      <pre class="prettyprint lang-lisp">
+        <code>
+          (ql:quickload :quickutil-client)
+        </code>
+      </pre>
 
       <h3>Load a Utility</h3>
 
-      <pre class="prettyprint lang-lisp"><code>(qtl:quickload :iota)</code></pre>
+      <pre class="prettyprint lang-lisp">
+        <code>
+          &gt; (qtl:quickload :iota)<br/>
+          &gt; (qtl:quickload :riffle)
+        </code>
+      </pre>
+      
+      <h3>Use a Utility</h3>
+      
+      <pre class="prettyprint lang-lisp">
+        <code>
+          &gt; (qtl:riffle (qtl:iota 5) '--)<br/>
+          (0 -- 1 -- 2 -- 3 -- 4)
+        </code>
+      </pre>
     {/param}
   {/call}
 {/template}
