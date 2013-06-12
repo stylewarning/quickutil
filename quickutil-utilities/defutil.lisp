@@ -315,29 +315,40 @@ it. If UTILITY is NIL, then emit all utility source code."
   (let ((load-order (mapcar #'lookup-util
                             (compute-load-order utility registry))))
     (flet ((compute-provided-symbols ()
-             (mapcan #'(lambda (x)
-                         (copy-list (util.provides x)))
-                     load-order)))
+             (mapcar #'symbol-name
+                     (mapcan #'(lambda (x)
+                                 (copy-list (util.provides x)))
+                             load-order))))
+      
       (loop :for util :in load-order
             :when util
               :collect (util.code util) :into code
             :finally (return
                        (flatten-progn
                         `(progn
+                           (in-package #:quickutil)
                            ,@code
-                           (export ',(compute-provided-symbols)
-                                   (find-package '#:quickutil)))))))))
+                           (export ',(mapcar #'(lambda (name)
+                                                 (intern name '#:quickutil))
+                                             (compute-provided-symbols))
+                                   '#:quickutil))))))))
 
-(defun pretty-print-utility-code (code &optional stream)
-  "Pretty print utility code CODE to stream STREAM."
+(defun pretty-print-utility-code (code &optional stream (prognify? nil))
+  "Pretty print utility code CODE to stream STREAM. If PROGNIFY? is
+true and if the code is a PROGN form, wrap all of the code in a
+PROGN. If it is false, omit the PROGN in the printed representation."
   (let ((*package* (find-package '#:quickutil)))
     (if (not (typep code '(cons (eql progn))))
         (pprint code stream)
         (progn
-          (write-string "(PROGN                                                ; toplevel"
-                        stream)
+          (when prognify?
+            (write-string "(PROGN                                                ; toplevel"
+                          stream))
+          
           (dolist (form (cdr code))
             (pprint form stream)
             (terpri stream))
-          (write-string ")" stream)))
+          
+          (when prognify?
+            (write-string ")" stream))))
     nil))
