@@ -56,7 +56,7 @@
                                copy-array
                                list-to-vector
                                sequence-to-list)
-                  :category (random generic shuffle))
+                  :category (random generic))
   #1="Shuffle a generic object."
   (defgeneric shuffle (obj)
     (:documentation #1#)
