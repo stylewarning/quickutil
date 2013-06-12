@@ -2,36 +2,41 @@
 
 (defutil positivep (:version (1 . 0)
                     :category math)
+  #1="Check if N is positive."
   (defun positivep (n)
-    "Check if N is positive."
+    #1#
     (declare (type real n))
     (plusp n)))
 
 (defutil negativep (:version (1 . 0)
                     :category math)
+  #1="Check if N is negative."
   (defun negativep (n)
-    "Check if N is negative."
+    #1#
     (declare (type real n))
     (minusp n)))
 
 (defutil non-negative-p (:version (1 . 0)
                          :category math)
+  #1="Check if N is non-negative."
   (defun non-negative-p (n)
-    "Check if N is non-negative."
+    #1#
     (declare (type real n))
     (>= n 0)))
 
 (defutil non-positive-p (:version (1 . 0)
                          :category math)
+  #1="Check if N is non-positive."
   (defun non-positive-p (n)
-    "Check if N is non-positive."
+    #1#
     (declare (type real n))
     (<= n 0)))
 
 (defutil non-zero-p (:version (1 . 0)
                      :category math)
+  #1="Check if N is non-zero."
   (defun non-zero-p (n)
-    "Check if N is non-zero."
+    #1#
     (declare (type real n))
     (not (zerop n))))
 
