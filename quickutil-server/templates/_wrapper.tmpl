@@ -32,7 +32,7 @@
       </ul>
     </nav>
     <aside>
-      <div class="category-filters">
+      <div class="category-filters" {if $current != 'list'}style="display:none"{/if}>
         <h2>Categories</h2>
         <ul>
           {foreach $category in $categories}

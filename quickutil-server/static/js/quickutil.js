@@ -49,7 +49,10 @@ Quickutil.init.done(function() {
     $(document)
         .on('pjax:start', function() { $('#main').css('opacity', 0.4); })
         .on('pjax:end', function() { $('#main').animate({ opacity: 1 }, 'fast'); })
-        .on('pjax:success', function() { prettyPrint(); });
+        .on('pjax:success', function() {
+            prettyPrint();
+            $('.category-filters').toggle(/^\/list/.test(location.pathname));
+        });
 
     var updateFilter = function() {
         if ($(this).length === 0) return;
@@ -85,6 +88,19 @@ Quickutil.init.done(function() {
         form.attr('data-action', '/api/' + (isFavorite ? 'favorite' : 'unfavorite') + '.json');
         button.attr('value', isFavorite ? 'starempty' : 'star');
         form.toggleClass('favorite').toggleClass('unfavorite');
+    });
+    $(document).on('click', '.show-source-code', function(e) {
+        e.preventDefault();
+        var target = $(e.target);
+        var source = target.closest('.utility').children('.source-code');
+        if (source.is(':visible')) {
+            target.text('Source Code');
+            source.slideUp();
+        }
+        else {
+            target.text('Hide Code');
+            source.slideDown();
+        }
     });
 });
 
