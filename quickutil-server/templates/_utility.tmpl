@@ -12,11 +12,13 @@
     </div>
   </dt>
   <dd>
+    {if 0}
     <form type="POST" data-action="/api/{if $utility.favoritep}unfavorite{else}favorite{/if}.json" class="{if $utility.favoritep}favorite{else}unfavorite{/if}">
       {$csrfHtmlTag | noAutoescape}
       <input type="hidden" name="utility" value="{$utility.name}" />
       <input class="lsf" type="submit" value="{if $utility.favoritep}star{else}starempty{/if}" />
     </form>
+    {/if}
     {if $utility.documentation}
     <div class="documentation">{$utility.documentation | noAutoescape}</div>
     {/if}
