@@ -98,19 +98,26 @@ input {
     font-size: 16px;
     font-weight: bold;
   }
-  .categories {
+  .provides {
     display: inline-block;
     margin-left: 15px;
+    color: #888;
+    font-size: 80%;
+  }
+  .categories {
+    display: inline-block;
+    margin-left: 6px;
     font-size: 90%;
     .category {
       display: inline-block;
       margin: 0 2px;
-      background-color: #d8d8d8;
-      color: #555;
+      background-color: #e8e8e8;
+      color: #888;
       text-decoration: none;
       font-size: 85%;
-      border-radius: 5px;
+      border-radius: 2px;
       padding: 0 5px;
+      line-height: 140%;
       font-weight: bold;
       &.active, &:active, &:hover {
         background-color: #247cc0;
@@ -204,6 +211,7 @@ input.filter {
   font-size: 80%;
   color: #888;
   line-height: 140%;
+  margin: 0 0 5px;
   dt, dd {
     padding: 0 10px;
   }
