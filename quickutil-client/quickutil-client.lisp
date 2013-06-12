@@ -17,11 +17,18 @@
   (load (compile-file (download-url url))))
 
 (defvar *quickutil-query-url*
-  "http://qtl.clacklisp.org/api/emit-utility-code.lisp?utility=")
+  "http://www.quickutil.org")
+
+(defvar *quickutil-query-suffix*
+  "/api/emit-utility-code.lisp?utility=")
+
+(defun set-quickutil-host (hostname)
+  (setf *quickutil-query-url* hostname))
 
 (defun quickutil-query-url (util-name)
   (concatenate 'string
                *quickutil-query-url*
+               *quickutil-query-suffix*
                (string-downcase (if (symbolp util-name)
                                     (symbol-name util-name)
                                     util-name))))
