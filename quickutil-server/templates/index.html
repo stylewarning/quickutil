@@ -12,20 +12,20 @@
 
       <p>It is similar in spirit to <a href="http://www.quicklisp.org/">Quicklisp</a>, in that utilities can automatically be downloaded and installed to projects.</p>
 
-      <h3>Installation</h3>
+      <h3>1. Installation</h3>
 
       <pre class="prettyprint lang-lisp">
         <code>(ql:quickload :quickutil-client)</code>
       </pre>
 
-      <h3>Load a Utility</h3>
+      <h3>2. Load a Utility</h3>
 
       <pre class="prettyprint lang-lisp">
         <code>&gt; (qtl:quickload :iota)</code><br/>
         <code>&gt; (qtl:quickload :riffle)</code>
       </pre>
 
-      <h3>Use a Utility</h3>
+      <h3>3. Use a Utility</h3>
 
       <pre class="prettyprint lang-lisp">
         <code>&gt; (qtl:riffle (qtl:iota 5) '--)</code><br/>
