@@ -6,7 +6,8 @@
                 :*utility-registry*
                 :util.version
                 :util.categories
-                :util.code)
+                :util.code
+                :util.documentation)
   (:import-from :quickutil-server.view
                 :render-index
                 :render-list
@@ -14,7 +15,9 @@
   (:import-from :quickutil-server.app
                 :*web*)
   (:import-from :clack.middleware.csrf
-                :csrf-html-tag))
+                :csrf-html-tag)
+  (:import-from :cl-markdown
+                :markdown))
 (in-package :quickutil-server.controller.web)
 
 (cl-syntax:use-syntax :annot)
@@ -36,6 +39,9 @@
                      (cdr (util.version utility)))
           :favoritep ,(not (null (member name favorites :test #'string-equal)))
           :categories ,(util.categories utility)
+          :documentation ,(with-output-to-string (s)
+                            (markdown (util.documentation utility)
+                                      :stream s))
           :code ,(mapcar
                   #'(lambda (sexp)
                       (with-output-to-string (s)

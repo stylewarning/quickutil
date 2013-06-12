@@ -152,8 +152,12 @@ input {
 .utility dd {
   margin-left: 20px;
 }
-/* Prettify */
-.prettyprint.lang-lisp {
+.utility .documentation {
+  font-size: 90%;
+  color: #555;
+}
+.utility .source-code {
+  display: none;
   color: white;
 }
 .pun,

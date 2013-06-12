@@ -14,7 +14,8 @@
                :yason
                :quickutil-utilities
                :closure-template
-               :cl-fad)
+               :cl-fad
+               :cl-markdown)
   :components ((:module "src"
                 :components
                 ((:file "app")

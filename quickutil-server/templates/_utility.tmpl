@@ -17,7 +17,8 @@
       <input type="hidden" name="utility" value="{$utility.name}" />
       <input class="lsf" type="submit" value="{if $utility.favoritep}star{else}starempty{/if}" />
     </form>
-    <pre class="prettyprint lang-lisp">{foreach $sexp in $utility.code}{$sexp}{if not isLast($sexp)}<br/>{/if}{/foreach}</pre>
+    <div class="documentation">{$utility.documentation | noAutoescape}</div>
+    <pre class="source-code prettyprint lang-lisp">{foreach $sexp in $utility.code}{$sexp}{if not isLast($sexp)}<br/>{/if}{/foreach}</pre>
   </dd>
 </div>
 {/template}
