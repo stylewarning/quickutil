@@ -47,11 +47,34 @@
 
 (defun ensure-keyword (x)
   "Ensure that the symbol X is in the keyword package."
-  (if (keywordp x) x (intern (symbol-name x) :keyword)))
+  (cond
+    ((keywordp x) x)
+    ((symbolp x) (intern (symbol-name x) :keyword))
+    ((stringp x) (intern x :keyword))
+    (t (error "Can't make ~S a keyword." x))))
 
 (defun ensure-keyword-list (x)
   "Ensure that X is a list of keywords."
   (mapcar #'ensure-keyword (ensure-list x)))
+
+(defvar *reverse-lookup* (make-hash-table)
+  "Table indexing from provided symbols to their originating utilities.")
+
+(defun reverse-lookup (name)
+  "Find the utility associated with the provided symbol named NAME."
+  (nth-value 0 (gethash (ensure-keyword name) *reverse-lookup*)))
+
+(defun index-provides (util-name provides)
+  "Index all of the provides in the list PROVIDES for the utility
+named UTIL-NAME."
+  (dolist (p provides)
+    (let ((current (gethash p *reverse-lookup*)))
+      (if (or (null current) (eql current util-name))
+          (setf (gethash p *reverse-lookup*) util-name)
+          (error "Trying to provide ~A from utility ~A, but it is already provided by ~A."
+                 p
+                 util-name
+                 current)))))
 
 (defmacro defutil (name (&key version
                               depends-on
@@ -62,9 +85,15 @@
   (check-type name symbol)
   (check-type version util-version)
   
-  (let ((documentation nil))
+  (let ((documentation nil)
+        (provides (if provides
+                      (ensure-keyword-list provides)
+                      (ensure-keyword-list name)))
+        (name (ensure-keyword name)))
     
     ;; Parse documentation
+    ;;
+    ;; XXX FIXME: Refactor this into a subfunction.
     (cond
       ((null utility-code)       nil)
       ((null (cdr utility-code)) nil)
@@ -72,15 +101,16 @@
        (setf documentation (car utility-code))
        (setf utility-code  (cdr utility-code))))
     
+    ;; Index the symbols provided
+    (index-provides name provides)
+    
     ;; Generate the registration forms.
     `(progn
-       (setf (gethash ',(ensure-keyword name) *utility-registry*)
+       (setf (gethash ',name *utility-registry*)
              (make-util :version ',version
                         :dependencies ',(ensure-keyword-list depends-on)
                         :categories ',(ensure-keyword-list category)
-                        :provides ',(if provides
-                                        (ensure-keyword-list provides)
-                                        (ensure-keyword-list name))
+                        :provides ',provides
                         :documentation ,documentation
                         :code '(progn ,@utility-code)))
        ',name)))
