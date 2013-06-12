@@ -30,7 +30,14 @@
                      (asdf:component-pathname
                       (asdf:find-system :quickutil-server))))
 
-(closure-template:compile-cl-templates (fad:list-directory *template-path*))
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  @export
+  (defun recompile-templates (&optional (path *template-path*))
+    (closure-template:compile-cl-templates (fad:list-directory path))))
+
+;; (Re-)compile the templates.
+(recompile-templates)
+
 
 @export
 (defparameter *categories*
