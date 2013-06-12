@@ -5,7 +5,8 @@
   (:import-from :quickutil-utilities
                 :*utility-registry*
                 :emit-utility-code
-                :pretty-print-utility-code)
+                :pretty-print-utility-code
+                :reverse-lookup)
   (:import-from :quickutil-server.app
                 :*api*)
   (:import-from :quickutil-server.error
@@ -59,6 +60,14 @@
                       :utility (intern (string-upcase (getf params :|utility|)) :keyword))
                      s)
                     s)
+                (type-error () nil))))))
+
+(setf (route *api* "/reverse-lookup")
+      #'(lambda (params)
+          `(200
+            (:content-type "text/plain")
+            (,(handler-case
+                  (reverse-lookup (string-upcase (getf params :|symbol|)))
                 (type-error () nil))))))
 
 (setf (route *api* "/favorite.json" :method :post)
