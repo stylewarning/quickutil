@@ -315,7 +315,9 @@ it. If UTILITY is NIL, then emit all utility source code."
   (let ((load-order (mapcar #'lookup-util
                             (compute-load-order utility registry))))
     (flet ((compute-provided-symbols ()
-             (mapcar #'symbol-name (mapcan #'util.provides load-order))))
+             (mapcan #'(lambda (x)
+                         (copy-list (util.provides x)))
+                     load-order)))
       (loop :for util :in load-order
             :when util
               :collect (util.code util) :into code
