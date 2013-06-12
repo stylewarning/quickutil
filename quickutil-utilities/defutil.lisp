@@ -277,6 +277,7 @@ them in proper sorted order, leaving just cycles."
   "Compute the order in which the utilities must be loaded."
   (sort-dependencies (generate-util-dependency-table :registry registry)))
 
+;;; XXX: This can be cleaned up and simplified.
 (defun flatten-progn (code)
   "Flatten PROGN forms at depth 1. That is, flatten
 
@@ -311,17 +312,19 @@ to
                                (registry *utility-registry*))
   "Emit all of the source code for the utility UTILITY in order to use
 it. If UTILITY is NIL, then emit all utility source code."
-  (let ((load-order (compute-load-order utility registry)))
-    (loop :for name :in load-order
-          :for util := (lookup-util name)
-          :when util
-            :collect (util.code util) :into code
-          :finally (return
-                     (flatten-progn
-                      `(progn
-                         ,@code
-                         (export ',(mapcar #'symbol-name load-order)
-                                 (find-package '#:quickutil))))))))
+  (let ((load-order (mapcar #'lookup-util
+                            (compute-load-order utility registry))))
+    (flet ((compute-provided-symbols ()
+             (mapcar #'symbol-name (mapcan #'util.provides load-order))))
+      (loop :for util :in load-order
+            :when util
+              :collect (util.code util) :into code
+            :finally (return
+                       (flatten-progn
+                        `(progn
+                           ,@code
+                           (export ',(compute-provided-symbols)
+                                   (find-package '#:quickutil)))))))))
 
 (defun pretty-print-utility-code (code &optional stream)
   "Pretty print utility code CODE to stream STREAM."
