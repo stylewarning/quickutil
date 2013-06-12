@@ -42,21 +42,23 @@
 
 (defutil integral-length (:version (1 . 0)
                           :category math)
+  #1="Compute the length of an integer (integral quantity) N in base
+BASE. By default, base-10 is compute, *not* base-2 as in
+INTEGER-LENGTH."
   (declaim (ftype (function (integer &optional (integer 2)) integer)
                   integral-length))
   (defun integral-length (n &optional (base 10))
-    "Compute the length of an integer (integral quantity) N in base
-BASE. By default, base-10 is compute, *not* base-2 as in
-INTEGER-LENGTH."
+    #1#
     (declare (type integer n)
              (type (integer 2) base))
     (nth-value 0 (ceiling (integer-length n) (log base 2)))))
 
 (defutil range-product (:version (1 . 0)
                         :category math)
+  #1="Compute LOWER * (LOWER+1) * ... * (UPPER-1) * UPPER."
   (declaim (ftype (function (integer integer) integer) range-product))
   (defun range-product (lower upper)
-    "Compute LOWER * (LOWER+1) * ... * (UPPER-1) * UPPER."
+    #1#
     (assert (<= lower upper))
     (case (- upper lower)
       ((0) lower)
@@ -68,10 +70,11 @@ INTEGER-LENGTH."
 (defutil factorial (:version (1 . 0)
                     :depends-on (range-product)
                     :category math)
+  #1="Compute the factorial of N, N! = 1 * 2 * ... * N."
   (declaim (ftype (function ((integer 0)) (integer 1))
                   factorial))
   (defun factorial (n)
-    "Compute the factorial of N, N! = 1 * 2 * ... * N."
+    #1#
     (if (zerop n)
         1
         (range-product 1 n))))
@@ -79,10 +82,11 @@ INTEGER-LENGTH."
 (defutil binomial-coefficient (:version (1 . 0)
                                :depends-on (range-product factorial)
                                :category math)
+  #1="Binomial coefficient of N and K."
   (declaim (ftype (function ((integer 0) (integer 0)) (integer 0))
                   binomial-coefficient))
   (defun binomial-coefficient (n k)
-    "Binomial coefficient of N and K."
+    #1#
     (assert (>= n k))
     (labels ((core (k n-k)
                (if (= 1 n-k)
@@ -104,10 +108,11 @@ INTEGER-LENGTH."
                                   :depends-on (binomial-coefficient
                                                collect-reduce)
                                   :category math)
-  (defun multinomial-coefficient (n &rest ks)
-    "Yield the number of combinations of N objects partitioned into m
+  #1="Yield the number of combinations of N objects partitioned into m
 groups [for ks = (k_1, ..., k_m)] with k_i objects in a respective
 group (i.e., group m has k_m objects)."
+  (defun multinomial-coefficient (n &rest ks)
+    #1#
     (let ((sums (collect-reduce #'+ (sort ks #'>) :initial-value 0)))
       (reduce #'* (loop
                     :for i :in (sort ks #'>)
@@ -118,8 +123,10 @@ group (i.e., group m has k_m objects)."
 
 (defutil mulf (:version (1 . 0)
                :category (math orthogonality))
+  "A modifying version of multiplication, similar to INCF."
   (define-modify-macro mulf (&optional (ratio 2)) *))
 
 (defutil divf (:version (1 . 0)
                :category (math orthogonality))
-  (define-modify-macro divf (&optional (ratio 2)) /))
+  "A modifying version of division, similar to DECF."
+  (define-modify-macro divf (&optional (1/ratio) 2) /))
