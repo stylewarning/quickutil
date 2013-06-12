@@ -51,6 +51,7 @@ code {
 header {
   position: absolute;
   width: 200px;
+  z-index: 1;
 }
 header .subtitle {
   margin-top: 0;
@@ -123,20 +124,27 @@ input {
   font-size: 16px;
   font-weight: bold;
 }
-.utility .categories {
+.utility .provides {
   display: inline-block;
   margin-left: 15px;
+  color: #888;
+  font-size: 80%;
+}
+.utility .categories {
+  display: inline-block;
+  margin-left: 6px;
   font-size: 90%;
 }
 .utility .categories .category {
   display: inline-block;
   margin: 0 2px;
-  background-color: #d8d8d8;
-  color: #555;
+  background-color: #e8e8e8;
+  color: #888;
   text-decoration: none;
   font-size: 85%;
-  border-radius: 5px;
+  border-radius: 2px;
   padding: 0 5px;
+  line-height: 140%;
   font-weight: bold;
 }
 .utility .categories .category.active,
@@ -227,6 +235,7 @@ input.filter {
   font-size: 80%;
   color: #888;
   line-height: 140%;
+  margin: 0 0 5px;
 }
 .informations dt,
 .informations dd {
@@ -297,5 +306,4 @@ input.filter {
 /* footer */
 footer {
   margin-top: 60px;
-  z-index: -1;
 }
