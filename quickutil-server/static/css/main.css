@@ -51,6 +51,7 @@ code {
 header {
   position: absolute;
   width: 200px;
+  z-index: 1;
 }
 header .subtitle {
   margin-top: 0;
@@ -297,5 +298,4 @@ input.filter {
 /* footer */
 footer {
   margin-top: 60px;
-  z-index: -1;
 }
