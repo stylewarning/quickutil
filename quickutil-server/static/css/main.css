@@ -115,10 +115,13 @@ input {
 }
 .utility {
   position: relative;
-  margin-top: 25px;
+  margin-top: 15px;
+  padding: 10px 0;
+  border-top: 1px solid #eee;
 }
 .utility .symbol-name {
-  font-size: 18px;
+  font-size: 16px;
+  font-weight: bold;
 }
 .utility .categories {
   display: inline-block;
@@ -144,17 +147,19 @@ input {
 }
 .utility .version {
   display: inline-block;
+  display: none;
   margin-left: 7px;
   color: #aaa;
   font-style: italic;
   font-size: 90%;
 }
-.utility dd {
-  margin-left: 20px;
+.utility > dd {
+  margin-left: 0;
 }
 .utility .documentation {
   font-size: 90%;
   color: #555;
+  margin-left: 20px;
 }
 .utility .source-code {
   display: none;
@@ -209,6 +214,26 @@ input.filter {
   text-align: center;
   color: #888;
   padding: 15px;
+}
+/* informations */
+.informations {
+  font-size: 80%;
+  color: #888;
+  line-height: 140%;
+}
+.informations dt,
+.informations dd {
+  padding: 0 10px;
+}
+.informations dt {
+  float: left;
+  clear: both;
+}
+.informations dt:after {
+  content: ":";
+}
+.informations dd {
+  margin-left: -4px;
 }
 /* footer */
 footer {

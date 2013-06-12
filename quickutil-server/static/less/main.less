@@ -90,9 +90,12 @@ input {
 
 .utility {
   position: relative;
-  margin-top: 25px;
+  margin-top: 15px;
+  padding: 10px 0;
+  border-top: 1px solid #eee;
   .symbol-name {
-    font-size: 18px;
+    font-size: 16px;
+    font-weight: bold;
   }
   .categories {
     display: inline-block;
@@ -116,17 +119,19 @@ input {
   }
   .version {
     display: inline-block;
+    display: none; // hide in the first release
     margin-left: 7px;
     color: #aaa;
     font-style: italic;
     font-size: 90%;
   }
-  dd {
-    margin-left: 20px;
+  & > dd {
+    margin-left: 0;
   }
   .documentation {
     font-size: 90%;
     color: #555;
+    margin-left: 20px;
   }
   .source-code {
     display: none; // hidden when loaded
@@ -184,6 +189,26 @@ input.filter {
   text-align: center;
   color: #888;
   padding: 15px;
+}
+
+/* informations */
+.informations {
+  font-size: 80%;
+  color: #888;
+  line-height: 140%;
+  dt, dd {
+    padding: 0 10px;
+  }
+  dt {
+    float: left;
+    clear: both;
+    &:after {
+      content: ":";
+    }
+  }
+  dd {
+    margin-left: -4px;
+  }
 }
 
 /* footer */

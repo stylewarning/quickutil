@@ -3,7 +3,7 @@
 {template utility}
 <div class="utility" data-utility-name="{$utility.name}">
   <dt>
-    <code class="symbol-name">{$utility.name}</code>
+    <span class="symbol-name">{$utility.name}</span>
     <span class="version">v{$utility.version}</span>
     <div class="categories">
       {foreach $category in $utility.categories}
@@ -17,8 +17,20 @@
       <input type="hidden" name="utility" value="{$utility.name}" />
       <input class="lsf" type="submit" value="{if $utility.favoritep}star{else}starempty{/if}" />
     </form>
+    {if $utility.documentation}
     <div class="documentation">{$utility.documentation | noAutoescape}</div>
+    {/if}
     <pre class="source-code prettyprint lang-lisp">{foreach $sexp in $utility.code}{$sexp}{if not isLast($sexp)}<br/>{/if}{/foreach}</pre>
+    {if $utility.dependencies}
+    <dl class="informations">
+      {if $utility.provides}
+      <dt>Provides</dt>
+      <dd>{foreach $symbol in $utility.provides}{$symbol}{if not isLast($symbol)},&nbsp;{/if}{/foreach}</dd>
+      {/if}
+      <dt>Dependencies</dt>
+      <dd>{foreach $dependency in $utility.dependencies}{$dependency}{if not isLast($dependency)},&nbsp;{/if}{/foreach}</dd>
+    </dl>
+    {/if}
   </dd>
 </div>
 {/template}

@@ -5,8 +5,10 @@
   (:import-from :quickutil-utilities
                 :*utility-registry*
                 :util.version
+                :util.provides
                 :util.categories
                 :util.code
+                :util.dependencies
                 :util.documentation)
   (:import-from :quickutil-server.view
                 :render-index
@@ -37,11 +39,13 @@
           :version ,(format nil "~A.~A"
                      (car (util.version utility))
                      (cdr (util.version utility)))
+          :provides ,(util.provides utility)
           :favoritep ,(not (null (member name favorites :test #'string-equal)))
           :categories ,(util.categories utility)
           :documentation ,(with-output-to-string (s)
                             (markdown (util.documentation utility)
                                       :stream s))
+          :dependencies ,(util.dependencies utility)
           :code ,(mapcar
                   #'(lambda (sexp)
                       (with-output-to-string (s)
