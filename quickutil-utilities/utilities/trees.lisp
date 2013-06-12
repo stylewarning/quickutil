@@ -2,7 +2,7 @@
 
 (defutil map-tree (:version (1 . 0)
                    :category trees)
-  #1="Map FUNCTION to each of the leave of TREE."
+  #1="Map `function` to each of the leave of `tree`."
   (defun map-tree (function tree)
     #1#
     (check-type tree cons)
@@ -17,7 +17,7 @@
 
 (defutil tree-member-p (:version (1 . 0)
                         :category trees)
-  #1="Returns T if ITEM is in TREE, NIL otherwise."
+  #1="Returns `t` if `item` is in `tree`, `nil` otherwise."
   (defun tree-member-p (item tree &key (test #'eql))
     #1#
     (labels ((rec (tree)

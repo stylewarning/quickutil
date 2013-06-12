@@ -3,7 +3,7 @@
 (defutil emptyp (:version (1 . 0)
                  :depends-on non-zero-p
                  :category generic)
-  #1="Determine if OBJECT is empty."
+  #1="Determine if `object` is empty."
   (defgeneric emptyp (object)
     (:documentation #1#)
     (:method ((x null)) t)
@@ -14,7 +14,7 @@
 
 (defutil singletonp (:version (1 . 0)
                      :category generic)
-  #1="Determine if OBJECT is a singleton object."
+  #1="Determine if `object` is a singleton object."
   (defgeneric singletonp (object)
     (:documentation #1#)
     (:method ((x list)) (and x (null (cdr x))))

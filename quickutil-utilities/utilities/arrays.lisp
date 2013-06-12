@@ -2,7 +2,7 @@
 
 (defutil copy-array (:version (1 . 0)
                      :category (arrays orthogonality))
-  #1="Make a copy of ARRAY."
+  #1="Make a copy of `array`."
   (defun copy-array (array)
     #1#
     (let ((dims (array-dimensions array)))
@@ -15,8 +15,8 @@
 (defutil rerank-array (:version (1 . 0)
                        :depends-on copy-array
                        :category (arrays orthogonality))
-  #1="Reshape ARRAY to have dimensions specified by DIMENSIONS. This
-function makes a copy of ARRAY."
+  #1="Reshape `array` to have dimensions specified by `dimensions`. This
+function makes a copy of `array`."
   (defun rerank-array (dimensions array)
     #1#
     (let ((copy (copy-array array)))
@@ -25,8 +25,7 @@ function makes a copy of ARRAY."
 ;;; XXX: Make generic?
 (defutil vector-range (:version (1 . 0)
                        :category vectors)
-  #1="Compute the equivalent of
-    (COERCE (RANGE A B :STEP STEP) 'VECTOR)."
+  #1="Compute the equivalent of `(coerce (range a b :step step) 'vector)`."
   (defun vector-range (a b &key (step 1))
     #1#
     (assert (< a b))
@@ -41,7 +40,7 @@ function makes a copy of ARRAY."
 
 (defutil vector-slice (:version (1 . 0)
                        :category vectors)
-  #1="Compute the slice of a vector V at indexes INDEXES."
+  #1="Compute the slice of a vector `v` at indexes `indexes`."
   (defun vector-slice (v indexes)
     #1#
     (let ((result (make-array (length indexes))))
@@ -54,7 +53,7 @@ function makes a copy of ARRAY."
 
 (defutil vector-associative-reduce (:version (1 . 0)
                                     :category vectors)
-  #1="Reduce VECTOR with ASSOCIATIVE-FUNCTION, using a divide-and-conquer
+  #1="Reduce `vector` with `associative-function`, using a divide-and-conquer
 method."
   (defun vector-associative-reduce (vector associative-function)
     #1#

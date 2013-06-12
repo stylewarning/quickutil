@@ -2,7 +2,7 @@
 
 (defutil positivep (:version (1 . 0)
                     :category math)
-  #1="Check if N is positive."
+  #1="Check if `n` is positive."
   (defun positivep (n)
     #1#
     (declare (type real n))
@@ -10,7 +10,7 @@
 
 (defutil negativep (:version (1 . 0)
                     :category math)
-  #1="Check if N is negative."
+  #1="Check if `n` is negative."
   (defun negativep (n)
     #1#
     (declare (type real n))
@@ -18,7 +18,7 @@
 
 (defutil non-negative-p (:version (1 . 0)
                          :category math)
-  #1="Check if N is non-negative."
+  #1="Check if `n` is non-negative."
   (defun non-negative-p (n)
     #1#
     (declare (type real n))
@@ -26,7 +26,7 @@
 
 (defutil non-positive-p (:version (1 . 0)
                          :category math)
-  #1="Check if N is non-positive."
+  #1="Check if `n` is non-positive."
   (defun non-positive-p (n)
     #1#
     (declare (type real n))
@@ -34,7 +34,7 @@
 
 (defutil non-zero-p (:version (1 . 0)
                      :category math)
-  #1="Check if N is non-zero."
+  #1="Check if `n` is non-zero."
   (defun non-zero-p (n)
     #1#
     (declare (type real n))
@@ -42,9 +42,9 @@
 
 (defutil integral-length (:version (1 . 0)
                           :category math)
-  #1="Compute the length of an integer (integral quantity) N in base
-BASE. By default, base-10 is compute, *not* base-2 as in
-INTEGER-LENGTH."
+  #1="Compute the length of an integer (integral quantity) `n` in base
+`base`. By default, base-10 is compute, *not* base-2 as in
+`integral-length`."
   (declaim (ftype (function (integer &optional (integer 2)) integer)
                   integral-length))
   (defun integral-length (n &optional (base 10))
@@ -55,7 +55,7 @@ INTEGER-LENGTH."
 
 (defutil range-product (:version (1 . 0)
                         :category math)
-  #1="Compute LOWER * (LOWER+1) * ... * (UPPER-1) * UPPER."
+  #1="Compute `lower * (lower+1) * ... * (upper-1) * upper`."
   (declaim (ftype (function (integer integer) integer) range-product))
   (defun range-product (lower upper)
     #1#
@@ -70,7 +70,7 @@ INTEGER-LENGTH."
 (defutil factorial (:version (1 . 0)
                     :depends-on (range-product)
                     :category math)
-  #1="Compute the factorial of N, N! = 1 * 2 * ... * N."
+  #1="Compute the factorial of `n`, where `n! = 1 * 2 * ... * n`."
   (declaim (ftype (function ((integer 0)) (integer 1))
                   factorial))
   (defun factorial (n)
@@ -82,7 +82,7 @@ INTEGER-LENGTH."
 (defutil binomial-coefficient (:version (1 . 0)
                                :depends-on (range-product factorial)
                                :category math)
-  #1="Binomial coefficient of N and K."
+  #1="Binomial coefficient of `n` and `k`."
   (declaim (ftype (function ((integer 0) (integer 0)) (integer 0))
                   binomial-coefficient))
   (defun binomial-coefficient (n k)
@@ -108,9 +108,9 @@ INTEGER-LENGTH."
                                   :depends-on (binomial-coefficient
                                                collect-reduce)
                                   :category math)
-  #1="Yield the number of combinations of N objects partitioned into m
-groups [for ks = (k_1, ..., k_m)] with k_i objects in a respective
-group (i.e., group m has k_m objects)."
+  #1="Yield the number of combinations of `n` objects partitioned into m
+groups (for `ks = (k_1, ..., k_m)`) with `k_i` objects in a respective
+group (i.e., group *m* has `k_m` objects)."
   (defun multinomial-coefficient (n &rest ks)
     #1#
     (let ((sums (collect-reduce #'+ (sort ks #'>) :initial-value 0)))
@@ -123,10 +123,10 @@ group (i.e., group m has k_m objects)."
 
 (defutil mulf (:version (1 . 0)
                :category (math orthogonality))
-  "A modifying version of multiplication, similar to INCF."
+  "A modifying version of multiplication, similar to `incf`."
   (define-modify-macro mulf (&optional (ratio 2)) *))
 
 (defutil divf (:version (1 . 0)
                :category (math orthogonality))
-  "A modifying version of division, similar to DECF."
+  "A modifying version of division, similar to `decf`."
   (define-modify-macro divf (&optional (1/ratio) 2) /))

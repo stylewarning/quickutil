@@ -1,4 +1,5 @@
 ;;;; defutil.lisp
+;;;; Copyright (c) 2013 Robert Smith
 
 (in-package #:quickutil-utilities)
 

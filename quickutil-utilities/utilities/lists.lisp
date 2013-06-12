@@ -2,16 +2,16 @@
 
 (defutil ensure-list (:version (1 . 0)
                   :category lists)
-  #1="If X is a list, return it. Otherwise, wrap it."
+  #1="If `x` is a list, return it. Otherwise, wrap it."
   (defun ensure-list (x)
     #1#
     (if (listp x) x (list x))))
 
 (defutil range (:version (1 . 0)
                 :category lists)
-  #1="Return the list of numbers n such that START <= n < END and n =
-START + k*STEP. If a function KEY is provided, then apply KEY to each
-number."
+  #1="Return the list of numbers `n` such that `start <= n < end` and
+`n = start + k*step` for suitable integers `k`. If a function `key` is
+provided, then apply it to each number."
   (defun range (start end &key (step 1) (key 'identity))
     #1#
     (assert (<= start end))
@@ -20,7 +20,7 @@ number."
 (defutil iota (:version (1 . 0)
                :depends-on (range non-negative-p)
                :category lists)
-  #1="Return [0, ..., N-1]."
+  #1="Return `[0, ..., n-1]`."
   (defun iota (n)
     #1#
     (assert (non-negative-p n))
@@ -29,7 +29,7 @@ number."
 (defutil iota+1 (:version (1 . 0)
                  :depends-on range
                  :category lists)
-  #1="Return [1, ..., N]."
+  #1="Return `[1, ..., n]`."
   (defun iota+1 (n)
     #1#
     (assert (>= n 1))
@@ -37,7 +37,7 @@ number."
 
 (defutil replicate (:version (1 . 0)
                     :category lists)
-  #1="Make a list of N copies of X."
+  #1="Make a list of `n` copies of `x`."
   (defun replicate (n x)
     #1#
     (declare (type (integer 0) n))
@@ -46,7 +46,7 @@ number."
 ;;; XXX: Make generic?
 (defutil slice (:version (1 . 0)
                 :category lists)
-  #1="Compute the slice of a list LIST at indexes INDEXES."
+  #1="Compute the slice of a list `list` at indexes `indexes`."
   (defun slice (list indexes)
     #1#
     (loop
@@ -56,7 +56,7 @@ number."
 
 (defutil transpose (:version (1 . 0)
                     :category lists)
-  #1="Analog to matrix transpose for a list of lists given by LISTS."
+  #1="Analog to matrix transpose for a list of lists given by `lists`."
   (defun transpose (lists)
     #1#
     (loop
@@ -67,7 +67,7 @@ number."
 (defutil zip (:version (1 . 0)
               :depends-on transpose
               :category lists)
-  #1="Equivalent to UNZIP. Hooray for idempotency."
+  #1="Equivalent to `unzip`."
   (defun zip (&rest lists)
     #1#
     (transpose lists)))
@@ -75,15 +75,15 @@ number."
 (defutil unzip (:version (1 . 0)
                 :depends-on transpose
                 :category lists)
-  #1="Equivalent to ZIP. Hooray for idempotency."
+  #1="Equivalent to `zip`."
   (defun unzip (&rest lists)
     #1#
     (transpose lists)))
 
 (defutil long-zip (:version (1 . 0)
                    :category lists)
-  #1="ZIP using the longest, rather than shortest list, filling with
-FILL."
+  #1="`zip` using the longest, rather than shortest list, filling with
+`fill`."
   (defun long-zip (fill &rest lists)
     #1#
     (let ((longest (reduce #'max lists :key #'length)))
@@ -94,7 +94,7 @@ FILL."
 
 (defutil enumerate (:version (1 . 0)
                     :category lists)
-  #1="Equivalent to (ZIP (IOTA (LENGTH LIST)) LIST)."
+  #1="Equivalent to `(zip (iota (length list)) list)`."
   (defun enumerate (list)
     #1#
     (loop
@@ -105,14 +105,14 @@ FILL."
 (defutil flatten-once (:version (1 . 0)
                        :depends-on ensure-list
                        :category lists)
-  #1="Flatten LIST once."
+  #1="Flatten `list` once."
   (defun flatten-once (list)
     #1#
     (reduce #'append list :key #'ensure-list)))
 
 (defutil flatten (:version (1 . 0)
                   :category lists)
-  #1="Flatten (and append) all lists XS completely."
+  #1="Flatten (and append) all lists `xs` completely."
   (defun flatten (&rest xs)
     #1#
     (labels ((rec (xs acc)
@@ -123,7 +123,7 @@ FILL."
 
 (defutil ncycle (:version (1 . 0)
                  :category lists)
-  #1="Mutate LIST into a circlular list."
+  #1="Mutate `list` into a circlular list."
   (defun ncycle (list)
     #1#
     (and list
@@ -131,15 +131,15 @@ FILL."
 
 (defutil cycle (:version (1 . 0)
                 :category lists)
-  #1="Make LIST into a circular list."
+  #1="Make `list` into a circular list."
   (defun cycle (list)
     #1#
     (and list
          (ncycle (copy-list list)))))
 
-(defutil next (:version (1 . 0)
+(defutil nest (:version (1 . 0)
                :category lists)
-  #1="Compute a COUNT compositions of FUNCTION on INITIAL-VALUE."
+  #1="Compute a `count` compositions of `function` on `initial-value`."
   (defun nest (function initial-value count)
     #1#
     (loop
@@ -149,7 +149,7 @@ FILL."
 
 (defutil nest-list (:version (1 . 0)
                     :category lists)
-  #1="Compute a list of COUNT compositions of FUNCTION on INITIAL-VALUE."
+  #1="Compute a list of `count` compositions of `function` on `initial-value`."
   (defun nest-list (function initial-value count)
     #1#
     (loop
@@ -159,8 +159,8 @@ FILL."
 
 (defutil safe-nth (:version (1 . 0)
                    :category lists)
-  #1="Find the Nth element of LIST. If N is out of bounds, return
-IF-OUT-OF-BOUNDS (NIL by default)."
+  #1="Find the `n`th element of `list`. If `n` is out of bounds, return
+`if-out-of-bounds` (`nil` by default)."
   (defun safe-nth (n list &optional if-out-of-bounds)
     #1#
     (if (>= n (length list))
@@ -169,7 +169,7 @@ IF-OUT-OF-BOUNDS (NIL by default)."
 
 (defutil mapply (:version (1 . 0)
                  :category lists)
-  #1="Apply F to each list of arguments contained within LIST and collect
+  #1="Apply `f` to each list of arguments contained within `list` and collect
 the results."
   (defun mapply (f list)
     #1#
@@ -177,8 +177,8 @@ the results."
 
 (defutil cartesian-product (:version (1 . 0)
                             :category lists)
-  #1="Compute the cartesian product of L1 and L2 as if they were
-sets. Optionally, map the function F across the product."
+  #1="Compute the cartesian product of `l1` and `l2` as if they were
+sets. Optionally, map the function `f` across the product."
   (defun cartesian-product (l1 l2 &optional (f 'cl:list))
     #1#
     (loop
@@ -190,7 +190,7 @@ sets. Optionally, map the function F across the product."
 ;;; TODO: Define a SETF method for END.
 (defutil end (:version (1 . 0)
               :category lists)
-  #1="Return the last element of LIST and whether or not it was
+  #1="Return the last element of `list` and whether or not it was
   empty."
   (defun end (list)
     #1#
@@ -199,7 +199,7 @@ sets. Optionally, map the function F across the product."
 (defutil tabulate (:version (1 . 0)
                    :depends-on range
                    :category lists)
-  #1="Return a list evaluations of F over the integers [0,n). Mimics the
+  #1="Return a list evaluations of `f` over the integers `[0,n)`. Mimics the
 SML function of the same name."
   (defun tabulate (f n)
     #1#
@@ -207,8 +207,8 @@ SML function of the same name."
 
 (defutil collect-reduce (:version (1 . 0)
                          :category lists)
-  #1="Collects intermediate reduction results of applying F to LIST. More
-  or less equivalent to (LOOP :FOR I :IN LIST :COLLECT (REDUCE F I))."
+  #1="Collects intermediate reduction results of applying `f` to `list`. More
+  or less equivalent to `(loop :for i :in list :collect (reduce f i))`."
   (defun collect-reduce (f list &key (initial-value (car list) initial-value-p))
     #1#
     (loop
@@ -219,7 +219,7 @@ SML function of the same name."
 (defutil weave (:version (1 . 0)
                 :depends-on (flatten-once transpose)
                 :category lists)
-  #1="Return a list whose elements alternate between LIST1 and LIST2."
+  #1="Return a list whose elements alternate between `list1` and `list2`."
   (defun weave (&rest lists)
     #1#
     (flatten-once (transpose lists))))
@@ -227,28 +227,28 @@ SML function of the same name."
 (defutil riffle (:version (1 . 0)
                  :depends-on (weave replicate)
                  :category lists)
-  #1="Insert the item X in between each element of LIST."
+  #1="Insert the item `x` in between each element of `list`."
   (defun riffle (list x)
     #1#
     (butlast (weave list (replicate (length list) x)))))
 
 (defutil extend (:version (1 . 0)
                  :category lists)
-  #1="Adjoin X to the end of XS."
+  #1="Adjoin `x` to the end of `xs`."
   (defun extend (xs x)
     #1#
     (append xs (list x))))
 
 (defutil list-to-vector (:version (1 . 0)
                          :category lists)
-  #1="Convert LIST into a vector."
+  #1="Convert `list` into a vector."
   (defun list-to-vector (list)
     #1#
     (make-array (length list) :initial-contents list)))
 
 (defutil sequence-to-list (:version (1 . 0)
                            :category lists)
-  #1="Convert the sequence SEQ into a list."
+  #1="Convert the sequence `seq` into a list."
   (defun sequence-to-list (seq)
     #1#
     (concatenate 'list seq)))
@@ -256,7 +256,7 @@ SML function of the same name."
 (defutil explode (:version (1 . 0)
                   :depends-on sequence-to-list
                   :category lists)
-  #1="The classic EXPLODE function. Take a string and return a list of
+  #1="The classic `explode` function. Take a string and return a list of
   its characters."
   (defun explode (string)
     #1#
@@ -264,7 +264,7 @@ SML function of the same name."
 
 (defutil implode (:version (1 . 0)
                   :category lists)
-  #1="The classic IMPLODE function. Take a list of characters and return
+  #1="The classic `implode` function. Take a list of characters and return
   the corresponding string."
   (defun implode (list-of-characters)
     #1#

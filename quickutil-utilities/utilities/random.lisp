@@ -9,7 +9,7 @@
 
 (defutil random-between (:version (1 . 0)
                          :category random)
-  #1="Generate a random integer between A and B, inclusive."
+  #1="Generate a random integer between `a` and `b`, inclusive."
   (defun random-between (a b)
     #1#
     (assert (>= b a))
@@ -20,9 +20,9 @@
 (defutil random-elt (:version (1 . 0)
                      :depends-on random-between
                      :category (random sequences))
-  #1="Choose a random element of SEQ according to DISTRIBUTION. If
-DISTRIBUTION is null, the distribution will be uniform. Otherwise,
-DISTRIBUTION should be a list of probability values"
+  #1="Choose a random element of `seq` according to `distribution`. If
+`distribution` is null, the distribution will be uniform. otherwise,
+`distribution` should be a list of probability values"
   (defun random-elt (seq &optional distribution)
     #1#
     (if (null distribution)
@@ -40,7 +40,7 @@ DISTRIBUTION should be a list of probability values"
 (defutil shuffle-vector (:version (1 . 0)
                          :depends-on random-between
                          :category (random vectors))
-  #1="Destructively shuffle VECTOR randomly."
+  #1="Destructively shuffle `vector` randomly."
   (defun shuffle-vector (vector)
     #1#
     (let ((n (length vector)))

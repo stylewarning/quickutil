@@ -2,7 +2,7 @@
 
 (defutil compose (:version (1 . 0)
                   :category functional)
-  #1="Compose FUNCTIONS right-associatively."
+  #1="Compose `functions` right-associatively."
   
   (defun compose (&rest functions)
     #1#
@@ -12,7 +12,7 @@
                 :from-end t)))
 
   (define-compiler-macro compose (&rest functions)
-    "Transform COMPOSE forms into the equivalent lambda function."
+    "Transform `compose` forms into the equivalent lambda function."
     (labels ((sharp-quoted-p (x)
                (and (listp x)
                     (eql (first x) 'function)
@@ -28,7 +28,7 @@
 (defutil fix (:version (1 . 0)
               :category functional)
   #1="Apply the fixed-point combinator, also known as the Y-combinator,
-to the function F : (A -> B) -> A -> B."
+to the function `F : (A -> B) -> A -> B`."
   (defun fix (f)
     #1#
     ((lambda (x) (funcall x x))
