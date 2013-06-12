@@ -8,9 +8,9 @@
 (defun download-url (url)
   (let* ((temp-stream (temporary-file:open-temporary))
          (temp (pathname temp-stream)))
-    (write-string (nth-value 0 (drakma:http-request url))
-                  temp-stream)
-    (close temp-stream)
+    (unwind-protect (write-string (nth-value 0 (drakma:http-request url))
+                                  temp-stream)
+      (close temp-stream))
     temp))
 
 (defun load-from-url (url)
