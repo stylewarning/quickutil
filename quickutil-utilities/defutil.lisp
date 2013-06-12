@@ -11,6 +11,8 @@
   (version '(1 . 0) :type util-version) ; (major . minor)
   dependencies
   categories
+  provides
+  documentation
   code)
 
 (defun util-major-version (util)
@@ -52,19 +54,35 @@
 
 (defmacro defutil (name (&key version
                               depends-on
-                              category)
+                              category
+                              provides)
                    &body utility-code)
   "Define a new utility."
   (check-type name symbol)
   (check-type version util-version)
   
-  `(progn
-     (setf (gethash ',(ensure-keyword name) *utility-registry*)
-           (make-util :version ',version
-                      :dependencies ',(ensure-keyword-list depends-on)
-                      :categories ',(ensure-keyword-list category)
-                      :code '(progn ,@utility-code)))
-     ',name))
+  (let ((documentation nil))
+    
+    ;; Parse documentation
+    (cond
+      ((null utility-code)       nil)
+      ((null (cdr utility-code)) nil)
+      ((stringp (car utility-code))
+       (setf documentation (car utility-code))
+       (setf utility-code  (cdr utility-code))))
+    
+    ;; Generate the registration forms.
+    `(progn
+       (setf (gethash ',(ensure-keyword name) *utility-registry*)
+             (make-util :version ',version
+                        :dependencies ',(ensure-keyword-list depends-on)
+                        :categories ',(ensure-keyword-list category)
+                        :provides ',(if provides
+                                        (ensure-keyword-list provides)
+                                        (ensure-keyword-list name))
+                        :documentation ,documentation
+                        :code '(progn ,@utility-code)))
+       ',name)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;; Dependency Resolution ;;;;;;;;;;;;;;;;;;;;;;;;
