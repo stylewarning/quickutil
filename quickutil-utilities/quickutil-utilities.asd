@@ -21,4 +21,7 @@
                              (:file "language")
                              (:file "constants")
                              (:file "control")
-                             (:file "hash-tables")))))
+                             (:file "hash-tables")
+                             (:file "random")
+                             (:file "generic")
+                             (:file "conses")))))
