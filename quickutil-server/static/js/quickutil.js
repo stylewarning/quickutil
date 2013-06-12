@@ -49,7 +49,10 @@ Quickutil.init.done(function() {
     $(document)
         .on('pjax:start', function() { $('#main').css('opacity', 0.4); })
         .on('pjax:end', function() { $('#main').animate({ opacity: 1 }, 'fast'); })
-        .on('pjax:success', function() { prettyPrint(); });
+        .on('pjax:success', function() {
+            prettyPrint();
+            $('.category-filters').toggle(/^\/list/.test(location.pathname));
+        });
 
     var updateFilter = function() {
         if ($(this).length === 0) return;
