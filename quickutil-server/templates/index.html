@@ -6,31 +6,40 @@
     {param current: 'index' /}
     {param categories: $categories /}
     {param body}
-      <h2>What's Quickutil?</h2>
+      <h2>What's <span class="logo">Quickutil</span>?</h2>
 
-      <p>Quickutil is an application and library for distributing Common Lisp utilities, aiming to solve the <em>utility problem</em>&mdash;everyone has their own utility library and <em>de facto</em> standard ones are too slowly moving. Quickutil is nimble, and only includes what you need.</p>
+      <p><span class="logo">Quickutil</span> is an application and library for distributing Common Lisp utilities, aiming to solve the <em>utility problem</em>&mdash;everyone has their own utility library and <em>de facto</em> standard ones are too slowly moving. <span class="logo">Quickutil</span> is nimble, and only includes what you need.</p>
 
-      <p>It is similar in spirit to <a href="http://www.quicklisp.org/">Quicklisp</a>, in that utilities can automatically be downloaded and installed to projects.</p>
+      <p>It is similar in spirit to <a href="http://www.quicklisp.org/" target="_blank">Quicklisp</a>, in that utilities can automatically be downloaded and installed to projects.</p>
 
-      <h3>1. Installation</h3>
+      <ul class="how-to-use">
+        <li>
+          <h3>1. Installation</h3>
 
-      <pre class="prettyprint lang-lisp">
-        <code>(ql:quickload :quickutil-client)</code>
-      </pre>
+          <pre>
+            <code>(ql:quickload :quickutil-client)</code>
+          </pre>
+        </li>
 
-      <h3>2. Load a Utility</h3>
+        <li>
+          <div class="side-link"><a href="/list" data-pjax="#main">Find utilities</a></div>
+          <h3>2. Load a Utility</h3>
 
-      <pre class="prettyprint lang-lisp">
-        <code>&gt; (qtl:quickload :iota)</code><br/>
-        <code>&gt; (qtl:quickload :riffle)</code>
-      </pre>
+          <pre>
+            <code>&gt; (qtl:quickload :iota)</code><br/>
+            <code>&gt; (qtl:quickload :riffle)</code>
+          </pre>
+        </li>
 
-      <h3>3. Use a Utility</h3>
+        <li>
+          <h3>3. Use a Utility</h3>
 
-      <pre class="prettyprint lang-lisp">
-        <code>&gt; (qtl:riffle (qtl:iota 5) '--)</code><br/>
-        <code>(0 -- 1 -- 2 -- 3 -- 4)</code>
-      </pre>
+          <pre>
+            <code>&gt; (qtl:riffle (qtl:iota 5) '--)</code><br/>
+            <code>(0 -- 1 -- 2 -- 3 -- 4)</code>
+          </pre>
+        </li>
+      </ul>
     {/param}
   {/call}
 {/template}

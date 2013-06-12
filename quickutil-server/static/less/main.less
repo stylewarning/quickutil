@@ -89,9 +89,24 @@ input {
   width: 200px;
 }
 
+.how-to-use {
+  list-style: none;
+  padding-left: 0;
+  h3 {
+    margin-bottom: 10px;
+  }
+  pre {
+    color: #fff;
+    background: #000;
+    margin: 0;
+    border-radius: 4px;
+	  padding: 1em;
+  }
+}
+
 .utility {
   position: relative;
-  margin-top: 15px;
+  margin-top: 10px;
   padding: 10px 0 0;
   border-top: 1px solid #eee;
   .symbol-name {
@@ -114,11 +129,11 @@ input {
       background-color: #e8e8e8;
       color: #888;
       text-decoration: none;
+      font-family: @neutral-font;
       font-size: 85%;
       border-radius: 2px;
       padding: 0 5px;
       line-height: 140%;
-      font-weight: bold;
       &.active, &:active, &:hover {
         background-color: #247cc0;
         color: white;
@@ -139,7 +154,8 @@ input {
     .show-source-code {
       position: absolute;
       right: 2px;
-      bottom: -4px;
+      bottom: 0;
+      font-family: @neutral-font;
       font-size: 80%;
     }
   }
@@ -155,6 +171,12 @@ input {
 }
 
 .pun,.opn,.clo { color: #993; }
+
+.side-link {
+  float: right;
+  font-size: 80%;
+  font-family: @neutral-font;
+}
 
 .filter-box {
   position: relative;

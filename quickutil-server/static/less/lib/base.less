@@ -1,17 +1,21 @@
 @charset "UTF-8";
 
+@neutral-font: "Helvetica Neue", Helvetica, Arial, sans-serif;
+@body-font: "Optima", "Nu Sans", Baskerville, "Times New Roman", "Arial", sans-serif;
+@logo-font: Baskerville, "Baskerville Win95BT", "Times New Roman", Times, serif;
+@code-font: Consolas, "Liberation Mono", Courier, monospace;
+
 body {
   margin: 3em auto;
   width: 820px;
   line-height: 150%;
-  font-family: "Optima", "Nu Sans", Baskerville, "Times New Roman", "Arial", sans-serif;
+  font-family: @body-font;
 }
 
 .logo {
   position: relative;
-  font-family: Baskerville, "Baskerville Win95BT", "Times New Roman", Times, serif;
+  font-family: @logo-font;
   margin: 0;
-  font-weight: bold;
   display: inline-block;
   a {
     color: black;
@@ -53,5 +57,5 @@ a {
 }
 
 code {
-  font-family: Consolas, "Liberation Mono", Courier, monospace;
+  font-family: @code-font;
 }
