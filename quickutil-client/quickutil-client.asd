@@ -1,4 +1,5 @@
 ;;;; quickutil-client.asd
+;;;; Copyright (c) 2013 Robert Smith
 
 (asdf:defsystem #:quickutil-client
   :serial t
@@ -7,4 +8,3 @@
   :components ((:file "package")
                (:file "quickutil-client"))
   :depends-on ("quicklisp" "temporary-file"))
-
