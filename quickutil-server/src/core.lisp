@@ -10,6 +10,9 @@
   (:shadow :stop)
   (:import-from :quickutil-server.app
                 :*app*)
+  (:import-from :quickutil-utilities
+                :*utility-registry*
+                :util.categories)
   (:import-from :cl-ppcre
                 :scan
                 :regex-replace)
@@ -28,6 +31,15 @@
                       (asdf:find-system :quickutil-server))))
 
 (closure-template:compile-cl-templates (fad:list-directory *template-path*))
+
+@export
+(defparameter *categories*
+              (loop for utility being the hash-values in *utility-registry*
+                    append (util.categories utility) into categories
+                    finally
+                 (return
+                   (mapcar #'string-downcase
+                           (remove-duplicates categories :test #'string-equal)))))
 
 (defun build (app)
   (builder

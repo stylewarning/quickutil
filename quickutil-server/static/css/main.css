@@ -49,7 +49,7 @@ code {
   font-family: Consolas, "Liberation Mono", Courier, monospace;
 }
 header {
-  position: fixed;
+  position: absolute;
   width: 200px;
 }
 header .subtitle {
@@ -58,16 +58,16 @@ header .subtitle {
   font-size: 80%;
   color: #999;
 }
-header ul {
+header nav ul {
   list-style: none;
   padding-left: 0;
 }
-header ul li {
+header nav ul li {
   width: 200px;
   margin-bottom: 5px;
   display: table;
 }
-header ul.menu li a {
+header nav ul.menu li a {
   display: table-cell;
   vertical-align: middle;
   width: 100%;
@@ -78,7 +78,7 @@ header ul.menu li a {
   text-align: center;
   text-decoration: none;
 }
-header ul.menu li a:hover {
+header nav ul.menu li a:hover {
   color: white;
   border-radius: 4px;
   background-color: #888;
@@ -87,8 +87,8 @@ header ul.menu li a:hover {
   box-shadow: inset 0px 0px 10px 0px #aaa;
   filter: progid:DXImageTransform.Microsoft.Shadow(color='#aaa', Direction=145, Strength=6);
 }
-header ul.menu li a:active,
-header ul.menu li a.current {
+header nav ul.menu li a:active,
+header nav ul.menu li a.current {
   color: white;
   border-radius: 4px;
   background-color: #aaa;
@@ -235,7 +235,55 @@ input.filter {
 .informations dd {
   margin-left: -4px;
 }
+/* Category Filter */
+.category-filters {
+  margin-top: 30px;
+  padding-left: 10px;
+  border-top: 1px solid #ccc;
+  font-size: 90%;
+}
+.category-filters ul {
+  list-style: none;
+  padding-left: 0;
+}
+.category-filters .remove-filter {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 5px;
+  font-size: 140%;
+  color: #aaa;
+}
+.category-filters .remove-filter:hover {
+  color: #333;
+}
+.category-filters li {
+  position: relative;
+}
+.category-filters li.active {
+  background: #eee;
+  border-radius: 3px;
+}
+.category-filters li.active .remove-filter {
+  display: inline;
+}
+.category-filters li.active a.category {
+  color: #555;
+}
+.category-filters li a.category {
+  display: block;
+  padding: 0 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-radius: 3px;
+  color: #888;
+}
+.category-filters li a.category:hover {
+  background: #eee;
+}
 /* footer */
 footer {
   margin-top: 60px;
+  z-index: -1;
 }

@@ -3,7 +3,7 @@
 @import "lib/base.less";
 
 header {
-  position: fixed;
+  position: absolute;
   width: 200px;
   .subtitle {
     margin-top: 0;
@@ -11,7 +11,7 @@ header {
     font-size: 80%;
     color: #999;
   }
-  ul {
+  nav ul {
     list-style: none;
     padding-left: 0;
     li {
@@ -211,7 +211,56 @@ input.filter {
   }
 }
 
+/* Category Filter */
+.category-filters {
+  margin-top: 30px;
+  padding-left: 10px;
+  border-top: 1px solid #ccc;
+  font-size: 90%;
+  ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  .remove-filter {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 5px;
+    font-size: 140%;
+    color: #aaa;
+    &:hover {
+      color: #333;
+    }
+  }
+  li {
+    position: relative;
+    &.active {
+      background: #eee;
+      border-radius: 3px;
+      .remove-filter {
+        display: inline;
+      }
+      a.category {
+        color: #555;
+      }
+    }
+    a.category {
+      display: block;
+      padding: 0 8px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      border-radius: 3px;
+      color: #888;
+      &:hover {
+        background: #eee;
+      }
+    }
+  }
+}
+
 /* footer */
 footer {
   margin-top: 60px;
+  z-index: -1;
 }

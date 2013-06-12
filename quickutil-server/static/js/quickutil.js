@@ -23,6 +23,11 @@ Quickutil.init.done(function() {
         });
         e.preventDefault();
     });
+    $(document).on('click', '.utility .category', function(e) {
+        var target = $(e.target);
+        $('.category-filters ul li').removeClass('active');
+        $('.category-filters ul li a[href="' + target.attr('href') + '"]').closest('li').addClass('active');
+    });
 
     $(document).on('click', '.menu li a', function(e) {
         var target = $(e.currentTarget);
@@ -32,6 +37,13 @@ Quickutil.init.done(function() {
     $('#header h1').on('click', function() {
         $('.menu li a').removeClass('current');
         $('.menu li a[href="/"]').addClass('current');
+    });
+    $(document).on('click', '.category-filters ul li a', function(e) {
+        var target = $(e.currentTarget);
+        $('.category-filters ul li').removeClass('active');
+        if (!target.hasClass('remove-filter')) {
+            target.closest('li').addClass('active');
+        }
     });
 
     $(document)

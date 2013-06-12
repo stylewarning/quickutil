@@ -2,6 +2,8 @@
 (defpackage quickutil-server.controller.web
   (:use :cl
         :ningle)
+  (:import-from :quickutil-server
+                :*categories*)
   (:import-from :quickutil-utilities
                 :*utility-registry*
                 :util.version
@@ -59,7 +61,8 @@
 (setf (route *web* "/")
       #'(lambda (params)
           (declare (ignore params))
-          (render-index)))
+          (render-index
+           (list :categories *categories*))))
 
 (setf (route *web* "/list/?:category?")
       #'(lambda (params)
@@ -67,6 +70,7 @@
                 (category (getf params :category)))
             (render-list
              (list
+              :categories *categories*
               :category category
               :q (getf params :|q|)
               :utilities
@@ -85,6 +89,7 @@
                 (favorites (gethash :favorites *session*)))
             (render-favorites
              (list
+              :categories *categories*
               :favorites (utility-plists
                           #'(lambda (name utility)
                               (declare (ignore utility))

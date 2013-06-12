@@ -4,10 +4,9 @@
   {call wrapper}
     {param title: 'Utilities | Quickutil' /}
     {param current: 'list' /}
+    {param currentCategory: $category /}
+    {param categories: $categories /}
     {param body}
-      {if $category}
-      <div class="filter-category">Category: <strong>{$category}</strong> (<a href="/list" data-pjax="#main">Show all categories</a>)</div>
-      {/if}
       <div class="filter-box">
         <span class="lsf filter-icon">search</span>
         <input type="text" class="filter" placeholder="Filter below utilities" value="{$q}" />
