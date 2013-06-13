@@ -1,2 +1,3 @@
 config.py
 *.py[cod]
+src/config.lisp

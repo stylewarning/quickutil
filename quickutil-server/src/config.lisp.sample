@@ -1,0 +1,4 @@
+`(:database-params (:mysql
+                    :database-name "quickutil"
+                    :username "dummyname"
+                    :password "dummypass"))

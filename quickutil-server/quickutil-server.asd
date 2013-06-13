@@ -16,7 +16,8 @@
                :quickutil-utilities
                :closure-template
                :cl-fad
-               :cl-markdown)
+               :cl-markdown
+               :dbi)
   :components ((:module "src"
                 :components
                 ((:file "app")
