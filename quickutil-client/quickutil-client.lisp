@@ -29,7 +29,7 @@ file. Return the pathname of the temporary file."
   (load (compile-file (download-url url))))
 
 (defvar *quickutil-query-suffix*
-  "/api/emit-utility-code.lisp?utility="
+  "/api/emit?utility="
   "The API string used to query a utility.")
 
 (defun quickutil-query-url (util-name)
