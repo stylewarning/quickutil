@@ -42,6 +42,12 @@ UTIL-NAME."
                                     (symbol-name util-name)
                                     util-name))))
 
-(defun quickload (util-name)
-  "Load the utility UTIL-NAME and its dependencies."
-  (compile-and-load-from-url (quickutil-query-url util-name)))
+;;; XXX FIXME: Right now this naively loads the utilities, causing
+;;; many repeat compilations.
+;;;
+;;; XXX FIXME: Error when utility is not found instead of just trying
+;;; to compile NIL.
+(defun quickload (&rest util-names)
+  "Load the utilities UTIL-NAMES and their dependencies."
+  (dolist (util-name util-names)
+    (compile-and-load-from-url (quickutil-query-url util-name))))
