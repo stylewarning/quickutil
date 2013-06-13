@@ -7,6 +7,7 @@
   :author "Robert Smith <quad@symbo1ics.com>"
   :license "BSD 3-clause. See LICENSE file."
   :components ((:file "package")
+               (:file "host")
                (:file "quickutil-client")
                (:file "autoload"))
   :depends-on ("drakma" "temporary-file"))
