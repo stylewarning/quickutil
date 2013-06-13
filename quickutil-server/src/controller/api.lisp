@@ -49,7 +49,7 @@
              s)
             s)))
 
-(setf (route *api* "/emit-utility-code.lisp")
+(setf (route *api* "/emit")
       #'(lambda (params)
           `(200
             (:content-type "text/plain")
