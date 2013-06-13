@@ -100,12 +100,12 @@ named UTIL-NAME."
       ((stringp (car utility-code))
        (setf documentation (car utility-code))
        (setf utility-code  (cdr utility-code))))
-    
-    ;; Index the symbols provided
-    (index-provides name provides)
-    
-    ;; Generate the registration forms.
+
     `(progn
+       ;; Index the symbols provided
+       (index-provides ,name ',provides)
+       
+       ;; Generate the registration forms.   
        (setf (gethash ',name *utility-registry*)
              (make-util :version ',version
                         :dependencies ',(ensure-keyword-list depends-on)
