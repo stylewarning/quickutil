@@ -205,6 +205,15 @@ input {
   font-size: 80%;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
+.footer-next-link {
+  display: block;
+  text-align: right;
+  margin-top: 30px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.footer-next-link:before {
+  content: "right";
+}
 .filter-box {
   position: relative;
 }
@@ -325,5 +334,5 @@ input.filter {
 }
 /* footer */
 footer {
-  margin-top: 60px;
+  margin-top: 40px;
 }
