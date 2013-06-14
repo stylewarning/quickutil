@@ -1,2 +1,0 @@
-* Be able to query the dependencies of several functions, merge them,
-  and produce a load order.
