@@ -41,7 +41,7 @@
         <code>(0 AND-A 1 AND-A 2 AND-A 3)</code>
       </pre>
       
-      <p>Note that there is not necessarily a one-to-one correspondence between utilities and usable symbols (functions, macros, etc.). For example, the utility <code>imaginary-i</code> makes both of the symbols <code>imaginary-i</code> and <code>ii</code> available for use. You can check which symbols a utility provides by looking at the <em>provides</em> heading with each utility in the utilities listing. Despite this, most utilities and provided symbols are the same.</p>
+      <p>Note that there is not necessarily a one-to-one correspondence between utilities and usable symbols (functions, macros, etc.). For example, the utility <code>split-sequence</code> makes the symbols <code>split-sequence</code>, <code>split-sequence-if</code>, and <code>split-sequence-if-not</code> available for use. You can check which symbols a utility provides by looking at the <em>provides</em> heading with each utility in the utilities listing. Despite this, most utilities and provided symbols are the same.</p>
       
       <a id="integrating"></a>
       <h3>Integrating <span class="logo">Quickutil</span> With Your Project</h3>
@@ -49,9 +49,9 @@
       <p>Integrating <span class="logo">Quickutil</span> is done simply by making your ASDF system depend on <code>quickutil</code>, and then adding a <code>utilities.lisp</code> file which contains the <code>qtl:utilize</code> form, along with any other project-specific utilities. For example:</p>
       
       <pre class="example-code">
-        <code>(qtl:utilize :multinomial-coefficient</code><br/>
+        <code>(qtl:utilize :split-sequence</code><br/>
         <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:ensure-list</code><br/>
-        <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:cartesian-product)</code><br/><br/>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:transpose)</code><br/><br/>
         <code>(defun half (x)</code><br/>
         <code>&nbsp;&nbsp;(/ x 2))</code>
       </pre>
