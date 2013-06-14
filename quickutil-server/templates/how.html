@@ -15,7 +15,7 @@
         <li><a href="#autoloading">Autoloading Utilities</a></li>
       </ul>
 
-      <a name="quickstart"></a>
+      <a id="quickstart"></a>
       <h3>Quickstart</h3>
       
       <p><span class="logo">Quickutil</span> is very easy to use, and accommodates the different kinds of ways one would want to use utilities.</p>
@@ -41,7 +41,7 @@
       
       <p>Note that there is not necessarily a one-to-one correspondence between utilities and usable symbols (functions, macros, etc.). For example, the utility <code>imaginary-i</code> makes both of the symbols <code>imaginary-i</code> and <code>ii</code> available for use. You can check which symbols a utility provides by looking at the <em>provides</em> heading with each utility in the utilities listing. Despite this, most utilities and provided symbols are the same.</p>
       
-      <a name="integrating"></a>
+      <a id="integrating"></a>
       <h3>Integrating <span class="logo">Quickutil</span> With Your Project</h3>
       
       <p>Integrating <span class="logo">Quickutil</span> is done simply by making your ASDF system depend on <code>quickutil</code>, and then adding a <code>utilities.lisp</code> file which contains the <code>qtl:quickload</code> form, along with any other project-specific utilities. For example:</p>
@@ -54,7 +54,7 @@
         <code>&nbsp;&nbsp;(/ x 2))</code>
       </pre>
       
-      <a name="offline"></a>
+      <a id="offline"></a>
       <h3>Offline Use of Utilities</h3>
       <p>Sometimes an Internet connection is not always available when compiling or loading a program, so it is necessary to have a static file with the utilities. This is done by using <code>qtl:save-utils-as</code>, which will download the utilities to a file, which can be compiled or loaded. For example:</p>
       
@@ -72,7 +72,7 @@
       
       <p>There are no network dependencies by loading <code>utils.lisp</code> here, and it can be added to any project, even those without <span class="logo">Quickutil</span>. The utilities themselves downloaded by this method are in the public domain, so there are no restrictions on the way they can be used.</p>
       
-      <a name="autoloading"></a>
+      <a id="autoloading"></a>
       <h3>Autoloading Utilities</h3>
       <p>Especially for scripts and REPL interactions, it is nice to be able to use utilities without previously loading them. <span class="logo">Quickutil</span> provides <em>autoload syntax</em>, <code>#?</code>, which autoloads the symbol right after it. The syntax is disabled by default, and can be enabled with <code>qtl:enable-autoload-syntax</code>. For example:</p>
 

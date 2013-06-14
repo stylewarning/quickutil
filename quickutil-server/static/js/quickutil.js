@@ -5,6 +5,17 @@ var Quickutil = Quickutil || {};
 if (Quickutil.init) return;
 Quickutil.init = $.Deferred(function () { $(this.resolve); });
 
+Quickutil.smoothScrollTo = function(el, opt_speed, opt_callback) {
+    var speed = opt_speed || 300;
+    var $el = $(el);
+    if ($el.length !== 0) {
+        var position = $el.offset().top;
+        $(/safari/i.test(navigator.userAgent) ? 'body' : 'html').animate({
+            scrollTop: position
+        }, speed, 'swing');
+    }
+};
+
 Quickutil.init.done(function() {
     prettyPrint();
 
@@ -104,6 +115,17 @@ Quickutil.init.done(function() {
             target.text('Hide Code');
             source.slideDown();
         }
+    });
+
+    $(document).on('click', 'a[href^=#]', function(e) {
+        var href = $(this).attr("href");
+        if (window.history && window.history.pushState) {
+            window.history.pushState(null, '', $(this).attr("href"));
+            e.preventDefault();
+        }
+        href = href.replace(/\./g, '\\.');
+        var target = $(href == "#" || href == "" ? 'html' : href);
+        Quickutil.smoothScrollTo(target, undefined);
     });
 });
 
