@@ -54,7 +54,7 @@ UTIL-NAMES."
 
 ;;; XXX FIXME: Error when utility is not found instead of just trying
 ;;; to compile NIL.
-(defun quickload (&rest util-names)
+(defun utilize (&rest util-names)
   "Load the utilities UTIL-NAMES and their dependencies."
   (compile-and-load-from-url (quickutil-query-url util-names)))
 

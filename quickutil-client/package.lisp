@@ -5,10 +5,10 @@
   (:use #:cl)
   (:export #:set-quickutil-host
            #:enable-autoload-syntax
-           #:quickload
+           #:utilize
            #:save-utils-as
            #:who-provides
-           #:quickload-symbols))
+           #:utilize-symbols))
 
 (unless (find-package "QUICKUTIL")
   (defpackage #:quickutil
@@ -17,14 +17,14 @@
     (:import-from #:quickutil-client
                   #:set-quickutil-host
                   #:enable-autoload-syntax
-                  #:quickload
+                  #:utilize
                   #:save-utils-as
                   #:who-provides
-                  #:quickload-symbols)
+                  #:utilize-symbols)
     (:export #:set-quickutil-host
              #:enable-autoload-syntax
-             #:quickload
+             #:utilize
              #:save-utils-as
              #:who-provides
-             #:quickload-symbols)))
+             #:utilize-symbols)))
 

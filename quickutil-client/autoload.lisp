@@ -26,9 +26,9 @@
                                                  (make-symbol symbol))))))
     (nth-value 0 (and who (intern who '#:keyword)))))
 
-(defun quickload-symbols (&rest symbols)
+(defun utilize-symbols (&rest symbols)
   "Load the utilities which provide the symbols SYMBOLS."
-  (apply #'quickload
+  (apply #'utilize
          (remove nil (remove-duplicates (mapcar #'who-provides symbols)))))
 
 (defun |#?-reader| (stream subchar n)
@@ -44,7 +44,7 @@
         (if (and found (eql type :external))
             found
             (progn
-              (quickutil-client:quickload (intern originating-util '#:keyword))
+              (quickutil-client:utilize (intern originating-util '#:keyword))
               (find-symbol name '#:quickutil)))))))
 
 (defun enable-autoload-syntax ()

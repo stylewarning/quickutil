@@ -28,10 +28,10 @@
         <code>(ql:quickload :quickutil)</code>
       </pre>
       
-      <p>After it has loaded, you can now load and use utilities from the <a href="/list" data-pjax="#main">utilities listing</a> with <code>qtl:quickload</code>.</p>
+      <p>After it has loaded, you can now load and use utilities from the <a href="/list" data-pjax="#main">utilities listing</a> with <code>qtl:utilize</code>.</p>
       
       <pre class="example-code">
-        <code>(qtl:quickload :riffle :iota)</code>
+        <code>(qtl:utilize :riffle :iota)</code>
       </pre>
       
       <p>Now they can be used.</p>
@@ -46,10 +46,10 @@
       <a id="integrating"></a>
       <h3>Integrating <span class="logo">Quickutil</span> With Your Project</h3>
       
-      <p>Integrating <span class="logo">Quickutil</span> is done simply by making your ASDF system depend on <code>quickutil</code>, and then adding a <code>utilities.lisp</code> file which contains the <code>qtl:quickload</code> form, along with any other project-specific utilities. For example:</p>
+      <p>Integrating <span class="logo">Quickutil</span> is done simply by making your ASDF system depend on <code>quickutil</code>, and then adding a <code>utilities.lisp</code> file which contains the <code>qtl:utilize</code> form, along with any other project-specific utilities. For example:</p>
       
       <pre class="example-code">
-        <code>(qtl:quickload :multinomial-coefficient</code><br/>
+        <code>(qtl:utilize :multinomial-coefficient</code><br/>
         <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:ensure-list</code><br/>
         <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:cartesian-product)</code><br/><br/>
         <code>(defun half (x)</code><br/>
@@ -99,10 +99,10 @@
         <code>:SPLIT-SEQUENCE</code>
       </pre>
 
-      <p>If you would like to directly quickload based off of provided symbols instead of utility names, you can use <code>qtl:quickload-symbols</code>.</p>
+      <p>If you would like to directly download utilities based off of provided symbols instead of utility names, you can use <code>qtl:utilize-symbols</code>.</p>
 
       <pre class="example-code">
-        <code>&gt; (qtl:quickload-symbols :ee :riffle)</code><br/>
+        <code>&gt; (qtl:utilize-symbols :ee :riffle)</code><br/>
         <code>&gt; (qtl:riffle '(1 2 3) qtl:ee)</code><br/>
         <code>(1 2.718281828459045d0 2 2.718281828459045d0 3)</code>
       </pre>
