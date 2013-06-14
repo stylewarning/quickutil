@@ -60,6 +60,15 @@
 ;;
 ;; for Web interface
 
+(setf (route *web* "*")
+      #'(lambda (params)
+          (declare (ignore params))
+          (setf (headers *response* :content-type) "text/html")
+          (or (next-route)
+              (asdf:system-relative-pathname
+               :quickutil-server
+               #P"static/html/404.html"))))
+
 (setf (route *web* "/")
       #'(lambda (params)
           (render-index
@@ -110,15 +119,3 @@
                               (declare (ignore utility))
                               (member name favorites :test #'string-equal)))
               :csrf-html-tag (clack.middleware.csrf:csrf-html-tag *session*))))))
-
-;;
-;; page not found
-
-(setf (route *web* "*")
-      #'(lambda (params)
-          (declare (ignore params))
-          (setf (headers *response* :content-type) "text/html")
-          (or (next-route)
-              (asdf:system-relative-pathname
-               :quickutil-server
-               #P"static/html/404.html"))))
