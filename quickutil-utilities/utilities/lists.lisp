@@ -1,12 +1,5 @@
 (in-package #:quickutil)
 
-(defutil ensure-list (:version (1 . 0)
-                      :category lists)
-  #1="If `x` is a list, return it. Otherwise, wrap it."
-  (defun ensure-list (x)
-    #1#
-    (if (listp x) x (list x))))
-
 (defutil range (:version (1 . 0)
                 :category lists)
   #1="Return the list of numbers `n` such that `start <= n < end` and
