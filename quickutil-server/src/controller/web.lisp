@@ -51,12 +51,7 @@
           :documentation ,(with-output-to-string (s)
                             (markdown (util.documentation utility)
                                       :stream s))
-          :dependencies ,(util.dependencies utility)
-          :code ,(with-output-to-string (s)
-                    (loop for sexp in (cdr (util.code utility))
-                          do
-                          (quickutil-utilities::pretty-print-utility-code sexp s)
-                          (format s "~%"))))))
+          :dependencies ,(util.dependencies utility))))
 
 ;;
 ;; for Web interface

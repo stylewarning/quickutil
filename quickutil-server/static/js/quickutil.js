@@ -17,8 +17,6 @@ Quickutil.smoothScrollTo = function(el, opt_speed, opt_callback) {
 };
 
 Quickutil.init.done(function() {
-    prettyPrint();
-
     $.pjax.defaults.timeout = 3 * 1000;
     $.pjax.defaults.contentType = 'text/html';
 
@@ -61,7 +59,6 @@ Quickutil.init.done(function() {
         })
         .on('pjax:success', function() {
             $('#main').animate({ opacity: 1 }, 'fast');
-            prettyPrint();
             if (location.pathname == '/list') {
                 $('.category-filters ul li').removeClass('active');
             }
@@ -106,14 +103,27 @@ Quickutil.init.done(function() {
     $(document).on('click', '.show-source-code', function(e) {
         e.preventDefault();
         var target = $(e.target);
-        var source = target.closest('.utility').children('.source-code');
+        var utility = target.closest('.utility');
+        var source = utility.children('.source-code');
+
         if (source.is(':visible')) {
             target.text('Source Code');
             source.slideUp();
         }
-        else {
+        else if (source.text()) {
             target.text('Hide Code');
             source.slideDown();
+        }
+        else {
+            $.get(
+                '/api/source-code?utility=' + encodeURI(utility.attr('data-utility-name'))
+            ).done(function(data) {
+                data = data.replace(/ /g, '&nbsp').replace(/\n/g, '<br/>');
+                data = prettyPrintOne(data, 'lisp');
+                source.html(data);
+                target.text('Hide Code');
+                source.slideDown();
+            });
         }
     });
 
