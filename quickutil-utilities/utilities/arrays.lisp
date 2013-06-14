@@ -1,5 +1,6 @@
 (in-package #:quickutil)
 
+#+#:ignore ;; Alexandria has a version of this
 (defutil copy-array (:version (1 . 0)
                      :category (arrays orthogonality))
   #1="Make a copy of `array`."
