@@ -6,7 +6,8 @@
   (:import-from :multival-plist
                 :getf-all)
   (:import-from :alexandria
-                :when-let)
+                :when-let
+                :ensure-list)
   (:import-from :quickutil-server
                 :*db*)
   (:import-from :quickutil-server.db
@@ -60,23 +61,23 @@
 
 (setf (route *api* "/emit")
       #'(lambda (params)
-          (when *db*
-            (loop for name in (getf-all params :|utility|)
-                  do
-               (when-let (id (utility-name-to-id (string-upcase name)))
-                 (dbi:do-sql *db* "INSERT INTO utility_stats SET utility_id = ?, download_count = 1 ON DUPLICATE KEY UPDATE download_count = download_count + 1" id))))
+          (let ((utilities (ensure-list (getf-all params :|utility|))))
+            (when *db*
+              (loop for name in utilities
+                    do
+                 (when-let (id (utility-name-to-id (string-upcase name)))
+                   (dbi:do-sql *db* "INSERT INTO utility_stats SET utility_id = ?, download_count = 1 ON DUPLICATE KEY UPDATE download_count = download_count + 1" id))))
 
-          `(200
-            (:content-type "text/plain")
-            (,(handler-case
-                  (with-output-to-string (s)
-                    (pretty-print-utility-code
-                     (emit-utility-code
-                      :utilities (mapcar #'string-upcase
-                                         (getf-all params :|utility|)))
-                     s)
-                    s)
-                (type-error () nil))))))
+            `(200
+              (:content-type "text/plain")
+              (,(handler-case
+                    (with-output-to-string (s)
+                      (pretty-print-utility-code
+                       (emit-utility-code
+                        :utilities (mapcar #'string-upcase utilities))
+                       s)
+                      s)
+                  (type-error () nil)))))))
 
 (setf (route *api* "/reverse-lookup")
       #'(lambda (params)
