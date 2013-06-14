@@ -36,7 +36,7 @@
                                            (:file "binding")
                                            (:file "strings")
                                            (:file "conditions")
-                                           ;; (:file "hash-tables")
+                                           (:file "hash-tables")
                                            ;; (:file "io" :depends-on ("macros" "lists" "types"))
                                            ;; (:file "macros" :depends-on ("strings" "symbols"))
                                            ;; (:file "control-flow" :depends-on ("definitions" "macros"))
