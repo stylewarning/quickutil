@@ -121,7 +121,7 @@ input {
 .how-to-use h3 {
   margin-bottom: 10px;
 }
-.how-to-use pre {
+pre.example-code {
   color: #fff;
   background: #000;
   margin: 0;
@@ -211,7 +211,7 @@ input {
   margin-top: 30px;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
-.footer-next-link:before {
+.footer-next-link a:before {
   content: "right";
 }
 .filter-box {

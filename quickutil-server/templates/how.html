@@ -8,36 +8,45 @@
     {param body}
       <h2>How to use <span class="logo">Quickutil</span></h2>
 
+      <ul>
+        <li><a href="#quickstart">Quickstart</a></li>
+        <li><a href="#integrating">Integrating <span class="logo">Quickutil</span> With Your Project</a></li>
+        <li><a href="#offline">Offline Use of Utilities</a></li>
+        <li><a href="#autoloading">Autoloading Utilities</a></li>
+      </ul>
+
+      <a name="quickstart"></a>
       <h3>Quickstart</h3>
       
       <p><span class="logo">Quickutil</span> is very easy to use, and accommodates the different kinds of ways one would want to use utilities.</p>
       
       <p>The simplest way to get started is to load the <code>quickutil</code> package via Quicklisp, like so.</p>
       
-      <pre>
+      <pre class="example-code">
         <code>(ql:quickload :quickutil)</code>
       </pre>
       
       <p>After it has loaded, you can now load and use utilities from the <a href="/list" data-pjax="#main">utilities listing</a> with <code>qtl:quickload</code>.</p>
       
-      <pre>
+      <pre class="example-code">
         <code>(qtl:quickload :riffle :iota)</code>
       </pre>
       
       <p>Now they can be used.</p>
       
-      <pre>
+      <pre class="example-code">
         <code>> (qtl:riffle (qtl:iota 4) 'and-a)</code><br/>
         <code>(0 AND-A 1 AND-A 2 AND-A 3)</code>
       </pre>
       
       <p>Note that there is not necessarily a one-to-one correspondence between utilities and usable symbols (functions, macros, etc.). For example, the utility <code>imaginary-i</code> makes both of the symbols <code>imaginary-i</code> and <code>ii</code> available for use. You can check which symbols a utility provides by looking at the <em>provides</em> heading with each utility in the utilities listing. Despite this, most utilities and provided symbols are the same.</p>
       
+      <a name="integrating"></a>
       <h3>Integrating <span class="logo">Quickutil</span> With Your Project</h3>
       
       <p>Integrating <span class="logo">Quickutil</span> is done simply by making your ASDF system depend on <code>quickutil</code>, and then adding a <code>utilities.lisp</code> file which contains the <code>qtl:quickload</code> form, along with any other project-specific utilities. For example:</p>
       
-      <pre>
+      <pre class="example-code">
         <code>(qtl:quickload :multinomial-coefficient</code><br/>
         <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:ensure-list</code><br/>
         <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:cartesian-product)</code><br/><br/>
@@ -45,16 +54,17 @@
         <code>&nbsp;&nbsp;(/ x 2))</code>
       </pre>
       
+      <a name="offline"></a>
       <h3>Offline Use of Utilities</h3>
       <p>Sometimes an Internet connection is not always available when compiling or loading a program, so it is necessary to have a static file with the utilities. This is done by using <code>qtl:save-utils-as</code>, which will download the utilities to a file, which can be compiled or loaded. For example:</p>
       
-      <pre>
+      <pre class="example-code">
         <code>&gt; (qtl:save-utils-as "~/utils.lisp" :range :weave)</code>
       </pre>
       
       <p>And then later, we can do the following:</p>
       
-      <pre>
+      <pre class="example-code">
         <code>&gt; (load "~/utils.lisp")</code><br/>
         <code>&gt; (qtl:weave '(a b c) (qtl:range 1 4))</code><br/>
         <code>(A 1 B 2 C 3)</code>
@@ -62,10 +72,11 @@
       
       <p>There are no network dependencies by loading <code>utils.lisp</code> here, and it can be added to any project, even those without <span class="logo">Quickutil</span>. The utilities themselves downloaded by this method are in the public domain, so there are no restrictions on the way they can be used.</p>
       
+      <a name="autoloading"></a>
       <h3>Autoloading Utilities</h3>
       <p>Especially for scripts and REPL interactions, it is nice to be able to use utilities without previously loading them. <span class="logo">Quickutil</span> provides <em>autoload syntax</em>, <code>#?</code>, which autoloads the symbol right after it. The syntax is disabled by default, and can be enabled with <code>qtl:enable-autoload-syntax</code>. For example:</p>
 
-      <pre>
+      <pre class="example-code">
         <code>&gt; (qtl:enable-autoload-syntax)</code><br/>
         <code>&gt; (#?implode (#?shuffle (#?explode "hello")))</code><br/>
         <code>"lolhe"</code>
