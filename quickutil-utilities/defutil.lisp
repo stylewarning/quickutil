@@ -304,6 +304,16 @@ them in proper sorted order, leaving just cycles."
         sorted
         (append sorted (list name)))))
 
+(defun compute-combined-load-order (names &optional (registry *utility-registry*))
+  "Compute the load order for the list of utility names NAMES,
+optimizing redundancy out."
+  (loop :for name :in names
+        :append (compute-load-order name registry) :into order
+        :finally (return
+                   (let ((coalesced nil))
+                     (dolist (sym order (nreverse coalesced))
+                       (pushnew sym coalesced :test #'eql))))))
+
 (defun compute-total-load-order (&optional (registry *utility-registry*))
   "Compute the order in which the utilities must be loaded."
   (sort-dependencies (generate-util-dependency-table :registry registry)))
@@ -339,12 +349,15 @@ to
       (t (reduce #'append-progn (cdr code))))))
 
 ;;; XXX: Do we want a WITH-COMPILATION-UNIT?
-(defun emit-utility-code (&key utility
+(defun emit-utility-code (&key utilities
                                (registry *utility-registry*))
-  "Emit all of the source code for the utility UTILITY in order to use
-it. If UTILITY is NIL, then emit all utility source code."
+  "Emit all of the source code for the utility (keyword) or
+utilities (keyword list) UTILITIES in order to use it. If UTILITY is
+NIL, then emit all utility source code."
   (let ((load-order (mapcar #'lookup-util
-                            (compute-load-order utility registry))))
+                            (compute-combined-load-order
+                             (ensure-keyword-list utilities)
+                             registry))))
     (flet ((compute-provided-symbols ()
              (mapcar #'symbol-name
                      (mapcan #'(lambda (x)
