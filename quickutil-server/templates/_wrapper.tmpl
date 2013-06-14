@@ -1,6 +1,12 @@
 {namespace quickutil-server.view}
 
 {template wrapper}
+{if $isPjax}
+  <title>{$title}</title>
+  <div id="main">
+    {$body | noAutoescape}
+  </div>
+{else}
 <!DOCTYPE html>
 <html>
 <head>
@@ -66,4 +72,5 @@
 </footer>
 </body>
 </html>
+{/if}
 {/template}

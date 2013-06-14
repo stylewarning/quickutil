@@ -62,9 +62,9 @@
 
 (setf (route *web* "/")
       #'(lambda (params)
-          (declare (ignore params))
           (render-index
-           (list :categories *categories*))))
+           (list :categories *categories*
+                 :is-pjax (getf params :|_pjax|)))))
 
 (setf (route *web* "/list/?:category?")
       #'(lambda (params)
@@ -72,6 +72,7 @@
                 (category (getf params :category)))
             (render-list
              (list
+              :is-pjax (getf params :|_pjax|)
               :categories *categories*
               :category category
               :q (getf params :|q|)
@@ -86,23 +87,23 @@
 
 (setf (route *web* "/why")
       #'(lambda (params)
-          (declare (ignore params))
           (render-why
-           (list :categories *categories*))))
+           (list :categories *categories*
+                 :is-pjax (getf params :|_pjax|)))))
 
 (setf (route *web* "/how")
       #'(lambda (params)
-          (declare (ignore params))
           (render-how
-           (list :categories *categories*))))
+           (list :categories *categories*
+                 :is-pjax (getf params :|_pjax|)))))
 
 (setf (route *web* "/favorites")
       #'(lambda (params)
-          (declare (ignore params))
           (let ((*print-case* :downcase)
                 (favorites (gethash :favorites *session*)))
             (render-favorites
              (list
+              :is-pjax (getf params :|_pjax|)
               :categories *categories*
               :favorites (utility-plists
                           #'(lambda (name utility)
