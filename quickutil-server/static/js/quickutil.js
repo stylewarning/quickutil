@@ -119,6 +119,10 @@ Quickutil.init.done(function() {
 
     $(document).on('click', 'a[href^=#]', function(e) {
         var href = $(this).attr("href");
+        if (href === '#') {
+            // do nothing
+            return;
+        }
         if (window.history && window.history.pushState) {
             window.history.pushState(null, '', $(this).attr("href"));
             e.preventDefault();
