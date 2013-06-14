@@ -35,7 +35,7 @@
                               :components ((:file "definitions")
                                            (:file "binding")
                                            (:file "strings")
-                                           ;; (:file "conditions")
+                                           (:file "conditions")
                                            ;; (:file "hash-tables")
                                            ;; (:file "io" :depends-on ("macros" "lists" "types"))
                                            ;; (:file "macros" :depends-on ("strings" "symbols"))
