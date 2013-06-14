@@ -16,7 +16,8 @@
                 :render-index
                 :render-list
                 :render-favorites
-                :render-benefits)
+                :render-benefits
+                :render-how)
   (:import-from :quickutil-server.app
                 :*web*)
   (:import-from :clack.middleware.csrf
@@ -87,6 +88,12 @@
       #'(lambda (params)
           (declare (ignore params))
           (render-benefits
+           (list :categories *categories*))))
+
+(setf (route *web* "/how")
+      #'(lambda (params)
+          (declare (ignore params))
+          (render-how
            (list :categories *categories*))))
 
 (setf (route *web* "/favorites")
