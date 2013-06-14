@@ -60,7 +60,7 @@
         <code>(A 1 B 2 C 3)</code>
       </pre>
       
-      <p>There are no network dependencies by loading <code>utils.lisp</code> here, and it can be added to any project, even those without <span class="logo">Quickutil</span>.</p>
+      <p>There are no network dependencies by loading <code>utils.lisp</code> here, and it can be added to any project, even those without <span class="logo">Quickutil</span>. The utilities themselves downloaded by this method are in the public domain, so there are no restrictions on the way they can be used.</p>
       
       <h3>Autoloading Utilities</h3>
       <p>Especially for scripts and REPL interactions, it is nice to be able to use utilities without previously loading them. <span class="logo">Quickutil</span> provides <em>autoload syntax</em>, <code>#?</code>, which autoloads the symbol right after it. The syntax is disabled by default, and can be enabled with <code>qtl:enable-autoload-syntax</code>. For example:</p>
