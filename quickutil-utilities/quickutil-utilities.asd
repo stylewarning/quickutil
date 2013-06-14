@@ -34,7 +34,7 @@
                              (:module alexandria
                               :components ((:file "definitions")
                                            (:file "binding")
-                                           ;; (:file "strings")
+                                           (:file "strings")
                                            ;; (:file "conditions")
                                            ;; (:file "hash-tables")
                                            ;; (:file "io" :depends-on ("macros" "lists" "types"))
