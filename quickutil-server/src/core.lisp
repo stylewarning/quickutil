@@ -19,6 +19,12 @@
                 :fetch)
   (:import-from :quickutil-server.app
                 :*app*)
+  (:import-from :quickutil-server.constants
+                :*config*
+                :*db*
+                :load-config)
+  (:import-from :quickutil-server.db
+                :utility-name-to-id)
   (:import-from :quickutil-utilities
                 :*utility-registry*
                 :util.categories
@@ -27,7 +33,6 @@
                 :scan
                 :regex-replace)
   (:import-from :fad
-                :file-exists-p
                 :list-directory))
 (in-package :quickutil-server)
 
@@ -60,29 +65,6 @@
                                  (remove-duplicates categories :test #'string-equal))
                          #'string<))))
 
-@export
-(defparameter *config* nil)
-
-@export
-(defparameter *db* nil)
-
-(defun slurp-file (path)
-  "Read a specified file and return the content as a sequence."
-  (with-open-file (stream path :direction :input)
-    (let ((seq (make-array (file-length stream) :element-type 'character :fill-pointer t)))
-      (setf (fill-pointer seq) (read-sequence seq stream))
-      seq)))
-
-(defun load-config ()
-  (let ((config-file
-         (merge-pathnames "src/config.lisp"
-                          (asdf:component-pathname (asdf:find-system :quickutil-server)))))
-    (when (file-exists-p config-file)
-      (setf *config*
-            (eval
-             (read-from-string
-              (slurp-file config-file)))))))
-
 (defun build (app)
   (builder
    (<clack-middleware-static>
@@ -110,8 +92,24 @@
                      (cdr (util.version utility))))
             (result (dbi:execute query (string name) version))
             (record (dbi:fetch result)))
+
        (unless record
-         (dbi:do-sql *db* "INSERT INTO utility (name, version) VALUES (?, ?)" (string name) version)))))
+         (dbi:execute
+          (dbi:prepare *db*
+           "INSERT INTO utility (name, version) VALUES (?, ?)") (string name) version))
+
+       ;; XXX: just for cleaning up
+       (dbi:fetch result)))
+
+  (dbi:execute (dbi:prepare *db* "DELETE FROM utility_categories"))
+
+  (loop for name being the hash-keys in *utility-registry* using (hash-value utility)
+        for id = (utility-name-to-id name)
+        do
+     (when id
+       (let ((query (dbi:prepare *db* "INSERT INTO utility_categories SET utility_id = ?, category_name = ?")))
+         (loop for cat in (util.categories utility)
+               do (dbi:execute query id (string cat)))))))
 
 @export
 (defun start (&rest args &key (debug t) (port 8080) &allow-other-keys)

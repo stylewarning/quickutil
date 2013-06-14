@@ -22,7 +22,9 @@
   :components ((:module "src"
                 :components
                 ((:file "app")
-                 (:file "core" :depends-on ("app"))
+                 (:file "core" :depends-on ("app" "db" "constants"))
+                 (:file "constants")
+                 (:file "db" :depends-on ("constants"))
                  (:module "controller"
                   :depends-on ("app" "core" "error")
                   :components

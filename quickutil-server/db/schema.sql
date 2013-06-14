@@ -12,3 +12,11 @@ CREATE TABLE utility_stats (
     download_count INT UNSIGNED NOT NULL DEFAULT 1,
     PRIMARY KEY (utility_id)
 ) ENGINE=InnoDB;
+
+CREATE TABLE utility_categories (
+    utility_id BIGINT UNSIGNED NOT NULL,
+    category_name VARCHAR(256) NOT NULL,
+    UNIQUE KEY (utility_id, category_name),
+    KEY (utility_id),
+    KEY (category_name)
+) ENGINE=InnoDB DEFAULT CHARSET=binary;

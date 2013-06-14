@@ -1,18 +1,16 @@
 (in-package :cl-user)
 (defpackage quickutil-server.controller
   (:use :cl
-        :ningle)
-  (:import-from :dbi
-                :do-sql
-                :prepare
-                :execute
-                :fetch)
+        :ningle
+        :dbi)
   (:import-from :multival-plist
                 :getf-all)
   (:import-from :alexandria
                 :when-let)
   (:import-from :quickutil-server
                 :*db*)
+  (:import-from :quickutil-server.db
+                :utility-name-to-id)
   (:import-from :quickutil-utilities
                 :*utility-registry*
                 :emit-utility-code
@@ -59,15 +57,6 @@
                     collect (string key))
              s)
             s)))
-
-(defun utility-name-to-id (name)
-  (let* ((query (dbi:prepare *db* "SELECT id FROM utility WHERE name = ? LIMIT 1"))
-         (result (dbi:execute query name)))
-    (prog1
-      (getf (dbi:fetch result) :|id|)
-
-      ;; XXX: just for cleaning up
-      (dbi:fetch result))))
 
 (setf (route *api* "/emit")
       #'(lambda (params)
