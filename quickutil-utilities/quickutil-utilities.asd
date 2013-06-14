@@ -31,6 +31,7 @@
                              (:file "random")
                              (:file "generic")
                              (:file "conses")
+                             (:file "synonyms")
                              (:module split-sequence
                               :serial t
                               :components ((:file "split-sequence")))

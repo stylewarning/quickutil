@@ -1,7 +1,7 @@
 (in-package #:quickutil)
 
 (defutil positivep (:version (1 . 0)
-                    :category math)
+                    :category (math synonyms))
   #1="Check if `n` is positive."
   (defun positivep (n)
     #1#
@@ -9,7 +9,7 @@
     (plusp n)))
 
 (defutil negativep (:version (1 . 0)
-                    :category math)
+                    :category (math synonyms))
   #1="Check if `n` is negative."
   (defun negativep (n)
     #1#
@@ -17,7 +17,7 @@
     (minusp n)))
 
 (defutil non-negative-p (:version (1 . 0)
-                         :category math)
+                         :category (math synonyms))
   #1="Check if `n` is non-negative."
   (defun non-negative-p (n)
     #1#
@@ -25,7 +25,7 @@
     (>= n 0)))
 
 (defutil non-positive-p (:version (1 . 0)
-                         :category math)
+                         :category (math synonyms))
   #1="Check if `n` is non-positive."
   (defun non-positive-p (n)
     #1#
@@ -33,7 +33,7 @@
     (<= n 0)))
 
 (defutil non-zero-p (:version (1 . 0)
-                     :category math)
+                     :category (math synonyms))
   #1="Check if `n` is non-zero."
   (defun non-zero-p (n)
     #1#
