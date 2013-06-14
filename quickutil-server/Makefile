@@ -9,7 +9,7 @@ all: start
 start:
 	$(call $(LISP), \
 		(ql:quickload :quickutil-server) (ql:quickload :swank), \
-		(quickutil-server:start :debug nil :port $(SERVER_PORT)) \
+		(quickutil-server:start :debug nil :port $(SERVER_PORT) :server :fcgi) \
 		(swank:create-server :port $(SWANK_PORT) :style :spawn :dont-close t))
 
 #
