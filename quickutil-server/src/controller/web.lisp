@@ -16,7 +16,7 @@
                 :render-index
                 :render-list
                 :render-favorites
-                :render-benefits
+                :render-why
                 :render-how)
   (:import-from :quickutil-server.app
                 :*web*)
@@ -84,10 +84,10 @@
                                :test #'string-equal))))
               :csrf-html-tag (clack.middleware.csrf:csrf-html-tag *session*))))))
 
-(setf (route *web* "/benefits")
+(setf (route *web* "/why")
       #'(lambda (params)
           (declare (ignore params))
-          (render-benefits
+          (render-why
            (list :categories *categories*))))
 
 (setf (route *web* "/how")
