@@ -9,6 +9,14 @@ def update():
         run('git pull')
 
 
+def start():
+    sudo('supervisorctl start %s' % env.project_name, shell=False)
+
+
+def stop():
+    sudo('supervisorctl stop %s' % env.project_name, shell=False)
+
+
 def restart():
     sudo('supervisorctl restart %s' % env.project_name, shell=False)
 

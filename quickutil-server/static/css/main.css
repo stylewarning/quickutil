@@ -98,7 +98,11 @@ header nav ul.menu li a.current {
   background: -webkit-gradient(linear, 0 0, 0 100%, from(rgba(0, 0, 0, 0.8)), color-stop(0.1, rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0))), -webkit-gradient(linear, 0 0, 0 100%, from(rgba(0, 0, 0, 0.2)), color-stop(0.3, rgba(0, 0, 0, 0)), color-stop(0.7, rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0.2))), -webkit-gradient(linear, 0 0, 100% 0, from(rgba(0, 0, 0, 0.2)), color-stop(0.2, rgba(0, 0, 0, 0)), color-stop(0.8, rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0.2))), -webkit-gradient(linear, 0 0, 0 100%, from(#2f2f2f), color-stop(0.97, #4b4b4b), color-stop(0.97, rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0.45)));
 }
 h3 {
+  margin-top: 30px;
   font-weight: bold;
+}
+.toc {
+  margin-top: 30px;
 }
 #main {
   width: 560px;
