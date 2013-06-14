@@ -2,6 +2,8 @@
 (defpackage quickutil-server.controller.web
   (:use :cl
         :ningle)
+  (:import-from :clack.response
+                :headers)
   (:import-from :quickutil-server
                 :*categories*)
   (:import-from :quickutil-utilities
