@@ -49,7 +49,8 @@
 (eval-when (:compile-toplevel :load-toplevel :execute)
   @export
   (defun recompile-templates (&optional (path *template-path*))
-    (closure-template:compile-cl-templates (fad:list-directory path))))
+    (closure-template:compile-cl-templates (fad:list-directory path))
+    t))
 
 ;; (Re-)compile the templates.
 (recompile-templates)
