@@ -266,6 +266,8 @@ them in proper sorted order, leaving just cycles."
               cycles)
         (nreverse (append sorted cycles))))))
 
+;;; XXX FIXME: Be more clear about mutation. It has been causing many
+;;; a bug.
 (defun sort-dependencies (dag)
   "Topologically sort the dependencies, with error handling."
   (handler-case (topological-sort dag)
@@ -298,8 +300,9 @@ them in proper sorted order, leaving just cycles."
 (defun compute-load-order (name &optional (registry *utility-registry*))
   "Compute the load order for the utility named NAME."
   (let ((sorted (sort-dependencies
-                 (generate-util-dependency-table :utility name
-                                                 :registry registry))))
+                 (copy-tree
+                  (generate-util-dependency-table :utility name
+                                                  :registry registry)))))
     (if (member name sorted)
         sorted
         (append sorted (list name)))))
