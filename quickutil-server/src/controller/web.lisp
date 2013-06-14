@@ -117,6 +117,7 @@
 (setf (route *web* "*")
       #'(lambda (params)
           (declare (ignore params))
+          (setf (headers *response* :content-type) "text/html")
           (or (next-route)
               (asdf:system-relative-pathname
                :quickutil-server
