@@ -43,6 +43,7 @@
                                            (:file "conditions")
                                            (:file "hash-tables")
                                            (:file "symbols")
+                                           (:file "macros")
                                            ;; (:file "io" :depends-on ("macros" "lists" "types"))
                                            ;; (:file "macros" :depends-on ("strings" "symbols"))
                                            ;; (:file "control-flow" :depends-on ("definitions" "macros"))
