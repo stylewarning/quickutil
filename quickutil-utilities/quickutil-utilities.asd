@@ -33,7 +33,7 @@
                              (:file "conses")
                              (:module alexandria
                               :components ((:file "definitions")
-                                           ;; (:file "binding")
+                                           (:file "binding")
                                            ;; (:file "strings")
                                            ;; (:file "conditions")
                                            ;; (:file "hash-tables")

@@ -1,7 +1,7 @@
 (in-package #:quickutil)
 
 (defutil define-constant (:version (1 . 0)
-                          :category (:alexandria :definitions))
+                          :category (alexandria definitions))
   #1="Ensures that the global variable named by NAME is a constant with a value
 that is equal under TEST to the result of evaluating INITIAL-VALUE. TEST is a
 /function designator/ that defaults to EQL. If DOCUMENTATION is given, it

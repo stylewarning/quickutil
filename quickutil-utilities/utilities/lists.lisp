@@ -1,7 +1,7 @@
 (in-package #:quickutil)
 
 (defutil ensure-list (:version (1 . 0)
-                  :category lists)
+                      :category lists)
   #1="If `x` is a list, return it. Otherwise, wrap it."
   (defun ensure-list (x)
     #1#
