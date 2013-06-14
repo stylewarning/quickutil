@@ -29,18 +29,24 @@ file. Return the pathname of the temporary file."
   (load (compile-file (download-url url))))
 
 (defvar *quickutil-query-suffix*
-  "/api/emit?utility="
+  "/api/emit"
   "The API string used to query a utility.")
 
-(defun quickutil-query-url (util-name)
-  "Construct the URL from which to query for the utility named
-UTIL-NAME."
-  (concatenate 'string
-               *quickutil-host*
-               *quickutil-query-suffix*
-               (string-downcase (if (symbolp util-name)
-                                    (symbol-name util-name)
-                                    util-name))))
+(defvar *quickutil-query-argument*
+  "?utility=")
+
+(defun quickutil-query-url (util-names)
+  "Construct the URL from which to query for the utilities named
+UTIL-NAMES."
+  (flet ((format-argument (util-name)
+           (write-string *quickutil-query-argument*)
+           (write-string (string-downcase (if (symbolp util-name)
+                                              (symbol-name util-name)
+                                              util-name)))))
+    (with-output-to-string (*standard-output*)
+      (write-string *quickutil-host*)
+      (write-string *quickutil-query-suffix*)
+      (mapc #'format-argument util-names))))
 
 ;;; XXX FIXME: Right now this naively loads the utilities, causing
 ;;; many repeat compilations.
@@ -49,5 +55,4 @@ UTIL-NAME."
 ;;; to compile NIL.
 (defun quickload (&rest util-names)
   "Load the utilities UTIL-NAMES and their dependencies."
-  (dolist (util-name util-names)
-    (compile-and-load-from-url (quickutil-query-url util-name))))
+  (compile-and-load-from-url (quickutil-query-url util-names)))
