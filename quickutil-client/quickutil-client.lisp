@@ -52,11 +52,27 @@ UTIL-NAMES."
       (format-argument (first util-names) nil)
       (mapc #'format-argument (rest util-names)))))
 
-;;; XXX FIXME: Right now this naively loads the utilities, causing
-;;; many repeat compilations.
-;;;
 ;;; XXX FIXME: Error when utility is not found instead of just trying
 ;;; to compile NIL.
 (defun quickload (&rest util-names)
   "Load the utilities UTIL-NAMES and their dependencies."
   (compile-and-load-from-url (quickutil-query-url util-names)))
+
+(defun save-utils-as (filename &rest util-names)
+  "Download the utilities listed in UTIL-NAMES to the file named
+  FILENAME."
+  (with-open-file (file filename :direction :output
+                                 :if-exists :overwrite
+                                 :if-does-not-exist :create)
+    (let ((file-contents (download-url-string (quickutil-query-url util-names))))
+      (write-string "(DEFPACKAGE QUICKUTIL (:USE #:CL) (:NICKNAMES #:QTL))" file)
+      
+      (terpri file)
+      
+      (write-string file-contents file)
+      
+      (terpri file)
+      
+      (format file ";;;; END OF ~A~%" filename)
+      
+      (pathname filename))))

@@ -5,7 +5,8 @@
   (:use #:cl)
   (:export #:set-quickutil-host
            #:enable-autoload-syntax
-           #:quickload))
+           #:quickload
+           #:save-utils-as))
 
 (unless (find-package "QUICKUTIL")
   (defpackage #:quickutil
@@ -14,7 +15,10 @@
     (:import-from #:quickutil-client
                   #:set-quickutil-host
                   #:enable-autoload-syntax
-                  #:quickload)
+                  #:quickload
+                  #:save-utils-as)
     (:export #:set-quickutil-host
-             #:quickload)))
+             #:enable-autoload-syntax
+             #:quickload
+             #:save-utils-as)))
 
