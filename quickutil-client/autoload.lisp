@@ -26,6 +26,11 @@
                                                  (make-symbol symbol))))))
     (nth-value 0 (and who (intern who '#:keyword)))))
 
+(defun quickload-symbols (&rest symbols)
+  "Load the utilities which provide the symbols SYMBOLS."
+  (apply #'quickload
+         (remove nil (remove-duplicates (mapcar #'who-provides symbols)))))
+
 (defun |#?-reader| (stream subchar n)
   (declare (ignore subchar n))
   (let ((symbol (read stream t nil nil)))

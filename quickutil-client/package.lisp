@@ -7,7 +7,8 @@
            #:enable-autoload-syntax
            #:quickload
            #:save-utils-as
-           #:who-provides))
+           #:who-provides
+           #:quickload-symbols))
 
 (unless (find-package "QUICKUTIL")
   (defpackage #:quickutil
@@ -17,10 +18,13 @@
                   #:set-quickutil-host
                   #:enable-autoload-syntax
                   #:quickload
-                  #:save-utils-as)
+                  #:save-utils-as
+                  #:who-provides
+                  #:quickload-symbols)
     (:export #:set-quickutil-host
              #:enable-autoload-syntax
              #:quickload
              #:save-utils-as
-             #:who-provides)))
+             #:who-provides
+             #:quickload-symbols)))
 

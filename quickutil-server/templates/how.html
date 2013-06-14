@@ -14,6 +14,7 @@
         <li><a href="#integrating">Integrating <span class="logo">Quickutil</span> With Your Project</a></li>
         <li><a href="#offline">Offline Use of Utilities</a></li>
         <li><a href="#autoloading">Autoloading Utilities</a></li>
+        <li><a href="#provides">Finding the Right Utility to Load</a></li>
       </ul>
 
       <a id="quickstart"></a>
@@ -86,10 +87,30 @@
       <p>Autoloading only uses the network when it needs to; already loaded symbols are recycled.</p>
       
       <p>You can permanently enable autoload syntax by loading <span class="logo">Quickutil</span> and putting the <code>qtl:enable-autoload-syntax</code> call in your Lisp's initialization file.</p>
+      
+      <a id="provides"></a>
+      <h3>Finding the Right Utility to Load</h3>
+      <p>If you know which function, macro, etc. that you want, but you neither know nor remember which utility it originates from, you can use <code>qtl:who-provides</code>.</p>
 
+      <pre class="example-code">
+        <code>&gt; (qtl:who-provides :ee)</code><br/>
+        <code>:EXPONENTIAL-E</code><br/>
+        <code>&gt; (qtl:who-provides :split-sequence-if-not)</code><br/>
+        <code>:SPLIT-SEQUENCE</code>
+      </pre>
+
+      <p>If you would like to directly quickload based off of provided symbols instead of utility names, you can use <code>qtl:quickload-symbols</code>.</p>
+
+      <pre class="example-code">
+        <code>&gt; (qtl:quickload-symbols :ee :riffle)</code><br/>
+        <code>&gt; (qtl:riffle '(1 2 3) qtl:ee)</code><br/>
+        <code>(1 2.718281828459045d0 2 2.718281828459045d0 3)</code>
+      </pre>
+      
       <div class="footer-next-link">
         <a href="/list" class="lsf-icon" data-pjax="#main">Discover utilities</a>
       </div>
+      
     {/param}
   {/call}
 {/template}
