@@ -4,7 +4,7 @@
 (in-package #:quickutil-client)
 
 (defvar *quickutil-host*
-  "http://www.quickutil.org"
+  "http://quickutil.org"
   "The host from which Quickutil downloads.")
 
 (defun set-quickutil-host (hostname)
