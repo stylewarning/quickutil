@@ -52,12 +52,11 @@
                             (markdown (util.documentation utility)
                                       :stream s))
           :dependencies ,(util.dependencies utility)
-          :code ,(mapcar
-                  #'(lambda (sexp)
-                      (with-output-to-string (s)
-                        (quickutil-utilities::pretty-print-utility-code sexp s)
-                        s))
-                  (cdr (util.code utility))))))
+          :code ,(with-output-to-string (s)
+                    (loop for sexp in (cdr (util.code utility))
+                          do
+                          (quickutil-utilities::pretty-print-utility-code sexp s)
+                          (format s "~%"))))))
 
 ;;
 ;; for Web interface
