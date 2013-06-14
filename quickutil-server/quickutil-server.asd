@@ -17,7 +17,8 @@
                :closure-template
                :cl-fad
                :cl-markdown
-               :dbi)
+               :dbi
+               :multival-plist)
   :components ((:module "src"
                 :components
                 ((:file "app")
