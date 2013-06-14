@@ -326,6 +326,3 @@ Example:
   (defmacro destructuring-ecase (keyform &body clauses)
     #1#
     (expand-destructuring-case keyform clauses 'ecase)))
-
-
-
