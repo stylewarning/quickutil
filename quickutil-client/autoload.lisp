@@ -16,6 +16,16 @@
                (symbol-name symbol))
         str)))
 
+;;; XXX FIXME: This could use improved error handling.
+(defun who-provides (symbol)
+  "Which utility provides the symbol SYMBOL?"
+  (assert (or (symbolp symbol)
+              (stringp symbol)))
+  (let ((who (ignore-errors (autoload-lookup (if (symbolp symbol)
+                                                 symbol
+                                                 (make-symbol symbol))))))
+    (nth-value 0 (and who (intern who '#:keyword)))))
+
 (defun |#?-reader| (stream subchar n)
   (declare (ignore subchar n))
   (let ((symbol (read stream t nil nil)))
