@@ -31,7 +31,11 @@
                              (:file "random")
                              (:file "generic")
                              (:file "conses")
+                             (:module split-sequence
+                              :serial t
+                              :components ((:file "split-sequence")))
                              (:module alexandria
+                              :serial t
                               :components ((:file "definitions")
                                            (:file "binding")
                                            (:file "strings")
