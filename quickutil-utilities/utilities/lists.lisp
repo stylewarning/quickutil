@@ -123,6 +123,7 @@ provided, then apply it to each number."
          (setf (rest (last list)) list))))
 
 (defutil cycle (:version (1 . 0)
+                :depends-on ncycle
                 :category lists)
   #1="Make `list` into a circular list."
   (defun cycle (list)
