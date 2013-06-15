@@ -10,7 +10,7 @@
 
 (defutil boolean (:version (1 . 0)
                   :category (language misc))
-  #1="Convert X into a Boolean value."
+  #1="Convert `x` into a Boolean value."
   (defun boolean (x)
     #1#
     (and x t)))
