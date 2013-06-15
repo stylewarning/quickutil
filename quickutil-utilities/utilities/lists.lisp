@@ -257,6 +257,7 @@ SML function of the same name."
     (sequence-to-list string)))
 
 (defutil implode (:version (1 . 0)
+                  :depends-on list-to-vector
                   :category lists)
   #1="The classic `implode` function. Take a list of characters and return
   the corresponding string."
