@@ -11,6 +11,9 @@
         <span class="lsf filter-icon">search</span>
         <input type="text" class="filter" placeholder="Filter below utilities" value="{$q}" />
       </div>
+      <div class="side-link">
+        <a href="/submit" data-pjax="#main">Submit a new utility</a>
+      </div>
       <p class="filter-result-description">There are <strong class="count">{length($utilities)}</strong> utilities.</p>
       <dl>
         {foreach $utility in $utilities}
