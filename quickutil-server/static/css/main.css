@@ -198,6 +198,7 @@ pre.example-code {
 }
 .utility .source-code {
   display: none;
+  overflow-y: scroll;
   color: white;
 }
 .pun,
