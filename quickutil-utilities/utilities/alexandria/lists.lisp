@@ -1,6 +1,7 @@
 (in-package #:quickutil)
 
 (defutil safe-endp (:version (1 . 0)
+                    :hidden t
                     :category (alexandria lists helper))
   #1="Safely compute the end of a list."
   (declaim (inline safe-endp))

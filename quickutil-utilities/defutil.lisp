@@ -12,6 +12,7 @@
   (version '(1 . 0) :type util-version) ; (major . minor)
   dependencies
   categories
+  (hidden nil :type boolean)
   provides
   documentation
   code)
@@ -83,11 +84,13 @@ named UTIL-NAME."
 (defmacro defutil (name (&key version
                               depends-on
                               category
-                              provides)
+                              provides
+                              (hidden nil))
                    &body utility-code)
   "Define a new utility."
-  (check-type name symbol)
+  (check-type name    symbol)
   (check-type version util-version)
+  (check-type hidden  boolean)
   
   (let ((documentation nil)
         (provides (if provides
@@ -114,6 +117,7 @@ named UTIL-NAME."
              (make-util :version ',version
                         :dependencies ',(ensure-keyword-list depends-on)
                         :categories ',(ensure-keyword-list category)
+                        :hidden ,hidden
                         :provides ',provides
                         :documentation ,documentation
                         :code '(progn ,@utility-code)))
