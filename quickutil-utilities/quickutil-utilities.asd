@@ -18,6 +18,7 @@
                 :components ((:static-file "LICENSE")
                              (:file "arithmetic")
                              (:file "trigonometry")
+                             (:file "sequences")
                              (:file "lists")
                              (:file "combinators")
                              (:file "arrays")
