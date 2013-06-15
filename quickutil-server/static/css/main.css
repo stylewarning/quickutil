@@ -231,10 +231,15 @@ pre.example-code {
   background-image: linear-gradient(#8add6d, #60b044);
   border: 1px solid #5ca941;
   border-radius: 3px;
-  letter-spacing: 1px;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 13px;
   cursor: pointer;
+}
+.button:hover {
+  background-color: #569e3d;
+  background-image: -moz-linear-gradient(#79d858, #569e3d);
+  background-image: -webkit-linear-gradient(#79d858, #569e3d);
+  background-image: linear-gradient(#79d858, #569e3d);
+  border-color: #4a993e;
 }
 dl dt {
   font-weight: bold;
