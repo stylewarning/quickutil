@@ -9,19 +9,25 @@
     {param body}
       <h2>Submit a utility</h2>
 
-      <a class="button" href="https://github.com/tarballs-are-good/quickutil/issues/new?body=%3B%3B%20Write%20the%20code%20here.%0A%0AProvides:%0ARequires:%0AAuthor:%0ALicense:">Submit a new utility on GitHub</a>
+      <p><span class="logo">Quickutil</span> is intended to be a platform for not just distributing utilities, but also publishing utilities from members of the Common Lisp community.</p>
+      
+      <p>Currently, we are exploring different options for utility submission: web forms, Emacs commands, file uploads, etc. While we search for a satisfactory submission process, we have set up a GitHub issue tracker to which you can send useful utilities to be added, similar to the way new libraries and applications are added to Quicklisp.</p>
+      
+      <center><a class="button" href="https://github.com/tarballs-are-good/quickutil/issues/new?body=%3B%3B%20Write%20the%20code%20here.%0A%0AProvides:%0ARequires:%0AAuthor:%0ALicense:">Submit a new utility on GitHub</a></center>
 
-      <p>I&rsquo;d like to hear you the following things:</p>
+      <p>When submitting a utility, please provide the following pieces of information:</p>
 
       <dl>
-        <dt>Provides</dt>
-        <dd>What the utility provides.</dd>
-        <dt>Requires</dt>
-        <dd>What utilities are required.</dd>
         <dt>Author</dt>
         <dd>The original author of the code.</dd>
         <dt>License</dt>
-        <dd>The license of the code.</dd>
+        <dd>The license of the code. Please note that at the moment, we only accept code that is placed in the public domain.</dd>
+        <dt>Provides</dt>
+        <dd>What symbols the utility provides.</dd>
+        <dt>Requires</dt>
+        <dd>Which utilities are required for this utility.</dd>
+        <dt>Source Code</dt>
+        <dd>The utility source code. Except for relying on other utilities, it should be self-contained.</dd>
       </dl>
     {/param}
   {/call}
