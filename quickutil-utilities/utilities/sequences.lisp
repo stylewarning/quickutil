@@ -57,6 +57,7 @@
                       :collect (subseq sequence i (min len (+ chunk-size i))))))))
 
 (defutil n-grams (:version (1 . 0)
+                  :depends-on take
                   :category sequences)
   #1="Find all N-grams of the sequence SEQUENCE."
   (defun n-grams (n sequence)
