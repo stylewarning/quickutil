@@ -220,6 +220,25 @@ pre.example-code {
 .footer-next-link a:before {
   content: "right";
 }
+.button {
+  display: inline-block;
+  padding: 7px 15px;
+  color: #fff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-color: #60b044;
+  background-image: -moz-linear-gradient(#8add6d, #60b044);
+  background-image: -webkit-linear-gradient(#8add6d, #60b044);
+  background-image: linear-gradient(#8add6d, #60b044);
+  border: 1px solid #5ca941;
+  border-radius: 3px;
+  letter-spacing: 1px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+}
+dl dt {
+  font-weight: bold;
+}
 .filter-box {
   position: relative;
 }
@@ -279,6 +298,7 @@ input.filter {
 .informations dt {
   float: left;
   clear: both;
+  font-weight: normal;
 }
 .informations dt:after {
   content: ":";

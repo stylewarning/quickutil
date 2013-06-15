@@ -19,7 +19,8 @@
                 :render-list
                 :render-favorites
                 :render-why
-                :render-how)
+                :render-how
+                :render-submit)
   (:import-from :quickutil-server.app
                 :*web*)
   (:import-from :clack.middleware.csrf
@@ -101,6 +102,13 @@
           (render-how
            (list :categories *categories*
                  :is-pjax (getf params :|_pjax|)))))
+
+(setf (route *web* "/submit")
+      #'(lambda (params)
+          (render-submit
+           (list :categories *categories*
+                 :is-pjax (getf params :|_pjax|)
+                 :csrf-html-tag (clack.middleware.csrf:csrf-html-tag *session*)))))
 
 (setf (route *web* "/favorites")
       #'(lambda (params)

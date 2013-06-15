@@ -1,0 +1,28 @@
+{namespace quickutil-server.view}
+
+{template renderSubmit}
+  {call wrapper}
+    {param title: 'Submit a utility | Quickutil' /}
+    {param current: 'submit' /}
+    {param categories: $categories /}
+    {param isPjax: $isPjax /}
+    {param body}
+      <h2>Submit a utility</h2>
+
+      <a class="button" href="https://github.com/tarballs-are-good/quickutil/issues/new?body=%3B%3B%20Write%20the%20code%20here.%0A%0AProvides:%0ARequires:%0AAuthor:%0ALicense:">Submit a new utility on GitHub</a>
+
+      <p>I&rsquo;d like to hear you the following things:</p>
+
+      <dl>
+        <dt>Provides</dt>
+        <dd>What the utility provides.</dd>
+        <dt>Requires</dt>
+        <dd>What utilities are required.</dd>
+        <dt>Author</dt>
+        <dd>The original author of the code.</dd>
+        <dt>License</dt>
+        <dd>The license of the code.</dd>
+      </dl>
+    {/param}
+  {/call}
+{/template}
