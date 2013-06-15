@@ -366,9 +366,9 @@ NIL, then emit all utility source code."
         `(progn
            (in-package #:quickutil)
            (,(intern #.(string :utility-not-found-error)
-                     ,(if (find-package '#:quickutil-server)
-                          '#:quickutil-client
-                          '#:quickutil))
+                     (if (find-package '#:quickutil-server)
+                         '#:quickutil-client
+                         '#:quickutil))
             ',non-existent))
         (let ((load-order (mapcar #'lookup-util (compute-combined-load-order
                                                  (ensure-keyword-list utilities)
