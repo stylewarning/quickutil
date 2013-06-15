@@ -14,11 +14,13 @@ def start():
 
 
 def stop():
+    run('make -f /srv/www/quickutil/quickutil-server/Makefile SWANK_PORT=4095 stop')
     sudo('supervisorctl stop %s' % env.project_name, shell=False)
 
 
 def restart():
-    sudo('supervisorctl restart %s' % env.project_name, shell=False)
+    stop()
+    start()
 
 
 def deploy():
