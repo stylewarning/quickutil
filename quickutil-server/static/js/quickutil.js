@@ -57,6 +57,9 @@ Quickutil.init.done(function() {
                 $('.menu li a[href="' + location.pathname + '"]').addClass('current');
             }
         })
+        .on('pjax:end', function() {
+            $('#main').animate({ opacity: 1 }, 'fast');
+        })
         .on('pjax:success', function() {
             $('#main').animate({ opacity: 1 }, 'fast');
             if (location.pathname == '/list') {
