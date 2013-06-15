@@ -14,7 +14,7 @@ def start():
 
 
 def stop():
-    run('make -f /srv/www/quickutil/quickutil-server/Makefile SWANK_PORT=4095 stop')
+    run('make -f /srv/www/quickutil/quickutil-server/Makefile stop SWANK_PORT=4095')
     sudo('supervisorctl stop %s' % env.project_name, shell=False)
 
 

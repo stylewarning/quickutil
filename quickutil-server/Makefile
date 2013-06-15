@@ -17,7 +17,7 @@ stop:
 		(ql:quickload :quickutil-server) (ql:quickload :swank-client), \
 		(swank-client:with-slime-connection (conn "localhost" $(SWANK_PORT)) \
 			(swank-client:slime-eval (quote (handler-bind ((error (function continue))) (quickutil-server:stop))) conn)) \
-		($(LISP)-quit))
+		$($(LISP)-quit))
 
 #
 # Lisp Implementation
@@ -30,7 +30,7 @@ define sbcl
 endef
 
 define sbcl-quit
-	sb-ext:quit
+	(sb-ext:quit)
 endef
 
 define ccl
@@ -41,5 +41,5 @@ define ccl
 endef
 
 define ccl-quit
-	ccl:quit
+	(ccl:quit)
 endef
