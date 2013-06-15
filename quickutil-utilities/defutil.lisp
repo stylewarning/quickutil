@@ -41,6 +41,10 @@
   (check-type name symbol)
   (gethash name *utility-registry*))
 
+(defun util-exists-p (name)
+  "Does the utility named NAME exist in the registry?"
+  (not (null (lookup-util name))))
+
 (defun ensure-list (x)
   "Ensure that X is a list."
   (if (listp x) x (list x)))
@@ -357,28 +361,36 @@ to
   "Emit all of the source code for the utility (keyword) or
 utilities (keyword list) UTILITIES in order to use it. If UTILITY is
 NIL, then emit all utility source code."
-  (let ((load-order (mapcar #'lookup-util
-                            (compute-combined-load-order
-                             (ensure-keyword-list utilities)
-                             registry))))
-    (flet ((compute-provided-symbols ()
-             (mapcar #'symbol-name
-                     (mapcan #'(lambda (x)
-                                 (copy-list (util.provides x)))
-                             load-order))))
-      
-      (loop :for util :in load-order
-            :when util
-              :collect (util.code util) :into code
-            :finally (return
-                       (flatten-progn
-                        `(progn
-                           (in-package #:quickutil)
-                           ,@code
-                           (export ',(mapcar #'(lambda (name)
-                                                 (intern name '#:quickutil))
-                                             (compute-provided-symbols))
-                                   '#:quickutil))))))))
+  (let ((non-existent (remove-if #'util-exists-p (ensure-keyword-list utilities))))
+    (if non-existent
+        `(progn
+           (in-package #:quickutil)
+           (,(intern #.(string :utility-not-found-error)
+                     ,(if (find-package '#:quickutil-server)
+                          '#:quickutil-client
+                          '#:quickutil))
+            ',non-existent))
+        (let ((load-order (mapcar #'lookup-util (compute-combined-load-order
+                                                 (ensure-keyword-list utilities)
+                                                 registry))))
+          (flet ((compute-provided-symbols ()
+                   (mapcar #'symbol-name
+                           (mapcan #'(lambda (x)
+                                       (copy-list (util.provides x)))
+                                   load-order))))
+            
+            (loop :for util :in load-order
+                  :when util
+                    :collect (util.code util) :into code
+                  :finally (return
+                             (flatten-progn
+                              `(progn
+                                 (in-package #:quickutil)
+                                 ,@code
+                                 (export ',(mapcar #'(lambda (name)
+                                                       (intern name '#:quickutil))
+                                                   (compute-provided-symbols))
+                                         '#:quickutil))))))))))
 
 (defun pretty-print-utility-code (code &optional stream (prognify? nil))
   "Pretty print utility code CODE to stream STREAM. If PROGNIFY? is

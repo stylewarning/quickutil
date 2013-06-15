@@ -8,7 +8,8 @@
            #:utilize
            #:save-utils-as
            #:who-provides
-           #:utilize-symbols))
+           #:utilize-symbols
+           #:utility-not-found-error))
 
 (unless (find-package "QUICKUTIL")
   (defpackage #:quickutil
@@ -20,11 +21,13 @@
                   #:utilize
                   #:save-utils-as
                   #:who-provides
-                  #:utilize-symbols)
+                  #:utilize-symbols
+                  #:utility-not-found-error)
     (:export #:set-quickutil-host
              #:enable-autoload-syntax
              #:utilize
              #:save-utils-as
              #:who-provides
-             #:utilize-symbols)))
+             #:utilize-symbols
+             #:utility-not-found-error)))
 
