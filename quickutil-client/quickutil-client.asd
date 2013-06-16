@@ -11,4 +11,4 @@
                (:file "host")
                (:file "quickutil-client")
                (:file "autoload"))
-  :depends-on ("drakma" "temporary-file"))
+  :depends-on ("drakma" "cl-fad"))

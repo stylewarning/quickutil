@@ -13,7 +13,7 @@
 (defun download-url (url)
   "Download data from the URL URL and put it in a temporary
 file. Return the pathname of the temporary file."
-  (let* ((temp-stream (temporary-file:open-temporary))
+  (let* ((temp-stream (cl-fad:open-temporary))
          (temp (pathname temp-stream)))
     (unwind-protect (write-string (download-url-string url)
                                   temp-stream)
