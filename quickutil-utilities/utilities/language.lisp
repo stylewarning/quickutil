@@ -10,11 +10,11 @@
     (values))
   %%%)
 
-(defutil boolean (:version (1 . 0)
+(defutil ensure-boolean (:version (1 . 0)
                   :category (language misc))
   "Convert `x` into a Boolean value."
   #>%%%>
-  (defun boolean (x)
+  (defun ensure-boolean (x)
     %%DOC
     (and x t))
   %%%)
