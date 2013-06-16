@@ -53,7 +53,7 @@
                                            (:file "types")
                                            (:file "arrays")
                                            (:file "lists")
-                                           ;; (:file "io" :depends-on ("macros" "lists" "types"))
+                                           (:file "io")
                                            ;; (:file "sequences" :depends-on ("lists" "types"))
                                            ;; (:file "numbers" :depends-on ("sequences"))
                                            ))))))
