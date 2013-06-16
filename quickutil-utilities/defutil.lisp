@@ -410,25 +410,9 @@ NIL, then emit all utility source code."
                   (terpri)))
               (format t "(export '~A)~%" (compute-provided-symbols))))))))
 
-(defun pretty-print-utility-code (code &optional stream (prognify? nil))
-  "Pretty print utility code CODE to stream STREAM. If PROGNIFY? is
-true and if the code is a PROGN form, wrap all of the code in a
-PROGN. If it is false, omit the PROGN in the printed representation."
-  (declare (ignore prognify?))
-  (write-string code stream)
-  #+#:ignore
-  (let ((*package* (find-package '#:quickutil)))
-    (if (not (typep code '(cons (eql progn))))
-        (pprint code stream)
-        (progn
-          (when prognify?
-            (write-string "(PROGN                                                ; toplevel"
-                          stream))
-          
-          (dolist (form (cdr code))
-            (pprint form stream)
-            (terpri stream))
-          
-          (when prognify?
-            (write-string ")" stream))))
-    nil))
+(defun pretty-print-utility-code (code-string &optional stream)
+  "Pretty print utility code string CODE-STRING to stream STREAM."
+  (flet ((clean-up (string)
+           (string-right-trim '(#\Space)
+                              (string-trim '(#\Newline) string))))
+    (write-string (clean-up code-string) stream)))

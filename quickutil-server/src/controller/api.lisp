@@ -97,8 +97,7 @@
             (when utility
               `(200
                 (:content-type "text/plain")
-                (,(string-trim '(#\Newline #\Space)
-                               (quickutil-utilities::pretty-print-utility-code (util.code utility)))))))))
+                (,(quickutil-utilities::pretty-print-utility-code (util.code utility))))))))
 
 (setf (route *api* "/favorite.json" :method :post)
       #'(lambda (params)
