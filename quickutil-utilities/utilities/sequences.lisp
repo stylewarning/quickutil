@@ -4,6 +4,7 @@
                     :provides (sort-copy stable-sort-copy)
                     :category sequences)
   "Copying versions of SORT and STABLE-SORT."
+  #>%%%>
   (defun sort-copy (sequence predicate &key key)
     "Sort a copy of SEQUENCE according to PREDICATE accessing the
   sequence elements with the function KEY."
@@ -14,28 +15,34 @@
     "Stable sort a copy of SEQUENCE according to PREDICATE accessing the
   sequence elements with the function KEY."
     (let ((copy (copy-seq sequence)))
-      (stable-sort copy predicate :key key))))
+      (stable-sort copy predicate :key key)))
+  %%%)
 
 (defutil take (:version (1 . 0)
                :category sequences)
-  #1="Take the first N elements from SEQUENCE."
+  "Take the first N elements from SEQUENCE."
+  #>%%%>
   (defun take (n sequence)
-    #1#
-    (subseq sequence 0 n)))
+    %%DOC
+    (subseq sequence 0 n))
+  %%%)
 
 (defutil drop (:version (1 . 0)
                :category sequences)
-  #1="Drop the first N elements from SEQUENCE."
+  "Drop the first N elements from SEQUENCE."
+  #>%%%>
   (defun drop (n sequence)
-    #1#
+    %%DOC
     ;; This used to be NTHCDR for lists.
-    (subseq sequence n)))
+    (subseq sequence n))
+  %%%)
 
 (defutil subdivide (:version (1 . 0)
                     :category sequences)
-  #1="Split SEQUENCE into subsequences of size CHUNK-SIZE."
+  "Split SEQUENCE into subsequences of size CHUNK-SIZE."
+  #>%%%>
   (defun subdivide (sequence chunk-size)
-    #1#
+    %%DOC
     (check-type sequence sequence)
     (check-type chunk-size (integer 1))
     
@@ -54,14 +61,16 @@
       ;; by repeated SUBSEQs.
       (sequence (loop :with len := (length sequence)
                       :for i :below len :by chunk-size
-                      :collect (subseq sequence i (min len (+ chunk-size i))))))))
+                      :collect (subseq sequence i (min len (+ chunk-size i)))))))
+  %%%)
 
 (defutil n-grams (:version (1 . 0)
                   :depends-on take
                   :category sequences)
-  #1="Find all N-grams of the sequence SEQUENCE."
+  "Find all N-grams of the sequence SEQUENCE."
+  #>%%%>
   (defun n-grams (n sequence)
-    #1#
+    %%DOC
     (assert (and (plusp n)
                  (<= n (length sequence))))
     
@@ -73,4 +82,5 @@
       
       ;; General sequences
       (sequence (loop :for i :below (1+ (- (length sequence) n))
-                      :collect (subseq sequence i (+ i n)))))))
+                      :collect (subseq sequence i (+ i n))))))
+  %%%)

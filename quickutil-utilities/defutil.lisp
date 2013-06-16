@@ -14,8 +14,8 @@
   categories
   (hidden nil :type boolean)
   provides
-  documentation
-  code)
+  (documentation nil :type (or null string))
+  (code "" :type string))
 
 (defun util-major-version (util)
   "Get the major version of a utility UTIL."
@@ -81,6 +81,21 @@ named UTIL-NAME."
                  util-name
                  current)))))
 
+(defun replace-all (string part replacement &key (test #'char=))
+  "Returns a new string in which all the occurences of the part 
+is replaced with replacement."
+    (with-output-to-string (out)
+      (loop :with part-length := (length part)
+            :for old-pos := 0 :then (+ pos part-length)
+            :for pos := (search part string
+                                :start2 old-pos
+                                :test test)
+            :do (write-string string out
+                              :start old-pos
+                              :end (or pos (length string)))
+            :when pos :do (write-string replacement out)
+              :while pos))) 
+
 (defmacro defutil (name (&key version
                               depends-on
                               category
@@ -120,7 +135,11 @@ named UTIL-NAME."
                         :hidden ,hidden
                         :provides ',provides
                         :documentation ,documentation
-                        :code '(progn ,@utility-code)))
+                        :code (replace-all (concatenate 'string ,@utility-code)
+                                           "%%DOC"
+                                           ,(if documentation
+                                                (prin1-to-string documentation)
+                                                ""))))
        ',name)))
 
 
@@ -367,13 +386,13 @@ utilities (keyword list) UTILITIES in order to use it. If UTILITY is
 NIL, then emit all utility source code."
   (let ((non-existent (remove-if #'util-exists-p (ensure-keyword-list utilities))))
     (if non-existent
-        `(progn
-           (in-package #:quickutil)
-           (,(intern #.(string :utility-not-found-error)
-                     (if (find-package '#:quickutil-server)
-                         '#:quickutil-client
-                         '#:quickutil))
-            ',non-existent))
+        (format nil
+                "(in-package #:quickutil)~%~
+                 (~A:utility-not-found-error '~S)~%"
+                (if (find-package '#:quickutil-server)
+                    :quickutil-client
+                    :quickutil)
+                non-existent)
         (let ((load-order (mapcar #'lookup-util (compute-combined-load-order
                                                  (ensure-keyword-list utilities)
                                                  registry))))
@@ -382,24 +401,22 @@ NIL, then emit all utility source code."
                            (mapcan #'(lambda (x)
                                        (copy-list (util.provides x)))
                                    load-order))))
-            
-            (loop :for util :in load-order
-                  :when util
-                    :collect (util.code util) :into code
-                  :finally (return
-                             (flatten-progn
-                              `(progn
-                                 (in-package #:quickutil)
-                                 ,@code
-                                 (export ',(mapcar #'(lambda (name)
-                                                       (intern name '#:quickutil))
-                                                   (compute-provided-symbols))
-                                         '#:quickutil))))))))))
+            (with-output-to-string (*standard-output*)
+              (write-string "(in-package #:quickutil)")
+              (terpri)
+              (dolist (util load-order)
+                (when util
+                  (write-string (util.code util))
+                  (terpri)))
+              (format t "(export '~A)~%" (compute-provided-symbols))))))))
 
 (defun pretty-print-utility-code (code &optional stream (prognify? nil))
   "Pretty print utility code CODE to stream STREAM. If PROGNIFY? is
 true and if the code is a PROGN form, wrap all of the code in a
 PROGN. If it is false, omit the PROGN in the printed representation."
+  (declare (ignore prognify?))
+  (write-string code stream)
+  #+#:ignore
   (let ((*package* (find-package '#:quickutil)))
     (if (not (typep code '(cons (eql progn))))
         (pprint code stream)

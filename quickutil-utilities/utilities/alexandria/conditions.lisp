@@ -2,19 +2,24 @@
 
 (defutil required-argument (:version (1 . 0)
                             :category (alexandria conditions))
-  (defun required-argument (&optional name)
-    "Signals an error for a missing argument of NAME. Intended for
+  "Signals an error for a missing argument of NAME. Intended for
 use as an initialization form for structure and class-slots, and
 a default value for required keyword arguments."
-    (error "Required argument ~@[~S ~]missing." name)))
+  #>%%%>
+  (defun required-argument (&optional name)
+    %%DOC
+    (error "Required argument ~@[~S ~]missing." name))
+  %%%)
 
 (defutil if-let (:version (1 . 0)
                  :category (alexandria conditions))
+  #>%%%>
   (define-condition simple-style-warning (simple-warning style-warning)
     ())
 
   (defun simple-style-warning (message &rest args)
-    (warn 'simple-style-warning :format-control message :format-arguments args)))
+    (warn 'simple-style-warning :format-control message :format-arguments args))
+  %%%)
 
 ;; We don't specify a :report for simple-reader-error to let the
 ;; underlying implementation report the line and column position for
@@ -24,8 +29,9 @@ a default value for required keyword arguments."
 ;; debugger...
 (defutil simple-reader-error (:version (1 . 0)
                               :category (alexandria conditions))
+  #>%%%>
   (define-condition simple-reader-error
-      #-sbcl(simple-error reader-error)
+    #-sbcl(simple-error reader-error)
     #+sbcl(sb-int:simple-reader-error)
     ())
 
@@ -33,41 +39,49 @@ a default value for required keyword arguments."
     (error 'simple-reader-error
            :stream stream
            :format-control message
-           :format-arguments args)))
+           :format-arguments args))
+  %%%)
 
 (defutil simple-parse-error (:version (1 . 0)
                              :category (alexandria conditions))
+  #>%%%>
   (define-condition simple-parse-error (simple-error parse-error)
     ())
 
   (defun simple-parse-error (message &rest args)
     (error 'simple-parse-error
            :format-control message
-           :format-arguments args)))
+           :format-arguments args))
+  %%%)
 
 (defutil simple-program-error (:version (1 . 0)
                                :category (alexandria conditions))
+  #>%%%>
   (define-condition simple-program-error (simple-error program-error)
     ())
 
   (defun simple-program-error (message &rest args)
     (error 'simple-program-error
            :format-control message
-           :format-arguments args)))
+           :format-arguments args))
+  %%%)
 
 (defutil ignore-some-conditions (:version (1 . 0)
                                  :category (alexandria conditions))
-  (defmacro ignore-some-conditions ((&rest conditions) &body body)
-    "Similar to CL:IGNORE-ERRORS but the (unevaluated) CONDITIONS
+  "Similar to CL:IGNORE-ERRORS but the (unevaluated) CONDITIONS
 list determines which specific conditions are to be ignored."
+  #>%%%>
+  (defmacro ignore-some-conditions ((&rest conditions) &body body)
+    %%DOC
     `(handler-case
          (progn ,@body)
        ,@(loop for condition in conditions collect
-               `(,condition (c) (values nil c))))))
+               `(,condition (c) (values nil c)))))
+  %%%)
 
 (defutil unwind-protect-case (:version (1 . 0)
                               :category (alexandria conditions))
-  #1="Like CL:UNWIND-PROTECT, but you can specify the circumstances that
+  "Like CL:UNWIND-PROTECT, but you can specify the circumstances that
 the cleanup CLAUSES are run.
 
   clauses ::= (:NORMAL form*)* | (:ABORT form*)* | (:ALWAYS form*)*
@@ -92,8 +106,9 @@ Examples:
        (protected-form)
      (:always (perform-cleanup-if aborted-p)))
 "
+  #>%%%>
   (defmacro unwind-protect-case ((&optional abort-flag) protected-form &body clauses)
-    #1#
+    %%DOC
     (check-type abort-flag (or null symbol))
     (let ((gflag (gensym "FLAG+")))
       `(let ((,gflag t))
@@ -103,4 +118,5 @@ Examples:
                      collect (ecase cleanup-kind
                                (:normal `(when (not ,gflag) ,@forms))
                                (:abort  `(when ,gflag ,@forms))
-                               (:always `(progn ,@forms))))))))))
+                               (:always `(progn ,@forms)))))))))
+  %%%)

@@ -2,15 +2,19 @@
 
 (defutil void (:version (1 . 0)
                :category (language misc))
-  #1="Do absolutely nothing, and return absolutely nothing."
+  "Do absolutely nothing, and return absolutely nothing."
+  #>%%%>
   (defun void (&rest args)
-    #1#
+    %%DOC
     (declare (ignore args))
-    (values)))
+    (values))
+  %%%)
 
 (defutil boolean (:version (1 . 0)
                   :category (language misc))
-  #1="Convert `x` into a Boolean value."
+  "Convert `x` into a Boolean value."
+  #>%%%>
   (defun boolean (x)
-    #1#
-    (and x t)))
+    %%DOC
+    (and x t))
+  %%%)

@@ -2,20 +2,23 @@
 
 (defutil extract-function-name (:version (1 . 0)
                                 :category (alexandria control))
-  #1="Useful for macros that want to mimic the functional interface for functions
+  "Useful for macros that want to mimic the functional interface for functions
 like `#'eq` and `'eq`."
+  #>%%%>
   (defun extract-function-name (spec)
-    #1#
+    %%DOC
     (if (and (consp spec)
              (member (first spec) '(quote function)))
         (second spec)
-        spec)))
+        spec))
+  %%%)
 
 (defutil switch (:version (1 . 0)
                  :depends-on (with-gensyms extract-function-name)
                  :provides (switch eswitch cswitch)
                  :category (alexandria control))
   "Dispatch to different branches of code based off of the value of an expression."
+  #>%%%>
   (defun generate-switch-body (whole object clauses test key &optional default)
     (with-gensyms (value)
       (setf test (extract-function-name test))
@@ -53,14 +56,16 @@ returns the values of DEFAULT if no keys match."
   (defmacro cswitch (&whole whole (object &key (test 'eql) (key 'identity))
                      &body clauses)
     "Like SWITCH, but signals a continuable error if no key matches."
-    (generate-switch-body whole object clauses test key '(cerror "Return NIL from CSWITCH."))))
+    (generate-switch-body whole object clauses test key '(cerror "Return NIL from CSWITCH.")))
+  %%%)
 
 (defutil whichever (:version (1 . 0)
                     :depends-on with-gensyms
                     :category (alexandria control))
-  #1="Evaluates exactly one of POSSIBILITIES, chosen at random."
+  "Evaluates exactly one of POSSIBILITIES, chosen at random."
+  #>%%%>
   (defmacro whichever (&rest possibilities &environment env)
-    #1#
+    %%DOC
     (setf possibilities (mapcar (lambda (p) (macroexpand p env)) possibilities))
     (if (every (lambda (p) (constantp p)) possibilities)
         `(svref (load-time-value (vector ,@possibilities)) (random ,(length possibilities)))
@@ -77,20 +82,22 @@ returns the values of DEFAULT if no keys match."
           (with-gensyms (random-number)
             (let ((length (length possibilities)))
               `(let ((,random-number (random ,length)))
-                 ,(expand possibilities 0 random-number))))))))
+                 ,(expand possibilities 0 random-number)))))))
+  %%%)
 
 (defutil xor (:version (1 . 0)
               :depends-on with-gensyms
               :category (alexandria control orthogonality))
-  #1="Evaluates its arguments one at a time, from left to right. If more then one
+  "Evaluates its arguments one at a time, from left to right. If more then one
 argument evaluates to a true value no further DATUMS are evaluated, and NIL is
 returned as both primary and secondary value. If exactly one argument
 evaluates to true, its value is returned as the primary value after all the
 arguments have been evaluated, and T is returned as the secondary value. If no
 arguments evaluate to true NIL is retuned as primary, and T as secondary
 value."
+  #>%%%>
   (defmacro xor (&rest datums)
-    #1#
+    %%DOC
     (with-gensyms (xor tmp true)
       `(let (,tmp ,true)
          (block ,xor
@@ -100,17 +107,19 @@ value."
                                 (return-from ,xor (values nil nil))
                                 (setf ,true ,tmp))))
                      datums)
-           (return-from ,xor (values ,true t)))))))
+           (return-from ,xor (values ,true t))))))
+  %%%)
 
 (defutil nth-value-or (:version (1 . 0)
                        :depends-on (once-only with-gensyms)
                        :category (alexandria control))
-  #1="Evaluates FORM arguments one at a time, until the NTH-VALUE returned by one
+  "Evaluates FORM arguments one at a time, until the NTH-VALUE returned by one
 of the forms is true. It then returns all the values returned by evaluating
 that form. If none of the forms return a true nth value, this form returns
 NIL."
+  #>%%%>
   (defmacro nth-value-or (nth-value &body forms)
-    #1#
+    %%DOC
     (once-only (nth-value)
       (with-gensyms (values)
         `(let ((,values (multiple-value-list ,(first forms))))
@@ -118,12 +127,15 @@ NIL."
                (values-list ,values)
                ,(if (rest forms)
                     `(nth-value-or ,nth-value ,@(rest forms))
-                    nil)))))))
+                    nil))))))
+  %%%)
 
 (defutil multiple-value-prog2 (:version (1 . 0)
                                :category (alexandria control orthogonality))
-  #1="Evaluates FIRST-FORM, then SECOND-FORM, and then FORMS. Yields as its value
+  "Evaluates FIRST-FORM, then SECOND-FORM, and then FORMS. Yields as its value
 all the value returned by SECOND-FORM."
+  #>%%%>
   (defmacro multiple-value-prog2 (first-form second-form &body forms)
-    #1#
-    `(progn ,first-form (multiple-value-prog1 ,second-form ,@forms))))
+    %%DOC
+    `(progn ,first-form (multiple-value-prog1 ,second-form ,@forms)))
+  %%%)

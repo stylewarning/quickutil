@@ -2,29 +2,34 @@
 
 (defutil reseed-random-state (:version (1 . 0)
                               :category random)
-  #1="Reseed the random state use by the random number generator."
+  "Reseed the random state use by the random number generator."
+  #>%%%>
   (defun reseed-random-state ()
-    #1#
-    (setf *random-state* (make-random-state t))))
+    %%DOC
+    (setf *random-state* (make-random-state t)))
+  %%%)
 
 (defutil random-between (:version (1 . 0)
                          :category random)
-  #1="Generate a random integer between `a` and `b`, inclusive."
+  "Generate a random integer between `a` and `b`, inclusive."
+  #>%%%>
   (defun random-between (a b)
-    #1#
+    %%DOC
     (assert (>= b a))
     (if (= a b)
         a
-        (+ a (random (- (1+ b) a))))))
+        (+ a (random (- (1+ b) a)))))
+  %%%)
 
 (defutil random-elt (:version (1 . 0)
                      :depends-on random-between
                      :category (random sequences))
-  #1="Choose a random element of `seq` according to `distribution`. If
+  "Choose a random element of `seq` according to `distribution`. If
 `distribution` is null, the distribution will be uniform. otherwise,
 `distribution` should be a list of probability values"
+  #>%%%>
   (defun random-elt (seq &optional distribution)
-    #1#
+    %%DOC
     (if (null distribution)
         (elt seq (random-between 0 (1- (length seq))))
         (let* ((cum (loop :for x :in distribution
@@ -35,21 +40,24 @@
           (if (or (null pos)
                   (>= pos (length seq)))
               (error "Bad distribution: ~S" distribution)
-              (elt seq pos))))))
+              (elt seq pos)))))
+  %%%)
 
 (defutil shuffle-vector (:version (1 . 0)
                          :depends-on random-between
                          :category (random vectors))
-  #1="Destructively shuffle `vector` randomly."
+  "Destructively shuffle `vector` randomly."
+  #>%%%>
   (defun shuffle-vector (vector)
-    #1#
+    %%DOC
     (let ((n (length vector)))
       (loop :for i :below n 
             :for r := (random-between i (1- n))
             :when (/= i r)
               :do (rotatef (aref vector i)
                            (aref vector r))
-            :finally (return vector)))))
+            :finally (return vector))))
+  %%%)
 
 (defutil shuffle (:version (1 . 0)
                   :depends-on (shuffle-vector
@@ -57,9 +65,11 @@
                                list-to-vector
                                sequence-to-list)
                   :category (random generic))
-  #1="Shuffle a generic object."
+  "Shuffle a generic object."
+  #>%%%>
   (defgeneric shuffle (obj)
-    (:documentation #1#)
+    (:documentation %%DOC)
     (:method ((obj vector)) (shuffle-vector (copy-array obj)))
     (:method ((obj list)) (let ((vector (list-to-vector obj)))
-                            (sequence-to-list (shuffle-vector vector))))))
+                            (sequence-to-list (shuffle-vector vector)))))
+  %%%)

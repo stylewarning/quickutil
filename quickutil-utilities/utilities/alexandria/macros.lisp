@@ -3,7 +3,7 @@
 (defutil with-gensyms (:version (1 . 0)
                        :provides (with-gensyms with-unique-names)
                        :category (alexandria macro-writing))
-  #1="Binds each variable named by a symbol in NAMES to a unique symbol around
+  "Binds each variable named by a symbol in NAMES to a unique symbol around
 FORMS. Each of NAMES must either be either a symbol, or of the form:
 
  (symbol string-designator)
@@ -14,8 +14,9 @@ Bare symbols appearing in NAMES are equivalent to:
 
 The string-designator is used as the argument to GENSYM when constructing the
 unique symbol the named variable will be bound to."
+  #>%%%>
   (defmacro with-gensyms (names &body forms)
-    #1#
+    %%DOC
     `(let ,(mapcar (lambda (name)
                      (multiple-value-bind (symbol string)
                          (etypecase name
@@ -28,13 +29,14 @@ unique symbol the named variable will be bound to."
        ,@forms))
 
   (defmacro with-unique-names (names &body forms)
-    #1#
-    `(with-gensyms ,names ,@forms)))
+    %%DOC
+    `(with-gensyms ,names ,@forms))
+  %%%)
 
 (defutil once-only (:version (1 . 0)
                     :depends-on make-gensym-list
                     :category (alexandria macro-writing))
-  #1="Evaluates FORMS with symbols specified in SPECS rebound to temporary
+  "Evaluates FORMS with symbols specified in SPECS rebound to temporary
 variables, ensuring that each initform is evaluated only once.
 
 Each of SPECS must either be a symbol naming the variable to be rebound, or of
@@ -51,8 +53,9 @@ Example:
   (defmacro cons1 (x) (once-only (x) `(cons ,x ,x)))
   (let ((y 0)) (cons1 (incf y))) => (1 . 1)
 "
+  #>%%%>
   (defmacro once-only (specs &body forms)
-    #1#
+    %%DOC
     (let ((gensyms (make-gensym-list (length specs) "ONCE-ONLY"))
           (names-and-forms (mapcar (lambda (spec)
                                      (etypecase spec
@@ -72,16 +75,18 @@ Example:
             ;; bind in user-macro
             ,(let ,(mapcar (lambda (n g) (list (car n) g))
                     names-and-forms gensyms)
-               ,@forms))))))
+               ,@forms)))))
+  %%%)
 
 (defutil parse-body (:version (1 . 0)
                      :category (alexandria macro-writing))
-  #1="Parses BODY into (values remaining-forms declarations doc-string).
+  "Parses BODY into (values remaining-forms declarations doc-string).
 Documentation strings are recognized only if DOCUMENTATION is true.
 Syntax errors in body are signalled and WHOLE is used in the signal
 arguments when given."
+  #>%%%>
   (defun parse-body (body &key documentation whole)
-    #1#
+    %%DOC
     (let ((doc nil)
           (decls nil)
           (current nil))
@@ -96,14 +101,15 @@ arguments when given."
          (when (and (listp current) (eql (first current) 'declare))
            (push (pop body) decls)
            (go :declarations)))
-      (values body (nreverse decls) doc))))
+      (values body (nreverse decls) doc)))
+  %%%)
 
 (defutil parse-ordinary-lambda-list (:version (1 . 0)
                                      :depends-on (make-keyword
                                                   ensure-list
                                                   simple-program-error)
                                      :category (alexandria macro-writing))
-  #1="Parses an ordinary lambda-list, returning as multiple values:
+  "Parses an ordinary lambda-list, returning as multiple values:
 
 1. Required parameters.
 
@@ -126,12 +132,13 @@ arguments when given."
 7. Existence of &KEY in the lambda-list.
 
 Signals a PROGRAM-ERROR is the lambda-list is malformed."
+  #>%%%>
   (defun parse-ordinary-lambda-list (lambda-list &key (normalize t)
                                                       allow-specializers
                                                       (normalize-optional normalize)
                                                       (normalize-keyword normalize)
                                                       (normalize-auxilary normalize))
-    #1#
+    %%DOC
     (let ((state :required)
           (allow-other-keys nil)
           (auxp nil)
@@ -250,7 +257,8 @@ Signals a PROGRAM-ERROR is the lambda-list is malformed."
                (t
                 (simple-program-error "Invalid ordinary lambda-list:~%  ~S" lambda-list)))))))
       (values (nreverse required) (nreverse optional) rest (nreverse keys)
-              allow-other-keys (nreverse aux) keyp))))
+              allow-other-keys (nreverse aux) keyp)))
+  %%%)
 
 (defutil destructuring-case (:version (1 . 0)
                              :depends-on once-only
@@ -258,7 +266,7 @@ Signals a PROGRAM-ERROR is the lambda-list is malformed."
                                         destructuring-ccase
                                         destructuring-ecase)
                              :category (alexandria macro-writing))
-  #1="DESTRUCTURING-CASE, -CCASE, and -ECASE are a combination of CASE and DESTRUCTURING-BIND.
+  "DESTRUCTURING-CASE, -CCASE, and -ECASE are a combination of CASE and DESTRUCTURING-BIND.
 KEYFORM must evaluate to a CONS.
 
 Clauses are of the form:
@@ -303,6 +311,7 @@ Example:
   (decase (list :alt2 2))         ; => \"alt: 2\"
   (decase (list :quux 1 2 3))     ; =| error
 "
+  #>%%%>
   (defun expand-destructuring-case (key clauses case)
     (once-only (key)
       `(if (typep ,key 'cons)
@@ -316,13 +325,14 @@ Example:
            (error "Invalid key to DESTRUCTURING-~S: ~S" ',case ,key))))
 
   (defmacro destructuring-case (keyform &body clauses)
-    #1#
+    %%DOC
     (expand-destructuring-case keyform clauses 'case))
   
   (defmacro destructuring-ccase (keyform &body clauses)
-    #1#
+    %%DOC
     (expand-destructuring-case keyform clauses 'ccase))
 
   (defmacro destructuring-ecase (keyform &body clauses)
-    #1#
-    (expand-destructuring-case keyform clauses 'ecase)))
+    %%DOC
+    (expand-destructuring-case keyform clauses 'ecase))
+  %%%)

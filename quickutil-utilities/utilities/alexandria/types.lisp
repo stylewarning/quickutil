@@ -4,6 +4,7 @@
                        :provides (array-index array-length)
                        :category (alexandria types arrays))
   "Types related to array bounds."
+  #>%%%>
   (deftype array-index (&optional (length array-dimension-limit))
     "Type designator for an index into array of LENGTH: an integer between
 0 (inclusive) and LENGTH (exclusive). LENGTH defaults to
@@ -14,7 +15,8 @@ ARRAY-DIMENSION-LIMIT."
     "Type designator for a dimension of an array of LENGTH: an integer between
 0 (inclusive) and LENGTH (inclusive). LENGTH defaults to
 ARRAY-DIMENSION-LIMIT."
-    `(integer 0 ,length)))
+    `(integer 0 ,length))
+  %%%)
 
 ;;; XXX FIXME: Add this.
 #+#:ignore
@@ -115,10 +117,11 @@ ARRAY-DIMENSION-LIMIT."
 (defutil of-type (:version (1 . 0)
                   :depends-on with-gensyms
                   :category (alexandria))
-  #1="Returns a function of one argument, which returns true when its argument is
+  "Returns a function of one argument, which returns true when its argument is
 of TYPE."
+  #>%%%>
   (defun of-type (type)
-    #1#
+    %%DOC
     (lambda (thing) (typep thing type)))
 
   (define-compiler-macro of-type (&whole form type &environment env)
@@ -128,17 +131,19 @@ of TYPE."
         (with-gensyms (thing)
           `(lambda (,thing)
              (typep ,thing ,type)))
-        form)))
+        form))
+  %%%)
 
 (defutil type= (:version (1 . 0)
                 :category (alexandria types))
-  #1="Returns a primary value of T is TYPE1 and TYPE2 are the same type,
+  "Returns a primary value of T is TYPE1 and TYPE2 are the same type,
 and a secondary value that is true is the type equality could be reliably
 determined: primary value of NIL and secondary value of T indicates that the
 types are not equivalent."
+  #>%%%>
   (declaim (inline type=))
   (defun type= (type1 type2)
-    #1#
+    %%DOC
     (multiple-value-bind (sub ok) (subtypep type1 type2)
       (cond ((and ok sub)
              (subtypep type2 type1))
@@ -147,10 +152,13 @@ types are not equivalent."
             (t
              (multiple-value-bind (sub ok) (subtypep type2 type1)
                (declare (ignore sub))
-               (values nil ok)))))))
+               (values nil ok))))))
+  %%%)
 
 (defutil coercef (:version (1 . 0)
                   :category (alexandria types))
-  #1="Modify-macro for COERCE."
+  "Modify-macro for COERCE."
+  #>%%%>
   (define-modify-macro coercef (type-spec) coerce
-    #1#))
+    %%DOC)
+  %%%)

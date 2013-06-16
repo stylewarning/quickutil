@@ -4,6 +4,7 @@
                          :provides (split-sequence split-sequence-if split-sequence-if-not)
                          :category (split-sequence sequences))
   "Split sequences into a list of subsequences based off of a delimiter or function."
+  #>%%%>
   (macrolet ((check-bounds (sequence start end)
                (let ((length (gensym (string '#:length))))
                  `(let ((,length (length ,sequence)))
@@ -121,4 +122,5 @@ stopped."
           :collect (subseq sequence left right) :into subseqs
           :and :sum 1 :into nr-elts
         :until (>= right end)
-        :finally (return (values subseqs right))))))
+        :finally (return (values subseqs right)))))
+  %%%)

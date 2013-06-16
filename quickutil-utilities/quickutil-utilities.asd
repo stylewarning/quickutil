@@ -5,13 +5,14 @@
   :description "The utilities and backend to Quickutil."
   :author "Robert Smith <quad@symbo1ics.com>"
   :license "See LICENSE file."
+  :depends-on ("cl-heredoc")
   :components (
                ;; License: BSD 3-clause
                (:static-file "LICENSE")
                (:file "package")
                (:file "queue")
                (:file "defutil")
-               
+               (:file "setup-reader")
                ;; License: None. (Public Domain)
                (:module utilities
                 :serial t

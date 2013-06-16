@@ -2,8 +2,7 @@
 
 (defutil if-let (:version (1 . 0)
                  :category (binding alexandria))
-  (defmacro if-let (bindings &body (then-form &optional else-form))
-    "Creates new variable bindings, and conditionally executes either
+  "Creates new variable bindings, and conditionally executes either
 THEN-FORM or ELSE-FORM. ELSE-FORM defaults to NIL.
 
 BINDINGS must be either single binding of the form:
@@ -23,6 +22,9 @@ the variables are bound to the corresponding values.
 If all variables were bound to true values, the THEN-FORM is executed with the
 bindings in effect, otherwise the ELSE-FORM is executed with the bindings in
 effect."
+  #>%%%>
+  (defmacro if-let (bindings &body (then-form &optional else-form))
+    %%DOC
     (let* ((binding-list (if (and (consp bindings) (symbolp (car bindings)))
                              (list bindings)
                              bindings))
@@ -30,12 +32,14 @@ effect."
       `(let ,binding-list
          (if (and ,@variables)
              ,then-form
-             ,else-form)))))
+             ,else-form))))
+  %%%)
 
 (defutil when-let (:version (1 . 0)
                    :provides (when-let when-let*)
                    :category (binding alexandria))
   "Creates new variable bindings, and conditionally executes a series of forms."
+  #>%%%>
   (defmacro when-let (bindings &body forms)
     "Creates new variable bindings, and conditionally executes FORMS.
 
@@ -95,5 +99,6 @@ PROGN."
                      forms)))
         `(let (,(car binding-list))
            (when ,(caar binding-list)
-             ,@(bind (cdr binding-list) forms)))))))
+             ,@(bind (cdr binding-list) forms))))))
+  %%%)
 

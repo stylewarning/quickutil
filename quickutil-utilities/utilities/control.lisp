@@ -2,17 +2,21 @@
 
 (defutil until (:version (1 . 0)
                 :category (language control))
-  #1="Executes `body` until `expression` is true."
+  "Executes `body` until `expression` is true."
+  #>%%%>
   (defmacro until (expression &body body)
-    #1#
+    %%DOC
     `(do ()
          (,expression)
-       ,@body)))
+       ,@body))
+  %%%)
 
 (defutil while (:version (1 . 0)
                 :category (language control))
-  #1="Executes `body` while `expression` is true."
+  "Executes `body` while `expression` is true."
+  #>%%%>
   (defmacro while (expression &body body)
-    #1#
+    %%DOC
     `(until (not ,expression)
-       ,@body)))
+       ,@body))
+  %%%)

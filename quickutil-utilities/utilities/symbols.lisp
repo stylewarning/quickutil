@@ -2,8 +2,10 @@
 
 (defutil same-name (:version (1 . 0)
                     :category symbols)
-  #1="Do symbols `a` and `b` have the same name?"
+  "Do symbols `a` and `b` have the same name?"
+  #>%%%>
   (defun same-name (a b)
-    #1#
+    %%DOC
     (string= (symbol-name a)
-             (symbol-name b))))
+             (symbol-name b)))
+  %%%)

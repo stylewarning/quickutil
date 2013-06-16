@@ -3,11 +3,12 @@
 (defutil featurep (:version (1 . 0)
                    :depends-on switch
                    :category (alexandria features))
-  #1="Returns T if the argument matches the state of the *FEATURES*
-list and NIL if it does not. FEATURE-EXPRESSION can be any atom
-or list acceptable to the reader macros #+ and #-."
+  "Returns `t` if the argument matches the state of the `*features*`
+list and `nil` if it does not. `feature-expression` can be any atom
+or list acceptable to the reader macros `#+` and `#-`."
+  #>%%%>
   (defun featurep (feature-expression)
-    #1#
+    %%DOC
     (etypecase feature-expression
       (symbol (not (null (member feature-expression *features*))))
       (cons (check-type (first feature-expression) symbol)
@@ -15,4 +16,5 @@ or list acceptable to the reader macros #+ and #-."
          (:and (every #'featurep (rest feature-expression)))
          (:or  (some #'featurep (rest feature-expression)))
          (:not (assert (= 2 (length feature-expression)))
-               (not (featurep (second feature-expression)))))))))
+               (not (featurep (second feature-expression))))))))
+  %%%)

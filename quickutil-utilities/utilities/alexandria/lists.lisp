@@ -3,18 +3,21 @@
 (defutil safe-endp (:version (1 . 0)
                     :hidden t
                     :category (alexandria lists helper))
-  #1="Safely compute the end of a list."
+  "Safely compute the end of a list."
+  #>%%%>
   (declaim (inline safe-endp))
   (defun safe-endp (x)
-    #1#
+    %%DOC
     (declare (optimize safety))
-    (endp x)))
+    (endp x))
+  %%%)
 
 (defutil alist-plist (:version (1 . 0)
                       :depends-on safe-endp
                       :provides (alist-plist plist-alist)
                       :category (alexandria lists))
   "Convert between alists and plists."
+  #>%%%>
   (defun alist-plist (alist)
     "Returns a property list containing the same keys and values as the
 association list ALIST in the same order."
@@ -30,14 +33,15 @@ property list PLIST in the same order."
     (let (alist)
       (do ((tail plist (cddr tail)))
           ((safe-endp tail) (nreverse alist))
-        (push (cons (car tail) (cadr tail)) alist)))))
+        (push (cons (car tail) (cadr tail)) alist))))
+  %%%)
 
 (defutil alist-get (:version (1 . 0)
                     :depends-on (with-gensyms)
                     :provides (assoc-value rassoc-value)
                     :category (alexandria lists))
   "Getters and setters for ASSOC and RASSOC values."
-
+  #>%%%>
   (declaim (inline racons))
   (defun racons (key value ralist)
     (acons value key ralist))
@@ -84,19 +88,21 @@ property list PLIST in the same order."
 be used with SETF.")
     (define-alist-get rassoc-value rassoc car racons
       "RASSOC-VALUE is an alist accessor very much like RASSOC, but it can
-be used with SETF.")))
+be used with SETF."))
+  %%%)
 
 (defutil doplist (:version (1 . 0)
                   :depends-on with-gensyms
                   :category (alexandria lists))
-  #1="Iterates over elements of PLIST. BODY can be preceded by
+  "Iterates over elements of PLIST. BODY can be preceded by
 declarations, and is like a TAGBODY. RETURN may be used to terminate
 the iteration early. If RETURN is not used, returns VALUES."
+  #>%%%>
   (defun malformed-plist (plist)
     (error "Malformed plist: ~S" plist))
 
   (defmacro doplist ((key val plist &optional values) &body body)
-    #1#
+    %%DOC
     (multiple-value-bind (forms declarations) (parse-body body)
       (with-gensyms (tail loop results)
         `(block nil
@@ -122,50 +128,63 @@ the iteration early. If RETURN is not used, returns VALUES."
                         ,val (if ,tail
                                  (pop ,tail)
                                  (malformed-plist ',plist)))
-                  (go ,loop)))))))))
+                  (go ,loop))))))))
+  %%%)
 
 (defutil appendf (:version (1 . 0)
                   :category (alexandria lists))
-  #1="Modify-macro for APPEND. Appends LISTS to the place designated by the first
+  "Modify-macro for APPEND. Appends LISTS to the place designated by the first
 argument."
+  #>%%%>
   (define-modify-macro appendf (&rest lists) append
-    #1#))
+    %%DOC)
+  %%%)
 
 (defutil nconcf (:version (1 . 0)
                  :category (alexandria lists))
-  #1="Modify-macro for NCONC. Concatenates LISTS to place designated by the first
+  "Modify-macro for NCONC. Concatenates LISTS to place designated by the first
 argument."
+  #>%%%>
   (define-modify-macro nconcf (&rest lists) nconc
-    #1#))
+    %%DOC)
+  %%%)
 
 (defutil unionf (:version (1 . 0)
                  :category (alexandria lists sets))
-  #1="Modify-macro for UNION. Saves the union of LIST and the contents of the
+  "Modify-macro for UNION. Saves the union of LIST and the contents of the
 place designated by the first argument to the designated place."
+  #>%%%>
   (define-modify-macro unionf (list &rest args) union
-    #1#))
+    %%DOC)
+  %%%)
 
 (defutil nunionf (:version (1 . 0)
                   :category (alexandria lists sets))
-  #1="Modify-macro for NUNION. Saves the union of LIST and the contents of the
+  "Modify-macro for NUNION. Saves the union of LIST and the contents of the
 place designated by the first argument to the designated place. May modify
 either argument."
+  #>%%%>
   (define-modify-macro nunionf (list &rest args) nunion
-    #1#))
+    %%DOC)
+  %%%)
 
 (defutil reversef (:version (1 . 0)
                    :category (alexandria lists))
-  #1="Modify-macro for REVERSE. Copies and reverses the list stored in the given
+  "Modify-macro for REVERSE. Copies and reverses the list stored in the given
 place and saves back the result into the place."
+  #>%%%>
   (define-modify-macro reversef () reverse
-    #1#))
+    %%DOC)
+  %%%)
 
 (defutil nreversef (:version (1 . 0)
                     :category (alexandria lists))
-  #1="Modify-macro for NREVERSE. Reverses the list stored in the given place by
+  "Modify-macro for NREVERSE. Reverses the list stored in the given place by
 destructively modifying it and saves back the result into the place."
+  #>%%%>
   (define-modify-macro nreversef () nreverse
-    #1#))
+    %%DOC)
+  %%%)
 
 (defutil circular-list (:version (1 . 0)
                         :provides (circular-list
@@ -173,6 +192,7 @@ destructively modifying it and saves back the result into the place."
                                    make-circular-list)
                         :category (alexandria lists types))
   "Creation and detection of circular lists, as ."
+  #>%%%>
   (defun circular-list (&rest elements)
     "Creates a circular list of ELEMENTS."
     (let ((cycle (copy-list elements)))
@@ -198,13 +218,15 @@ destructively modifying it and saves back the result into the place."
     "Type designator for circular lists. Implemented as a SATISFIES type, so not
 recommended for performance intensive use. Main usefullness as the
 expected-type designator of a TYPE-ERROR."
-    `(satisfies circular-list-p)))
+    `(satisfies circular-list-p))
+  %%%)
 
 (defutil circular-tree-p (:version (1 . 0)
                           :category (alexandria trees))
-  #1="Returns true if OBJECT is a circular tree, NIL otherwise."
+  "Returns true if OBJECT is a circular tree, NIL otherwise."
+  #>%%%>
   (defun circular-tree-p (object)
-    #1#
+    %%DOC
     (labels ((circularp (object seen)
                (and (consp object)
                     (do ((fast (cons (car object) (cdr object)) (cddr fast))
@@ -219,12 +241,14 @@ expected-type designator of a TYPE-ERROR."
                                nil)
                             (let ((elt (car tail)))
                               (circularp elt (cons object seen))))))))))
-      (circularp object nil))))
+      (circularp object nil)))
+  %%%)
 
 (defutil proper-list-p (:version (1 . 0)
                         :provides (proper-list-p proper-list)
                         :category (alexandria lists orthogonality))
   "Type and function to detect if a list is proper."
+  #>%%%>
   (defun proper-list-p (object)
     "Returns true if OBJECT is a proper list."
     (cond ((not object)
@@ -244,7 +268,8 @@ expected-type designator of a TYPE-ERROR."
     "Type designator for proper lists. Implemented as a SATISFIES type, hence
 not recommended for performance intensive use. Main usefullness as a type
 designator of the expected type in a TYPE-ERROR."
-    `(and list (satisfies proper-list-p))))
+    `(and list (satisfies proper-list-p)))
+  %%%)
 
 ;; FIXME: these are two different utils...
 (defutil proper-list-length/last-car (:version (1 . 0)
@@ -253,7 +278,7 @@ designator of the expected type in a TYPE-ERROR."
                                       :provides (proper-list-length last-car)
                                       :category (alexandria lists))
   "Compute the length of a proper list, and the last CAR of a list quickly."
-  
+  #>%%%>
   (defun circular-list-error (list)
     (error 'type-error
            :datum list
@@ -300,35 +325,42 @@ list."
       nil
       nil
       (setf (cadr last) object)
-      (setf (car fast) object))))
+      (setf (car fast) object)))
+  %%%)
 
 (defutil ensure-car (:version (1 . 0)
                      :category (alexandria lists conses))
-  #1="If THING is a CONS, its CAR is returned. Otherwise THING is returned."
+  "If THING is a CONS, its CAR is returned. Otherwise THING is returned."
+  #>%%%>
   (defun ensure-car (thing)
-    #1#
+    %%DOC
     (if (consp thing)
         (car thing)
-        thing)))
+        thing))
+  %%%)
 
 (defutil ensure-cons (:version (1 . 0)
                       :category (alexandria lists conses))
-  #1="If CONS is a cons, it is returned. Otherwise returns a fresh cons with CONS
+  "If CONS is a cons, it is returned. Otherwise returns a fresh cons with CONS
   in the car, and NIL in the cdr."
+  #>%%%>
   (defun ensure-cons (cons)
-    #1#
+    %%DOC
     (if (consp cons)
         cons
-        (cons cons nil))))
+        (cons cons nil)))
+  %%%)
 
 (defutil ensure-list (:version (1 . 0)
                       :category (alexandria lists))
-  #1="If LIST is a list, it is returned. Otherwise returns the list designated by LIST."
+  "If LIST is a list, it is returned. Otherwise returns the list designated by LIST."
+  #>%%%>
   (defun ensure-list (list)
-    #1#
+    %%DOC
     (if (listp list)
         list
-        (list list))))
+        (list list)))
+  %%%)
 
 (defutil remove-from-plist (:version (1 . 0)
                             :provides (remove-from-plist 
@@ -339,6 +371,7 @@ list."
                             :category (alexandria lists))
   "Destructive and non-destructive functions to remove items from a
 plist, as well as associated modify macros."
+  #>%%%>
   (defun remove-from-plist (plist &rest keys)
     "Returns a propery-list with same keys and values as PLIST, except that keys
 in the list designated by KEYS and values corresponding to them are removed.
@@ -366,37 +399,43 @@ provided plist."
   (declaim (inline sans))
   (defun sans (plist &rest keys)
     "Alias of REMOVE-FROM-PLIST for backward compatibility."
-    (apply #'remove-from-plist plist keys)))
+    (apply #'remove-from-plist plist keys))
+  %%%)
 
 (defutil mappend (:version (1 . 0)
                   :category (alexandria lists orthogonality))
-  #1="Applies FUNCTION to respective element(s) of each LIST, appending all the
+  "Applies FUNCTION to respective element(s) of each LIST, appending all the
 all the result list to a single list. FUNCTION must return a list."
+  #>%%%>
   (defun mappend (function &rest lists)
-    #1#
+    %%DOC
     (loop for results in (apply #'mapcar function lists)
-          append results)))
+          append results))
+  %%%)
 
 (defutil setp (:version (1 . 0)
                :category (alexandria lists sets))
-  #1="Returns true if OBJECT is a list that denotes a set, NIL otherwise. A list
+  "Returns true if OBJECT is a list that denotes a set, NIL otherwise. A list
 denotes a set if each element of the list is unique under KEY and TEST."
+  #>%%%>
   (defun setp (object &key (test #'eql) (key #'identity))
-    #1#
+    %%DOC
     (and (listp object)
          (let (seen)
            (dolist (elt object t)
              (let ((key (funcall key elt)))
                (if (member key seen :test test)
                    (return nil)
-                   (push key seen))))))))
+                   (push key seen)))))))
+  %%%)
 
 (defutil set-equal (:version (1 . 0)
                     :category (alexandria lists sets))
-  #1="Returns true if every element of LIST1 matches some element of LIST2 and
+  "Returns true if every element of LIST1 matches some element of LIST2 and
 every element of LIST2 matches some element of LIST1. Otherwise returns false."
+  #>%%%>
   (defun set-equal (list1 list2 &key (test #'eql) (key nil keyp))
-    #1#
+    %%DOC
     (let ((keylist1 (if keyp (mapcar key list1) list1))
           (keylist2 (if keyp (mapcar key list2) list2)))
       (and (dolist (elt keylist1 t)
@@ -404,11 +443,12 @@ every element of LIST2 matches some element of LIST1. Otherwise returns false."
                  (return nil)))
            (dolist (elt keylist2 t)
              (or (member elt keylist1 :test test)
-                 (return nil)))))))
+                 (return nil))))))
+  %%%)
 
 (defutil map-product (:version (1 . 0)
                       :category (alexandria lists))
-  #1="Returns a list containing the results of calling FUNCTION with one argument
+  "Returns a list containing the results of calling FUNCTION with one argument
 from LIST, and one from each of MORE-LISTS for each combination of arguments.
 In other words, returns the product of LIST and MORE-LISTS using FUNCTION.
 
@@ -418,8 +458,9 @@ Example:
   => ((1 3 5) (1 3 6) (1 4 5) (1 4 6)
       (2 3 5) (2 3 6) (2 4 5) (2 4 6))
 "
+  #>%%%>
   (defun map-product (function list &rest more-lists)
-    #1#
+    %%DOC
     (labels ((%map-product (f lists)
                (let ((more (cdr lists))
                      (one (car lists)))
@@ -428,7 +469,8 @@ Example:
                      (mappend (lambda (x)
                                 (%map-product (curry f x) more))
                               one)))))
-      (%map-product (ensure-function function) (cons list more-lists)))))
+      (%map-product (ensure-function function) (cons list more-lists))))
+  %%%)
 
 #+#:ignore
 (defun flatten (tree)
