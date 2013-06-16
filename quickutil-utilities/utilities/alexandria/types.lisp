@@ -2,7 +2,7 @@
 
 (defutil array-bounds (:version (1 . 0)
                        :provides (array-index array-length)
-                       :category (alexandria types arrays))
+                       :category (alexandria types arrays cdr))
   "Types related to array bounds."
   #>%%%>
   (deftype array-index (&optional (length array-dimension-limit))
@@ -18,24 +18,100 @@ ARRAY-DIMENSION-LIMIT."
     `(integer 0 ,length))
   %%%)
 
-;;; XXX FIXME: Add this.
-#+#:ignore
-(defutil cdr5 (:version (1 . 0)
-               :depends-on (format-symbol)
-               :category (alexandria cdr))
+(defutil sub-interval-numeric-types (:version (1 . 0)
+                                     :depends-on (format-symbol)
+                                     :provides (negative-double-float
+                                                negative-fixnum-p
+                                                negative-float
+                                                negative-float-p
+                                                negative-long-float
+                                                negative-long-float-p
+                                                negative-rational
+                                                negative-rational-p
+                                                negative-real
+                                                negative-single-float-p
+                                                non-negative-double-float
+                                                non-negative-double-float-p
+                                                non-negative-fixnum
+                                                non-negative-fixnum-p
+                                                non-negative-float
+                                                non-negative-float-p
+                                                non-negative-integer-p
+                                                non-negative-long-float
+                                                non-negative-rational
+                                                non-negative-real-p
+                                                non-negative-short-float-p
+                                                non-negative-single-float
+                                                non-negative-single-float-p
+                                                non-positive-double-float
+                                                non-positive-double-float-p
+                                                non-positive-fixnum
+                                                non-positive-fixnum-p
+                                                non-positive-float
+                                                non-positive-float-p
+                                                non-positive-integer
+                                                non-positive-rational
+                                                non-positive-real
+                                                non-positive-real-p
+                                                non-positive-short-float
+                                                non-positive-short-float-p
+                                                non-positive-single-float-p
+                                                positive-double-float
+                                                positive-double-float-p
+                                                positive-fixnum
+                                                positive-fixnum-p
+                                                positive-float
+                                                positive-float-p
+                                                positive-integer
+                                                positive-rational
+                                                positive-real
+                                                positive-real-p
+                                                positive-short-float
+                                                positive-short-float-p
+                                                positive-single-float
+                                                positive-single-float-p
+                                                negative-double-float-p
+                                                negative-fixnum
+                                                negative-integer
+                                                negative-integer-p
+                                                negative-real-p
+                                                negative-short-float
+                                                negative-short-float-p
+                                                negative-single-float
+                                                non-negative-integer
+                                                non-negative-long-float-p
+                                                non-negative-rational-p
+                                                non-negative-real
+                                                non-negative-short-float
+                                                non-positive-integer-p
+                                                non-positive-long-float
+                                                non-positive-long-float-p
+                                                non-positive-rational-p
+                                                non-positive-single-float
+                                                positive-integer-p
+                                                positive-long-float
+                                                positive-long-float-p
+                                                positive-rational-p)
+               :category (alexandria types cdr))
+  "Contains 'sub-interval numeric types'. Majority of the implementation of CDR5."
   ;; This MACROLET will generate most of CDR5 (http://cdr.eurolisp.org/document/5/)
   ;; except the RATIO related definitions and ARRAY-INDEX.
+  #>%%%>
   (macrolet
       ((frob (type &optional (base-type type))
          (let ((subtype-names (list))
                (predicate-names (list)))
-           (flet ((make-subtype-name (format-control)
-                    (let ((result (format-symbol :alexandria format-control
+           (flet ((ensure-car (thing)   ; This is in Alexandria/Quickutil, but
+                    (if (consp thing)   ; it is needed at compile time.
+                        (car thing)
+                        thing))
+                  (make-subtype-name (format-control)
+                    (let ((result (format-symbol :quickutil format-control
                                                  (symbol-name type))))
                       (push result subtype-names)
                       result))
                   (make-predicate-name (sybtype-name)
-                    (let ((result (format-symbol :alexandria '#:~A-p
+                    (let ((result (format-symbol :quickutil '#:~A-p
                                                  (symbol-name sybtype-name))))
                       (push result predicate-names)
                       result))
@@ -112,7 +188,8 @@ ARRAY-DIMENSION-LIMIT."
     (frob short-float)
     (frob single-float)
     (frob double-float)
-    (frob long-float)))
+    (frob long-float))
+  %%%)
 
 (defutil of-type (:version (1 . 0)
                   :depends-on with-gensyms
