@@ -45,8 +45,8 @@
         <h2>Categories</h2>
         <ul>
           {foreach $category in $categories}
-          <li {if $category == $currentCategory}class="active"{/if} data-category="{$category}">
-            <a href="/list/{$category | escapeUri}" class="category" data-pjax="#main">{$category}</a>
+          <li {if $category.name == $currentCategory}class="active"{/if} data-category="{$category.name}">
+            <a href="/list/{$category.name | escapeUri}" class="category" data-pjax="#main">{$category.name} <span class="count">{$category.count}</span></a>
             <a href="/list" class="remove-filter lsf" data-pjax="#main">remove</a>
           </li>
           {/foreach}

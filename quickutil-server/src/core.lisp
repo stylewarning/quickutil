@@ -9,7 +9,8 @@
         :closure-template)
   (:shadow :stop)
   (:import-from :alexandria
-                :when-let)
+                :when-let
+                :hash-table-keys)
   (:import-from :dbi
                 :connect
                 :disconnect
@@ -58,13 +59,18 @@
 
 @export
 (defparameter *categories*
-              (loop for utility being the hash-values in *utility-registry*
-                    append (util.categories utility) into categories
+              (loop with categories = (make-hash-table :test 'equal)
+                    for utility being the hash-values in *utility-registry*
+                    do
+                 (loop for cat in (util.categories utility)
+                       do
+                    (incf (gethash (string-downcase cat) categories 0)))
                     finally
                  (return
-                   (sort (mapcar #'string-downcase
-                                 (remove-duplicates categories :test #'string-equal))
-                         #'string<))))
+                   (loop for cat in (sort (copy-list (hash-table-keys categories))
+                                          #'string<)
+                         collect `(:name ,cat
+                                   :count ,(gethash cat categories))))))
 
 (defun build (app)
   (builder
