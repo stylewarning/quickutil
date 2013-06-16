@@ -153,6 +153,6 @@ group (i.e., group *m* has `k_m` objects)."
                :category (math orthogonality))
   "A modifying version of division, similar to `decf`."
   #>%%%>
-  (define-modify-macro divf (&optional (1/ratio) 2) /
+  (define-modify-macro divf (&optional (1/ratio 2)) /
     %%DOC)
   %%%)
