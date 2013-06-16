@@ -1,6 +1,7 @@
 (in-package #:quickutil)
 
 (defutil with-gensyms (:version (1 . 0)
+                       :depends-on string-designator
                        :provides (with-gensyms with-unique-names)
                        :category (alexandria macro-writing))
   "Binds each variable named by a symbol in NAMES to a unique symbol around

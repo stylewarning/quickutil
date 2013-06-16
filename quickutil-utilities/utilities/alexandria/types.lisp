@@ -101,26 +101,26 @@ ARRAY-DIMENSION-LIMIT."
       ((frob (type &optional (base-type type))
          (let ((subtype-names (list))
                (predicate-names (list)))
-           (flet ((ensure-car (thing)   ; This is in Alexandria/Quickutil, but
-                    (if (consp thing)   ; it is needed at compile time.
-                        (car thing)
-                        thing))
-                  (make-subtype-name (format-control)
-                    (let ((result (format-symbol :quickutil format-control
-                                                 (symbol-name type))))
-                      (push result subtype-names)
-                      result))
-                  (make-predicate-name (sybtype-name)
-                    (let ((result (format-symbol :quickutil '#:~A-p
-                                                 (symbol-name sybtype-name))))
-                      (push result predicate-names)
-                      result))
-                  (make-docstring (range-beg range-end range-type)
-                    (let ((inf (ecase range-type (:negative "-inf") (:positive "+inf"))))
-                      (format nil "Type specifier denoting the ~(~A~) range from ~A to ~A."
-                              type
-                              (if (equal range-beg ''*) inf (ensure-car range-beg))
-                              (if (equal range-end ''*) inf (ensure-car range-end))))))
+           (labels ((ensure-car (thing)   ; This is in Alexandria/Quickutil, but
+                      (if (consp thing)   ; it is needed at compile time.
+                          (car thing)
+                          thing))
+                    (make-subtype-name (format-control)
+                      (let ((result (format-symbol :quickutil format-control
+                                                   (symbol-name type))))
+                        (push result subtype-names)
+                        result))
+                    (make-predicate-name (sybtype-name)
+                      (let ((result (format-symbol :quickutil '#:~A-p
+                                                   (symbol-name sybtype-name))))
+                        (push result predicate-names)
+                        result))
+                    (make-docstring (range-beg range-end range-type)
+                      (let ((inf (ecase range-type (:negative "-inf") (:positive "+inf"))))
+                        (format nil "Type specifier denoting the ~(~A~) range from ~A to ~A."
+                                type
+                                (if (equal range-beg ''*) inf (ensure-car range-beg))
+                                (if (equal range-end ''*) inf (ensure-car range-end))))))
              (let* ((negative-name     (make-subtype-name '#:negative-~a))
                     (non-positive-name (make-subtype-name '#:non-positive-~a))
                     (non-negative-name (make-subtype-name '#:non-negative-~a))
