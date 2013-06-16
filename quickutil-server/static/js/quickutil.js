@@ -57,15 +57,15 @@ Quickutil.init.done(function() {
                 $('.menu li a[href="' + location.pathname + '"]').addClass('current');
             }
         })
-        .on('pjax:end', function() {
+        .on('pjax:success pjax:end', function() {
             $('#main').animate({ opacity: 1 }, 'fast');
-        })
-        .on('pjax:success', function() {
-            $('#main').animate({ opacity: 1 }, 'fast');
-            if (location.pathname == '/list') {
+            var isListPage = /^\/list\/?/.test(location.pathname);
+            $('.category-filters').toggle(isListPage);
+            if (isListPage) {
                 $('.category-filters ul li').removeClass('active');
+                var category = location.pathname.replace(/^\/list\//, '');
+                $('.category-filters ul li[data-category="' + category + '"]').addClass('active');
             }
-            $('.category-filters').toggle(/^\/list\/?/.test(location.pathname));
         });
 
     var updateFilter = function() {
