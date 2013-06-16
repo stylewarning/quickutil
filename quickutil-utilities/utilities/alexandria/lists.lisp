@@ -2,12 +2,10 @@
 
 (defutil safe-endp (:version (1 . 0)
                     :hidden t
-                    :category (alexandria lists helper))
-  "Safely compute the end of a list."
+                    :category nil)
   #>%%%>
   (declaim (inline safe-endp))
   (defun safe-endp (x)
-    %%DOC
     (declare (optimize safety))
     (endp x))
   %%%)
