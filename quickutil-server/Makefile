@@ -6,17 +6,22 @@ ASDF_PATH=$(abspath $(dir $(shell find $(PROJECT_ROOT)/.. -name "*.asd")))
 
 all: start
 
+start_args=:debug nil :port $(SERVER_PORT) :server :fcgi
+
 start:
 	$(call $(LISP), \
 		(ql:quickload :quickutil-server) (ql:quickload :swank), \
-		(quickutil-server:start :debug nil :port $(SERVER_PORT) :server :fcgi) \
+		(quickutil-server:start $(start_args)) \
 		(swank:create-server :port $(SWANK_PORT) :style :spawn :dont-close t))
 
-stop:
+hot_deploy:
 	$(call $(LISP), \
 		(ql:quickload :quickutil-server) (ql:quickload :swank-client), \
 		(swank-client:with-slime-connection (conn "localhost" $(SWANK_PORT)) \
-			(swank-client:slime-eval (quote (handler-bind ((error (function continue))) (quickutil-server:stop))) conn)) \
+			(swank-client:slime-eval (quote (handler-bind ((error (function continue))) \
+				(ql:quickload :quickutil-utilities) (ql:quickload :quickutil-server) \
+				(funcall (symbol-function (intern "STOP" :quickutil-server))) \
+				(funcall (symbol-function (intern "START" :quickutil-server)) $(start_args)))) conn)) \
 		$($(LISP)-quit))
 
 #
