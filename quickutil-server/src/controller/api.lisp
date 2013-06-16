@@ -97,12 +97,8 @@
             (when utility
               `(200
                 (:content-type "text/plain")
-                (,(string-trim '(#\Newline)
-                               (with-output-to-string (s)
-                                 (loop for sexp in (cdr (util.code utility))
-                                       do
-                                    (quickutil-utilities::pretty-print-utility-code sexp s)
-                                    (format s "~%"))))))))))
+                (,(string-trim '(#\Newline #\Space)
+                               (quickutil-utilities::pretty-print-utility-code (util.code utility)))))))))
 
 (setf (route *api* "/favorite.json" :method :post)
       #'(lambda (params)
