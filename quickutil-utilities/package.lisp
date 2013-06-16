@@ -4,7 +4,9 @@
 (defpackage #:quickutil-utilities
   (:use #:cl)
   (:nicknames #:qtl-utl)
-  (:export #:defutil))
+  (:export
+   #:all-utilities
+   #:defutil))
 
 
 ;;; All actual utilities get shoved into this package.

@@ -42,6 +42,11 @@
   (check-type name symbol)
   (gethash name *utility-registry*))
 
+(defun all-utilities ()
+  "Obtain a list of all of the utilities."
+  (loop :for k :being :the :hash-keys :in *utility-registry*
+        :collect k))
+
 (defun util-exists-p (name)
   "Does the utility named NAME exist in the registry?"
   (not (null (lookup-util name))))
