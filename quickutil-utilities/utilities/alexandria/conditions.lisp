@@ -11,8 +11,8 @@ a default value for required keyword arguments."
     (error "Required argument ~@[~S ~]missing." name))
   %%%)
 
-(defutil if-let (:version (1 . 0)
-                 :category (alexandria conditions))
+(defutil simple-style-warning (:version (1 . 0)
+                               :category (alexandria conditions))
   #>%%%>
   (define-condition simple-style-warning (simple-warning style-warning)
     ())
