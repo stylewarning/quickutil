@@ -158,3 +158,23 @@ group (i.e., group *m* has `k_m` objects)."
   (define-modify-macro divf (&optional (1/ratio 2)) /
     %%DOC)
   %%%)
+
+(defutil half (:version (1 . 0)
+               :category math)
+  "Compute half of `x`."
+  #>%%%>
+  (declaim (inline half))
+  (defun half (x)
+    %%DOC
+    (/ x 2))
+  %%%)
+
+(defutil double (:version (1 . 0)
+                 :category math)
+  "Compute double `x`."
+  #>%%%>
+  (declaim (inline double))
+  (defun double (x)
+    %%DOC
+    (* x 2))
+  %%%)
