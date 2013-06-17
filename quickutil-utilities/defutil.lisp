@@ -103,6 +103,26 @@ is replaced with replacement."
             :when pos :do (write-string replacement out)
               :while pos))) 
 
+;;; Categories
+
+(defvar *category-index* (make-hash-table)
+  "A map from categories to utility names.")
+
+(defun index-category (category symbol)
+  "Add SYMBOL to the category CATEGORY."
+  (pushnew symbol (gethash category *category-index*)))
+
+(defun all-categories ()
+  "Return a list of all of the used categories."
+  (loop :for cat :being :the :hash-keys :in *category-index*
+        :collect cat))
+
+(defun utils-in-category (category)
+  "Return a list of the utilities in the category CATEGORY."
+  (nth-value 0 (gethash category *category-index*)))
+
+;;; DEFUTIL
+
 (defmacro defutil (name (&key version
                               compilation-depends-on
                               depends-on
@@ -119,6 +139,7 @@ is replaced with replacement."
         (provides (if provides
                       (ensure-keyword-list provides)
                       (ensure-keyword-list name)))
+        (categories (ensure-keyword-list category))
         (name (ensure-keyword name)))
     
     ;; Parse documentation
@@ -135,13 +156,18 @@ is replaced with replacement."
        ;; Index the symbols provided
        (index-provides ,name ',provides)
        
+       ;; Index the category of the symbol
+       (mapc #'(lambda (cat)
+                 (index-category cat ,name))
+             ',categories)
+       
        ;; Generate the registration forms.   
        (setf (gethash ',name *utility-registry*)
              (make-util :name ,name
                         :version ',version
                         :compilation-dependencies ',(ensure-keyword-list compilation-depends-on)
                         :runtime-dependencies ',(ensure-keyword-list depends-on)
-                        :categories ',(ensure-keyword-list category)
+                        :categories ',categories
                         :hidden ,hidden
                         :provides ',provides
                         :documentation ,documentation
