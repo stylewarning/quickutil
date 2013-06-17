@@ -2,8 +2,8 @@
 
 (defutil recons (:version (1 . 0)
                  :category conses)
-  "Reuse the cons cell `old-cons` to create a fresh cons cell whose CAR
-is `a` and whose CDR is `b`."
+  "Reuse the cons cell `old-cons`, replacing its CAR with `a` and CDR
+with `b`."
   #>%%%>
   (defun recons (a b old-cons)
     %%DOC
