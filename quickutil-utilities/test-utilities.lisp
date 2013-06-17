@@ -11,6 +11,7 @@
 (in-package :quickutil-utilities.test)
 
 (defun run-tests ()
+  (quickutil-server:stop)
   (quickutil-server:start :port 18081)
 
   (quickutil-client:set-quickutil-host "localhost:18081")
@@ -26,8 +27,7 @@
                     (*standard-output* log-stream))
                 (handler-case (quickutil-client:utilize name)
                   (error (e) (princ e log-stream))))
-
               (delete-package :quickutil))
         :finally (format t "~&~A utilities were tested.~%" i))
-
+  
   (quickutil-server:stop))

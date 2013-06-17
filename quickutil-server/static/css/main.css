@@ -367,6 +367,12 @@ input.filter {
 .category-filters li a.category:hover {
   background: #eee;
 }
+.category-filters li a.category .count {
+  display: inline-block;
+  margin-left: 3px;
+  color: #ccc;
+  font-size: 80%;
+}
 /* footer */
 footer {
   margin-top: 40px;
