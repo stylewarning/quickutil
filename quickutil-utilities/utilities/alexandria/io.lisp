@@ -154,7 +154,7 @@ unless it's NIL, which means the system default."
   %%%)
 
 (defutil copy-stream (:version (1 . 0)
-                      :depends-on (non-negative-integer positive-integer)
+                      :depends-on sub-interval-numeric-types
                       :category (alexandria files io orthogonality))
   "Reads data from INPUT and writes it to OUTPUT. Both INPUT and OUTPUT must
 be streams, they will be passed to READ-SEQUENCE and WRITE-SEQUENCE and must have

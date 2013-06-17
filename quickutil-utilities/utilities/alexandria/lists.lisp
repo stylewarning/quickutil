@@ -90,6 +90,7 @@ be used with SETF."))
   %%%)
 
 (defutil doplist (:version (1 . 0)
+                  :compilation-depends-on (with-gensyms parse-body)
                   :depends-on with-gensyms
                   :category (alexandria lists))
   "Iterates over elements of PLIST. BODY can be preceded by
@@ -445,6 +446,7 @@ every element of LIST2 matches some element of LIST1. Otherwise returns false."
   %%%)
 
 (defutil map-product (:version (1 . 0)
+                      :depends-on (mappend curry ensure-function)
                       :category (alexandria lists))
   "Returns a list containing the results of calling FUNCTION with one argument
 from LIST, and one from each of MORE-LISTS for each combination of arguments.

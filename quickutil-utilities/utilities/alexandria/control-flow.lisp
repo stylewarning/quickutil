@@ -14,33 +14,35 @@ like `#'eq` and `'eq`."
   %%%)
 
 (defutil switch (:version (1 . 0)
+                 :compilation-depends-on (with-gensyms extract-function-name)
                  :depends-on (with-gensyms extract-function-name)
                  :provides (switch eswitch cswitch)
                  :category (alexandria control))
   "Dispatch to different branches of code based off of the value of an expression."
   #>%%%>
-  (defun generate-switch-body (whole object clauses test key &optional default)
-    (with-gensyms (value)
-      (setf test (extract-function-name test))
-      (setf key (extract-function-name key))
-      (when (and (consp default)
-                 (member (first default) '(error cerror)))
-        (setf default `(,@default "No keys match in SWITCH. Testing against ~S with ~S."
-                                  ,value ',test)))
-      `(let ((,value (,key ,object)))
-         (cond ,@(mapcar (lambda (clause)
-                           (if (member (first clause) '(t otherwise))
-                               (progn
-                                 (when default
-                                   (error "Multiple default clauses or illegal use of a default clause in ~S."
-                                          whole))
-                                 (setf default `(progn ,@(rest clause)))
-                                 '(()))
-                               (destructuring-bind (key-form &body forms) clause
-                                 `((,test ,value ,key-form)
-                                   ,@forms))))
-                         clauses)
-               (t ,default)))))
+  (eval-when (:compile-toplevel :load-toplevel :execute)
+    (defun generate-switch-body (whole object clauses test key &optional default)
+      (with-gensyms (value)
+        (setf test (extract-function-name test))
+        (setf key (extract-function-name key))
+        (when (and (consp default)
+                   (member (first default) '(error cerror)))
+          (setf default `(,@default "No keys match in SWITCH. Testing against ~S with ~S."
+                                    ,value ',test)))
+        `(let ((,value (,key ,object)))
+           (cond ,@(mapcar (lambda (clause)
+                             (if (member (first clause) '(t otherwise))
+                                 (progn
+                                   (when default
+                                     (error "Multiple default clauses or illegal use of a default clause in ~S."
+                                            whole))
+                                   (setf default `(progn ,@(rest clause)))
+                                   '(()))
+                                 (destructuring-bind (key-form &body forms) clause
+                                   `((,test ,value ,key-form)
+                                     ,@forms))))
+                           clauses)
+                 (t ,default))))))
 
   (defmacro switch (&whole whole (object &key (test 'eql) (key 'identity))
                     &body clauses)

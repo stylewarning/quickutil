@@ -19,7 +19,7 @@ ARRAY-DIMENSION-LIMIT."
   %%%)
 
 (defutil sub-interval-numeric-types (:version (1 . 0)
-                                     :depends-on (format-symbol)
+                                     :compilation-depends-on format-symbol
                                      :provides (negative-double-float
                                                 negative-fixnum-p
                                                 negative-float
@@ -98,7 +98,7 @@ ARRAY-DIMENSION-LIMIT."
   ;; except the RATIO related definitions and ARRAY-INDEX.
   #>%%%>
   (macrolet
-      ((frob (type &optional (base-type type))
+      ((define-sub-interval-type-for (type &optional (base-type type))
          (let ((subtype-names (list))
                (predicate-names (list)))
            (labels ((ensure-car (thing)   ; This is in Alexandria/Quickutil, but
@@ -180,15 +180,15 @@ ARRAY-DIMENSION-LIMIT."
                   (defun ,positive-p-name (n)
                     (and (typep n ',type)
                          (< ,zero n)))))))))
-    (frob fixnum integer)
-    (frob integer)
-    (frob rational)
-    (frob real)
-    (frob float)
-    (frob short-float)
-    (frob single-float)
-    (frob double-float)
-    (frob long-float))
+    (define-sub-interval-type-for fixnum integer)
+    (define-sub-interval-type-for integer)
+    (define-sub-interval-type-for rational)
+    (define-sub-interval-type-for real)
+    (define-sub-interval-type-for float)
+    (define-sub-interval-type-for short-float)
+    (define-sub-interval-type-for single-float)
+    (define-sub-interval-type-for double-float)
+    (define-sub-interval-type-for long-float))
   %%%)
 
 (defutil of-type (:version (1 . 0)

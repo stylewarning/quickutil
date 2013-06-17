@@ -145,7 +145,7 @@ the last."
   %%%)
 
 (defutil curry (:version (1 . 0)
-                :depends-on (ensure-function make-gensym-list)
+                :compilation-depends-on (ensure-function make-gensym-list)
                 :category (alexandria functional))
   "Returns a function that applies ARGUMENTS and the arguments
 it is called with to FUNCTION."

@@ -35,7 +35,7 @@ unique symbol the named variable will be bound to."
   %%%)
 
 (defutil once-only (:version (1 . 0)
-                    :depends-on make-gensym-list
+                    :compilation-depends-on make-gensym-list
                     :category (alexandria macro-writing))
   "Evaluates FORMS with symbols specified in SPECS rebound to temporary
 variables, ensuring that each initform is evaluated only once.

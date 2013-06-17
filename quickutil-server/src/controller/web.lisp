@@ -12,7 +12,7 @@
                 :util.provides
                 :util.categories
                 :util.code
-                :util.dependencies
+                :util-dependencies
                 :util.documentation)
   (:import-from :quickutil-server.view
                 :render-index
@@ -52,7 +52,7 @@
           :documentation ,(with-output-to-string (s)
                             (markdown (util.documentation utility)
                                       :stream s))
-          :dependencies ,(util.dependencies utility))))
+          :dependencies ,(util-dependencies utility))))
 
 ;;
 ;; for Web interface

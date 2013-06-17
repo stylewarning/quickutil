@@ -9,8 +9,10 @@
   '(cons (integer 0) (integer 0)))
 
 (defstruct (util (:conc-name util.))
+  name
   (version '(1 . 0) :type util-version) ; (major . minor)
-  dependencies
+  runtime-dependencies
+  compilation-dependencies
   categories
   (hidden nil :type boolean)
   provides
@@ -102,6 +104,7 @@ is replaced with replacement."
               :while pos))) 
 
 (defmacro defutil (name (&key version
+                              compilation-depends-on
                               depends-on
                               category
                               provides
@@ -134,8 +137,10 @@ is replaced with replacement."
        
        ;; Generate the registration forms.   
        (setf (gethash ',name *utility-registry*)
-             (make-util :version ',version
-                        :dependencies ',(ensure-keyword-list depends-on)
+             (make-util :name ,name
+                        :version ',version
+                        :compilation-dependencies ',(ensure-keyword-list compilation-depends-on)
+                        :runtime-dependencies ',(ensure-keyword-list depends-on)
                         :categories ',(ensure-keyword-list category)
                         :hidden ,hidden
                         :provides ',provides
@@ -150,9 +155,13 @@ is replaced with replacement."
 
 ;;;;;;;;;;;;;;;;;;;;;;; Dependency Resolution ;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defun util-dependencies (util)
+  (union (util.runtime-dependencies util)
+         (util.compilation-dependencies util)))
+
 (defun dependencies (name)
   "Get the first-order dependencies for the utility named NAME."
-  (copy-list (util.dependencies (lookup-util name))))
+  (util-dependencies (lookup-util name)))
 
 (defun all-dependencies (name)
   "Get all of the dependencies for the utility named NAME."
@@ -321,7 +330,7 @@ them in proper sorted order, leaving just cycles."
   (labels ((complete-table ()
              (loop :for k :being :the :hash-key :in registry
                    :for v := (gethash k registry)
-                   :collect (cons k (util.dependencies v)))))
+                   :collect (cons k (util-dependencies v)))))
     (if (null utility)
         (complete-table)
         (loop :with deps := (all-dependencies utility)
@@ -398,9 +407,12 @@ NIL, then emit all utility source code."
                     :quickutil-client
                     :quickutil)
                 non-existent)
-        (let ((load-order (mapcar #'lookup-util (compute-combined-load-order
-                                                 (ensure-keyword-list utilities)
-                                                 registry))))
+        (let* ((load-order (mapcar #'lookup-util (compute-combined-load-order
+                                                  (ensure-keyword-list utilities)
+                                                  registry)))
+               (compilation-deps (loop :for util :in load-order
+                                       :append (util.compilation-dependencies util) :into deps
+                                       :finally (return (remove-duplicates deps)))))
           (flet ((compute-provided-symbols ()
                    (mapcar #'symbol-name
                            (mapcan #'(lambda (x)
@@ -411,8 +423,16 @@ NIL, then emit all utility source code."
               (terpri)
               (dolist (util load-order)
                 (when util
-                  (write-string (util.code util))
-                  (terpri)))
+                  (let ((compile-time? (member (util.name util) compilation-deps)))
+                    (when compile-time?
+                      (write-string "(eval-when (:compile-toplevel :load-toplevel :execute)"))
+                    
+                    (write-string (util.code util))
+
+                    (when compile-time?
+                      (write-string ")                                        ; eval-when"))
+                    
+                    (terpri))))
               (format t "(export '~A)~%" (compute-provided-symbols))))))))
 
 (defun pretty-print-utility-code (code-string &optional stream)

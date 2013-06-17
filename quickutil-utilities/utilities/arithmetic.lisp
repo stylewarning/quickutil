@@ -122,6 +122,8 @@
                 (core k n-k))))))
   %%%)
 
+;;; XXX FIXME
+#+#:ignore
 (defutil multinomial-coefficient (:version (1 . 0)
                                   :depends-on (binomial-coefficient
                                                collect-reduce)

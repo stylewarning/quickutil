@@ -90,6 +90,7 @@ provided, then apply it to each number."
   %%%)
 
 (defutil long-zip (:version (1 . 0)
+                   :depends-on zip
                    :category lists)
   "`zip` using the longest, rather than shortest list, filling with
 `fill`."
