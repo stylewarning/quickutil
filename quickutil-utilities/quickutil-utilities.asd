@@ -35,6 +35,7 @@
                              (:file "conses")
                              (:file "synonyms")
                              (:file "io")
+                             (:file "syntax")
                              (:module split-sequence
                               :serial t
                               :components ((:file "split-sequence")))
@@ -54,7 +55,6 @@
                                            (:file "arrays")
                                            (:file "lists")
                                            (:file "io")
-                                           (:file "syntax")
                                            ;; (:file "sequences" :depends-on ("lists" "types"))
                                            ;; (:file "numbers" :depends-on ("sequences"))
                                            ))))))
