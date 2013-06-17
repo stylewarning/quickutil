@@ -21,6 +21,7 @@
                              (:file "trigonometry")
                              (:file "sequences")
                              (:file "lists")
+                             (:file "strings")
                              (:file "combinators")
                              (:file "arrays")
                              (:file "instrumentation")
