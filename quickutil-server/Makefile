@@ -10,7 +10,8 @@ start_args=:debug nil :port $(SERVER_PORT) :server :fcgi
 
 start:
 	$(call $(LISP), \
-		(ql:quickload :quickutil-server) (ql:quickload :swank), \
+		(let ((retry 5)) (handler-bind ((error (lambda (e) (if (and (> retry 0) (find-restart (quote asdf:try-recompiling))) (progn (decf retry) (invoke-restart (quote asdf:try-recompiling))) (signal e))))) (ql:quickload :quickutil-server))) \
+		(ql:quickload :swank), \
 		(quickutil-server:start $(start_args)) \
 		(swank:create-server :port $(SWANK_PORT) :style :spawn :dont-close t))
 
