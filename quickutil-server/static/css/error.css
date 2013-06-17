@@ -7,9 +7,10 @@ body {
 }
 .logo {
   position: relative;
-  font-family: Baskerville, "Baskerville Win95BT", "Times New Roman", Times, serif;
-  margin: 0;
   display: inline-block;
+  margin: 0;
+  font-family: Baskerville, "Baskerville Win95BT", "Times New Roman", Times, serif;
+  font-style: normal;
 }
 .logo a {
   color: black;
