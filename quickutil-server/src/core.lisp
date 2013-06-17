@@ -76,7 +76,7 @@
   (builder
    (<clack-middleware-static>
     :path (lambda (path)
-            (when (ppcre:scan "^(?:/images/|/css/|/js/|/html/|/robot\\.txt$|/favicon.ico$)" path)
+            (when (ppcre:scan "^(?:/images/|/css/|/js/|/html/|/releases/|/robot\\.txt$|/favicon.ico$)" path)
               path))
     :root (merge-pathnames #p"static/"
                            (asdf:component-pathname
