@@ -399,41 +399,47 @@ to
 utilities (keyword list) UTILITIES in order to use it. If UTILITY is
 NIL, then emit all utility source code."
   (let ((non-existent (remove-if #'util-exists-p (ensure-keyword-list utilities))))
-    (if non-existent
-        (format nil
-                "(in-package #:quickutil)~%~
+    (cond
+      (non-existent
+       (format nil
+               "(in-package #:quickutil)~%~
                  (~A:utility-not-found-error '~S)~%"
-                (if (find-package '#:quickutil-server)
-                    :quickutil-client
-                    :quickutil)
-                non-existent)
-        (let* ((load-order (mapcar #'lookup-util (compute-combined-load-order
-                                                  (ensure-keyword-list utilities)
-                                                  registry)))
-               (compilation-deps (loop :for util :in load-order
-                                       :append (util.compilation-dependencies util) :into deps
-                                       :finally (return (remove-duplicates deps)))))
-          (flet ((compute-provided-symbols ()
-                   (mapcar #'symbol-name
-                           (mapcan #'(lambda (x)
-                                       (copy-list (util.provides x)))
-                                   load-order))))
-            (with-output-to-string (*standard-output*)
-              (write-string "(in-package #:quickutil)")
-              (terpri)
-              (dolist (util load-order)
-                (when util
-                  (let ((compile-time? (member (util.name util) compilation-deps)))
-                    (when compile-time?
-                      (write-string "(eval-when (:compile-toplevel :load-toplevel :execute)"))
-                    
-                    (write-string (util.code util))
+               (if (find-package '#:quickutil-server)
+                   :quickutil-client
+                   :quickutil)
+               non-existent))
 
-                    (when compile-time?
-                      (write-string ")                                        ; eval-when"))
-                    
-                    (terpri))))
-              (format t "(export '~A)~%" (compute-provided-symbols))))))))
+      ((null utilities)
+       "NIL")
+      
+      (t
+       (let* ((load-order (mapcar #'lookup-util (compute-combined-load-order
+                                                 (ensure-keyword-list utilities)
+                                                 registry)))
+              (compilation-deps (loop :for util :in load-order
+                                      :append (util.compilation-dependencies util) :into deps
+                                      :finally (return (remove-duplicates deps)))))
+         (flet ((compute-provided-symbols ()
+                  (mapcar #'symbol-name
+                          (mapcan #'(lambda (x)
+                                      (copy-list (util.provides x)))
+                                  load-order))))
+           (with-output-to-string (*standard-output*)
+             (write-string "(in-package #:quickutil)")
+             (terpri)
+             (dolist (util load-order)
+               (when util
+                 (let ((compile-time? (member (util.name util) compilation-deps)))
+                   (when compile-time?
+                     (write-string "(eval-when (:compile-toplevel :load-toplevel :execute)"))
+                   
+                   (write-string (util.code util))
+
+                   (when compile-time?
+                     (write-string ")                                        ; eval-when"))
+                   
+                   (terpri))))
+             (format t "(export '~A)~%" (compute-provided-symbols)))))))))
 
 (defun pretty-print-utility-code (code-string &optional stream)
   "Pretty print utility code string CODE-STRING to stream STREAM."
