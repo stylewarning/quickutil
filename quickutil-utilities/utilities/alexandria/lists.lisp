@@ -13,7 +13,7 @@
 (defutil alist-plist (:version (1 . 0)
                       :depends-on safe-endp
                       :provides (alist-plist plist-alist)
-                      :category (alexandria lists))
+                      :category (alexandria lists alists plists))
   "Convert between alists and plists."
   #>%%%>
   (defun alist-plist (alist)
@@ -34,10 +34,10 @@ property list PLIST in the same order."
         (push (cons (car tail) (cadr tail)) alist))))
   %%%)
 
-(defutil alist-get (:version (1 . 0)
-                    :depends-on (with-gensyms)
-                    :provides (assoc-value rassoc-value)
-                    :category (alexandria lists))
+(defutil assoc-value (:version (1 . 0)
+                      :depends-on (with-gensyms)
+                      :provides (assoc-value rassoc-value)
+                      :category (alexandria lists alists))
   "Getters and setters for ASSOC and RASSOC values."
   #>%%%>
   (declaim (inline racons))
@@ -81,9 +81,11 @@ property list PLIST in the same order."
                          ,setter
                          ,new-value)))
                    `(,',get-value-from-entry ,entry))))))))
+    
     (define-alist-get assoc-value assoc cdr acons
       "ASSOC-VALUE is an alist accessor very much like ASSOC, but it can
 be used with SETF.")
+    
     (define-alist-get rassoc-value rassoc car racons
       "RASSOC-VALUE is an alist accessor very much like RASSOC, but it can
 be used with SETF."))
@@ -92,7 +94,7 @@ be used with SETF."))
 (defutil doplist (:version (1 . 0)
                   :compilation-depends-on (with-gensyms parse-body)
                   :depends-on with-gensyms
-                  :category (alexandria lists))
+                  :category (alexandria lists plists))
   "Iterates over elements of PLIST. BODY can be preceded by
 declarations, and is like a TAGBODY. RETURN may be used to terminate
 the iteration early. If RETURN is not used, returns VALUES."
