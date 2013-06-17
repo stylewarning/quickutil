@@ -54,6 +54,7 @@
                                            (:file "arrays")
                                            (:file "lists")
                                            (:file "io")
+                                           (:file "syntax")
                                            ;; (:file "sequences" :depends-on ("lists" "types"))
                                            ;; (:file "numbers" :depends-on ("sequences"))
                                            ))))))
