@@ -25,7 +25,7 @@
   (defun separated-string-append* (separator sequence-of-strings)
     "Concatenate all of the strings in SEQUENCE-OF-STRINGS separated
     by the string SEPARATOR."
-    (typecase sequence-of-strings
+    (etypecase sequence-of-strings
       (null "")
       
       (cons (with-output-to-string (*standard-output*)
@@ -42,10 +42,7 @@
                         (write-string string)
                         (unless (zerop (decf length))
                           (write-string separator)))
-                sequence-of-strings))))
-      
-      (t (error 'type-error :expected-type 'sequence
-                            :datum sequence-of-strings))))
+                sequence-of-strings))))))
   
   (defun separated-string-append (separator &rest strings)
     "Concatenate the strings STRINGS separated by the string
