@@ -75,7 +75,13 @@ Quickutil.init.done(function() {
         var i = 0;
         $('.utility').each(function() {
             var name = $(this).attr('data-utility-name');
-            if (_.all(words, function(word) { return name.indexOf(word) >= 0; })) {
+            var provides = ($(this).attr('data-provides') || '').split(',');
+
+            if (_.all(words, function(word) {
+                return name.indexOf(word) >= 0 || _.any(provides, function(provide) {
+                    return provide.indexOf(word) >= 0;
+                });
+            })) {
                 $(this).show();
                 ++i;
             }

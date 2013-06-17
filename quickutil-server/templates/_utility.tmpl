@@ -1,7 +1,7 @@
 {namespace quickutil-server.view}
 
 {template utility}
-<div class="utility" data-utility-name="{$utility.name}">
+<div class="utility" data-utility-name="{$utility.name}" data-provides="{foreach $symbol in $utility.provides}{$symbol}{if not isLast($symbol)},{/if}{/foreach}">
   <dt>
     <span class="symbol-name">{$utility.name}</span>
     <span class="version">v{$utility.version}</span>
