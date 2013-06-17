@@ -2,6 +2,5 @@
 
 (asdf:defsystem #:quickutil-utilities-test
  :depends-on ("quickutil-server"
-              "quickutil-client"
-              "bordeaux-threads")
+              "quickutil-client")
  :components ((:file "test-utilities")))
