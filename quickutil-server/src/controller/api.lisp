@@ -17,7 +17,9 @@
                 :emit-utility-code
                 :pretty-print-utility-code
                 :reverse-lookup
-                :util.code)
+                :util.code
+                :all-categories
+                :utils-in-category)
   (:import-from :quickutil-server.app
                 :*api*)
   (:import-from :quickutil-server.error
@@ -59,6 +61,16 @@
                     collect (string key))
              s)
             s)))
+
+(setf (route *api* "/list/?:category?")
+      #'(lambda (params)
+          (let ((category (getf params :category)))
+            `(200
+              (:content-type "text/plain")
+              (,(prin1-to-string
+                 (if category
+                     (utils-in-category (intern (string-upcase category) :keyword))
+                     (all-categories))))))))
 
 (setf (route *api* "/emit")
       #'(lambda (params)
