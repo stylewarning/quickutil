@@ -64,12 +64,20 @@ CATEGORY-NAME."
                *category-lookup-suffix*
                (symbol-name category-name)))
 
-(defun symbols-in-category (category-name)
-  "Query for the symbols in the category CATEGORY-NAME."
-  (let ((str (ignore-errors (download-url-string (category-url category-name)))))
-    (if (null str)
-        nil
-        (nth-value 0 (read-from-string str)))))
+(defun category-utilities* (category-names)
+  "Query for the symbols in the categories CATEGORY-NAMES."
+  (flet ((category-syms (category-name)
+           (let ((str (ignore-errors (download-url-string (category-url category-name)))))
+             (if (null str)
+                 nil
+                 (nth-value 0 (read-from-string str))))))
+    (loop :for category :in category-names
+          :append (category-syms category) :into symbols
+          :finally (return (remove-duplicates symbols)))))
+
+(defun category-utilities (&rest category-names)
+  "Query for the symbols in the categories CATEGORY-NAMES."
+  (category-utilities* category-names))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Public API ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -81,10 +89,7 @@ CATEGORY-NAME."
 
 (defun utilize-categories (&rest category-names)
   "Load the utilities in the categories CATEGORY-NAMES."
-  (let ((syms (loop :for category :in category-names
-                    :append (symbols-in-category category) :into symbols
-                    :finally (return (remove-duplicates symbols)))))
-    (apply #'utilize syms)))
+  (apply #'utilize (category-utilities* category-names)))
 
 (defun save-utils-as (filename &rest util-names)
   "Download the utilities listed in UTIL-NAMES to the file named

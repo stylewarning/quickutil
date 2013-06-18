@@ -7,6 +7,7 @@
            #:enable-autoload-syntax
            #:utilize
            #:utilize-categories
+           #:category-utilities
            #:save-utils-as
            #:who-provides
            #:utilize-symbols
@@ -21,6 +22,7 @@
                   #:enable-autoload-syntax
                   #:utilize
                   #:utilize-categories
+                  #:category-utilities
                   #:save-utils-as
                   #:who-provides
                   #:utilize-symbols
@@ -29,6 +31,7 @@
              #:enable-autoload-syntax
              #:utilize
              #:utilize-categories
+             #:category-utilities
              #:save-utils-as
              #:who-provides
              #:utilize-symbols
