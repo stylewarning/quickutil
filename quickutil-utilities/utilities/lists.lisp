@@ -323,3 +323,17 @@ SML function of the same name."
     %%DOC
     (coerce (list-to-vector list-of-characters) 'string))
   %%%)
+
+(defutil successions (:version (1 . 0)
+                      :category lists)
+  "Generate a list of 'successions' of the list `list`.
+
+Example:
+
+    > (successions '(a b c d))
+    ((A) (A B) (A B C) (A B C D))"
+  #>%%%>
+  (defun successions (list)
+    %%DOC
+    (reverse (maplist #'reverse (reverse list))))
+  %%%)
