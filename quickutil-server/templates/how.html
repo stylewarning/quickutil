@@ -11,6 +11,7 @@
 
       <ul class="toc">
         <li><a href="#quickstart">Quickstart</a></li>
+        <li><a href="#categories">Utilizing Categories</a></li>
         <li><a href="#integrating">Integrating <span class="logo">Quickutil</span> With Your Project</a></li>
         <li><a href="#offline">Offline Use of Utilities</a></li>
         <li><a href="#autoloading">Autoloading Utilities</a></li>
@@ -43,6 +44,33 @@
       
       <p>Note that there is not necessarily a one-to-one correspondence between utilities and usable symbols (functions, macros, etc.). For example, the utility <code>split-sequence</code> makes the symbols <code>split-sequence</code>, <code>split-sequence-if</code>, and <code>split-sequence-if-not</code> available for use. You can check which symbols a utility provides by looking at the <em>provides</em> heading with each utility in the utilities listing. Despite this, most utilities and provided symbols are the same.</p>
       
+      <a id="categories"></a>
+      <h3>Utilizing Categories</h3>
+      
+      <p><span class="logo">Quickutil</span>'s utilities are designated particular <em>categories</em>. Each utility can have as many categories as needed to describe the utility. For example, the utility <code>copy-array</code> has the categories <strong>alexandria</strong>, <strong>arrays</strong>, and <strong>orthogonality</strong>. Sometimes, especially if one wants to utilize a large number of utilities, it is easiest to use a category as a sort of <em>micro-library</em>&mdash;a loose collection of categorically related utilities.</p>
+      
+      <p><span class="logo">Quickutil</span> provides a function to utilize an entire category: <code>qtl:utilize-categories</code>. If we want to utilize all of Alexandria and all of <span class="logo">Quickutil</span>'s synonyms, we can simply do the following:</p>
+      
+      <pre class="example-code">
+        <code>(qtl:utilize-categories :alexandria :synonyms)</code>
+      </pre>
+      
+      <p>Now we may use the categories' respective utilities:</p>
+      
+      <pre class="example-code">
+        <code>&gt; (funcall (qtl:conjoin 'qtl:positivep 'integerp) 5)</code><br/>
+        <code>T</code>
+      </pre>
+      
+      <p>We can also get a list of utilities that a category provides by calling <code>qtl:category-utilities</code>:</p>
+      
+      <pre class="example-code">
+        <code>&gt; (qtl:category-utilities :constants)</code><br/>
+        <code>(:TRUE-FALSE :EXPONENTIAL-E :IMAGINARY-I)</code>
+      </pre>
+      
+      <p>This will be useful later if we want to <a href="#offline">save categories</a> to files.</p>
+      
       <a id="integrating"></a>
       <h3>Integrating <span class="logo">Quickutil</span> With Your Project</h3>
       
@@ -73,6 +101,17 @@
       </pre>
       
       <p>There are no network dependencies by loading <code>utils.lisp</code> here, and it can be added to any project, even those without <span class="logo">Quickutil</span>. The utilities themselves downloaded by this method are in the public domain, so there are no restrictions on the way they can be used.</p>
+      
+      <p>We can save entire categories by using <code>qtl:category-utilities</code>:</p>
+      
+      <pre class="example-code">
+        <code>&gt; (apply #'qtl:save-utils-as</code><br/>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"constants.lisp"</code><br/>
+        <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(qtl:category-utilities :constants))</code><br/>
+        <code>#P"~/Scratch/constants.lisp"</code>
+      </pre>
+      
+      <p>Like before, we now have a file we can load at any time without dependencies. This time, however, an entire category of symbols was saved. We can save multiple categories to the same file by providing more category names to <code>qtl:category-utilities</code>.</p>
       
       <a id="autoloading"></a>
       <h3>Autoloading Utilities</h3>
