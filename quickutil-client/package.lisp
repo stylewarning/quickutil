@@ -6,6 +6,7 @@
   (:export #:set-quickutil-host
            #:enable-autoload-syntax
            #:utilize
+           #:utilize-categories
            #:save-utils-as
            #:who-provides
            #:utilize-symbols
@@ -19,6 +20,7 @@
                   #:set-quickutil-host
                   #:enable-autoload-syntax
                   #:utilize
+                  #:utilize-categories
                   #:save-utils-as
                   #:who-provides
                   #:utilize-symbols
@@ -26,6 +28,7 @@
     (:export #:set-quickutil-host
              #:enable-autoload-syntax
              #:utilize
+             #:utilize-categories
              #:save-utils-as
              #:who-provides
              #:utilize-symbols

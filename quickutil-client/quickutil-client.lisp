@@ -52,11 +52,39 @@ UTIL-NAMES."
       (format-argument (first util-names) nil)
       (mapc #'format-argument (rest util-names)))))
 
+
+(defparameter *category-lookup-suffix* "/api/list/"
+  "API call for finding category symbols.")
+
+(defun category-url (category-name)
+  "Construct the url for querying the symbols in the category named
+CATEGORY-NAME."
+  (concatenate 'string
+               *quickutil-host*
+               *category-lookup-suffix*
+               (symbol-name category-name)))
+
+(defun symbols-in-category (category-name)
+  "Query for the symbols in the category CATEGORY-NAME."
+  (let ((str (ignore-errors (download-url-string (category-url category-name)))))
+    (if (null str)
+        nil
+        (nth-value 0 (read-from-string str)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Public API ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ;;; XXX FIXME: Error when utility is not found instead of just trying
 ;;; to compile NIL.
 (defun utilize (&rest util-names)
   "Load the utilities UTIL-NAMES and their dependencies."
   (compile-and-load-from-url (quickutil-query-url util-names)))
+
+(defun utilize-categories (&rest category-names)
+  "Load the utilities in the categories CATEGORY-NAMES."
+  (let ((syms (loop :for category :in category-names
+                    :append (symbols-in-category category) :into symbols
+                    :finally (return (remove-duplicates symbols)))))
+    (apply #'utilize syms)))
 
 (defun save-utils-as (filename &rest util-names)
   "Download the utilities listed in UTIL-NAMES to the file named
