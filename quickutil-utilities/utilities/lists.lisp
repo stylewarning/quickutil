@@ -324,16 +324,37 @@ SML function of the same name."
     (coerce (list-to-vector list-of-characters) 'string))
   %%%)
 
-(defutil successions (:version (1 . 0)
-                      :category lists)
-  "Generate a list of 'successions' of the list `list`.
+(defutil inits (:version (1 . 0)
+                :category lists)
+  "Generate a list of initial sublists of the list `list`. The name
+`inits` comes from the Haskell function of the same name.
 
 Example:
 
-    > (successions '(a b c d))
-    ((A) (A B) (A B C) (A B C D))"
+    > (inits '(a b c d))
+    (NIL (A) (A B) (A B C) (A B C D))"
   #>%%%>
-  (defun successions (list)
+  (defun inits (list)
     %%DOC
-    (reverse (maplist #'reverse (reverse list))))
+    (cons nil (nreverse (maplist #'reverse (reverse list)))))
+  %%%)
+
+(defutil tails (:version (1 . 0)
+                :category lists)
+  "Generate a list of tails of the list `list`. The name `tails`
+comes from the Haskell function of the same name.
+
+Example
+
+    > (tails '(a b c d))
+    ((A B C D) (B C D) (C D) (D) NIL)"
+  ;; This is *almost* equivalent to (maplist #'identity list)
+  #>%%%>
+  (defun tails (list)
+    %%DOC
+    (labels ((rec (list acc)
+               (if (null list)
+                   (nreverse (cons nil acc))
+                   (rec (cdr list) (cons list acc)))))
+      (rec list nil)))
   %%%)
