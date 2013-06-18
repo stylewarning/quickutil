@@ -108,18 +108,18 @@ is replaced with replacement."
 (defvar *category-index* (make-hash-table)
   "A map from categories to utility names.")
 
-(defun index-category (category symbol)
+(defun index-category (category symbol &optional (index *category-index*))
   "Add SYMBOL to the category CATEGORY."
-  (pushnew symbol (gethash category *category-index*)))
+  (pushnew symbol (gethash category index)))
 
-(defun all-categories ()
+(defun all-categories (&optional (index *category-index*))
   "Return a list of all of the used categories."
-  (loop :for cat :being :the :hash-keys :in *category-index*
+  (loop :for cat :being :the :hash-keys :in index
         :collect cat))
 
-(defun utils-in-category (category)
+(defun utils-in-category (category &optional (index *category-index*))
   "Return a list of the utilities in the category CATEGORY."
-  (nth-value 0 (gethash category *category-index*)))
+  (nth-value 0 (gethash category index)))
 
 ;;; DEFUTIL
 

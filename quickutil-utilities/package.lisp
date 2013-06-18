@@ -5,8 +5,12 @@
   (:use #:cl)
   (:nicknames #:qtl-utl)
   (:export
+   #:defutil
    #:all-utilities
-   #:defutil))
+   #:all-categories
+   #:utils-in-category
+   #:emit-utility-code
+   #:pretty-print-utility-code))
 
 
 ;;; All actual utilities get shoved into this package.
