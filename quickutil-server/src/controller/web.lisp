@@ -12,6 +12,7 @@
                 :util.provides
                 :util.categories
                 :util.code
+                :util.hidden
                 :util-dependencies
                 :util.documentation)
   (:import-from :quickutil-server.view
@@ -38,6 +39,7 @@
   (loop with favorites = (gethash :favorites *session*)
         for name being the hash-keys in *utility-registry* using (hash-value utility)
         if (and utility
+                (not (util.hidden utility))
                 (if prod
                     (funcall prod name utility)
                     t))
