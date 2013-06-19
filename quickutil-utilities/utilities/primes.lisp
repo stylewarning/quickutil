@@ -1,22 +1,6 @@
 (in-package #:quickutil)
 
-;; c.f. Project Euler, Problem 10, daniel.is.fischer's overview.
-;; Pre-optimized version:
-;; (defun %primes-below (n)
-;;   (let* ((sieve-bound (floor n 2))
-;;          (sieve (make-array sieve-bound          ;odd-sieve
-;;                             :element-type 'bit :initial-element 0))
-;;          (cross-limit (floor (isqrt n) 2)))
-;;     (loop :for i :from 1 :to cross-limit :do
-;;        (when (zerop (sbit sieve i))
-;;          (loop :for j :from (* 2 i (1+ i)) :below sieve-bound
-;;                       :by (1+ (* 2 i)) :do
-;;             (setf (sbit sieve j) 1))))
-;;     (loop :for i :from 1 :below sieve-bound
-;;           :when (zerop (sbit sieve i))
-;;           :collect (1+ (* 2 i)) :into acc
-;;           :finally (return (cons 2 acc)))))
-
+;; Author: Takaya OCHIAI (github: tkych)
 (defutil primes-below (:version (1 . 0)
                        :category math)
   "Return a sorted list of all primes below an integer `n`.
