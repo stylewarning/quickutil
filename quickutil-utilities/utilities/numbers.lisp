@@ -1,5 +1,23 @@
 (in-package #:quickutil)
 
+(defutil digits (:version (1 . 0)
+                 :category math)
+  "Return a list of the decimal digits of the non-negative integer `n`."
+  #>%%%>
+  (defun digits (n)
+    %%DOC
+    (declare (optimize speed))
+    (check-type n (integer 0))
+    (labels ((rec (n digits)
+               (if (zerop n)
+                   (nreverse digits)
+                   (multiple-value-bind (quo rem) (floor n 10)
+                     (rec quo (cons rem digits))))))
+      (if (zerop n)
+          (list 0)
+          (rec n nil))))
+  %%%)
+
 ;;; Author: Goheeca (github: Goheeca)
 (defutil nth-digit (:version (1 . 0)
                     :category (math setters))
