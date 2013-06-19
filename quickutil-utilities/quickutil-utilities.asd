@@ -19,6 +19,7 @@
                 :components ((:static-file "LICENSE")
                              (:file "arithmetic")
                              (:file "numbers")
+                             (:file "primes")
                              (:file "trigonometry")
                              (:file "sequences")
                              (:file "lists")
