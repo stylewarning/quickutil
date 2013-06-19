@@ -18,6 +18,7 @@
                 :serial t
                 :components ((:static-file "LICENSE")
                              (:file "arithmetic")
+                             (:file "numbers")
                              (:file "trigonometry")
                              (:file "sequences")
                              (:file "lists")
