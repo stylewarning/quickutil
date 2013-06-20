@@ -126,6 +126,22 @@ provided, then apply it to each number."
     (reduce #'append list :key #'ensure-list))
   %%%)
 
+(defutil flatten-tagged-once (:version (1 . 0)
+                              :category lists)
+  "Flatten once a list X with a tag TAG."
+  #>%%%>
+  (defun flatten-tagged-once (tag x)
+    %%DOC
+    (flet ((ensure (x)
+             (if (and (consp x)
+                      (eq tag (car x)))
+                 x
+                 (list x)))
+           (concat (x y)
+             (list* tag (append (cdr x) (cdr y)))))
+      (reduce #'concat x :key #'ensure)))
+  %%%)
+
 (defutil flatten (:version (1 . 0)
                   :category lists)
   "Flatten (and append) all lists `xs` completely."
