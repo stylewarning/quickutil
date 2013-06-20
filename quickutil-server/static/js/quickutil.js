@@ -84,10 +84,11 @@ Quickutil.init.done(function() {
                     return provide.indexOf(word) >= 0;
                 });
             })) {
-                $(this).show();
                 if (words.length == 1 && words[0] === name) {
                     $(this).addClass('exact-match');
+                    $(this).remove().prependTo('.utility-list');
                 }
+                $(this).show();
                 ++i;
             }
             else {

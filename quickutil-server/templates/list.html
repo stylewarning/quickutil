@@ -15,7 +15,7 @@
         <a href="/submit" data-pjax="#main">Submit a new utility</a>
       </div>
       <p class="filter-result-description">There are <strong class="count">{length($utilities)}</strong> utilities.</p>
-      <dl>
+      <dl class="utility-list">
         {foreach $utility in $utilities}
           {call utility}
             {param utility: $utility /}
