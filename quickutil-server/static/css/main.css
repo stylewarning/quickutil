@@ -146,13 +146,15 @@ pre.example-code {
 }
 .utility {
   position: relative;
-  margin-top: 10px;
-  padding: 10px 0 0;
+  padding: 10px;
   border-top: 1px solid #eee;
 }
 .utility .symbol-name {
   font-size: 16px;
   font-weight: bold;
+}
+.utility .symbol-name a {
+  color: #000;
 }
 .utility .provides {
   display: inline-block;
@@ -211,6 +213,9 @@ pre.example-code {
   display: none;
   overflow-y: scroll;
   color: white;
+}
+.utility.exact-match {
+  background-color: #fcf8e3;
 }
 .pun,
 .opn,

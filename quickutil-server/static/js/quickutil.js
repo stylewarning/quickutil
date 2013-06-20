@@ -62,6 +62,7 @@ Quickutil.init.done(function() {
             var isListPage = /^\/list\/?/.test(location.pathname);
             $('.category-filters').toggle(isListPage);
             if (isListPage) {
+                $.proxy(updateFilter, $('.filter'))();
                 $('.category-filters ul li').removeClass('active');
                 var category = location.pathname.replace(/^\/list\//, '');
                 $('.category-filters ul li[data-category="' + category + '"]').addClass('active');
@@ -74,6 +75,7 @@ Quickutil.init.done(function() {
         var words = $(this).val().split(/\s+/);
         var i = 0;
         $('.utility').each(function() {
+            $(this).removeClass('exact-match');
             var name = $(this).attr('data-utility-name');
             var provides = ($(this).attr('data-provides') || '').split(',');
 
@@ -83,6 +85,9 @@ Quickutil.init.done(function() {
                 });
             })) {
                 $(this).show();
+                if (words.length == 1 && words[0] === name) {
+                    $(this).addClass('exact-match');
+                }
                 ++i;
             }
             else {
