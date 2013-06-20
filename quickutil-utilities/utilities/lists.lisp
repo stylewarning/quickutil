@@ -258,11 +258,28 @@ SML function of the same name."
 (defutil weave (:version (1 . 0)
                 :depends-on (flatten-once transpose)
                 :category lists)
-  "Return a list whose elements alternate between `list1` and `list2`."
+  "Return a list whose elements alternate between each of the lists
+`lists`. Weaving stops when any of the lists has been exhausted."
   #>%%%>
   (defun weave (&rest lists)
     %%DOC
     (flatten-once (transpose lists)))
+  %%%)
+
+;;; Author: Paul Khuong (github: pkhuong)
+(defutil interleave (:version (1 . 0)
+                     :category lists)
+  "Return a list whose elements alternate between each of the lists
+  `lists`. When a list has been exhausted, interleaving continues with
+  whatever other non-empty lists."
+  #>%%%>
+  (defun interleave (&rest lists)
+    %%DOC
+    (loop :while (some #'identity lists)
+          :nconc (loop :for list-head :on lists
+                       :for list := (first list-head)
+                       :when list
+                         :collect (pop (first list-head)))))
   %%%)
 
 (defutil riffle (:version (1 . 0)
