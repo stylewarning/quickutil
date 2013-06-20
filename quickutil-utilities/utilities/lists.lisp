@@ -128,7 +128,7 @@ provided, then apply it to each number."
 
 (defutil flatten-tagged-once (:version (1 . 0)
                               :category lists)
-  "Flatten once a list X with a tag TAG."
+  "Flatten once a list `x` with a tag `tag`."
   #>%%%>
   (defun flatten-tagged-once (tag x)
     %%DOC
