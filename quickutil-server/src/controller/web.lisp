@@ -4,8 +4,6 @@
         :ningle)
   (:import-from :clack.response
                 :headers)
-  (:import-from :trivial-shell
-                :shell-command)
   (:import-from :quickutil-server
                 :*categories*)
   (:import-from :quickutil-utilities
@@ -58,27 +56,6 @@
                                       :stream s))
           :dependencies ,(util-dependencies utility))))
 
-(defun md5sum (file)
-  (shell-command (format nil "md5sum ~A | awk '{print $1}'"
-                         file)))
-
-(defvar *static-files*
-    (let ((static-root (asdf:system-relative-pathname
-                        :quickutil-server
-                        #p"static/")))
-      (flet ((filepaths (paths) (mapcar
-                                 #'(lambda (file)
-                                     (format nil "/~A?~A"
-                                             file (md5sum (merge-pathnames file static-root))))
-                                 paths)))
-        (list
-         :javascripts (filepaths '("js/quickutil.js"))
-         :css (filepaths '("css/main.css"))))))
-
-(defvar *common-template-arguments*
-    `(:categories ,*categories*
-      :static-files ,*static-files*))
-
 ;;
 ;; for Web interface
 
@@ -94,55 +71,57 @@
 (setf (route *web* "/")
       #'(lambda (params)
           (render-index
-           `(,@*common-template-arguments*
-             :is-pjax ,(getf params :|_pjax|)))))
+           (list :categories *categories*
+                 :is-pjax (getf params :|_pjax|)))))
 
 (setf (route *web* "/list/?:category?")
       #'(lambda (params)
           (let ((*print-case* :downcase)
                 (category (getf params :category)))
             (render-list
-             `(,@*common-template-arguments*
-               :is-pjax ,(getf params :|_pjax|)
-               :category ,category
-               :q ,(getf params :|q|)
-               :utilities
-               ,(utility-plists
-                 #'(lambda (name utility)
-                     (declare (ignore name))
-                     (or (not category)
-                         (member category (util.categories utility)
-                                 :test #'string-equal))))
-               :csrf-html-tag ,(clack.middleware.csrf:csrf-html-tag *session*))))))
+             (list
+              :is-pjax (getf params :|_pjax|)
+              :categories *categories*
+              :category category
+              :q (getf params :|q|)
+              :utilities
+              (utility-plists
+               #'(lambda (name utility)
+                   (declare (ignore name))
+                   (or (not category)
+                       (member category (util.categories utility)
+                               :test #'string-equal))))
+              :csrf-html-tag (clack.middleware.csrf:csrf-html-tag *session*))))))
 
 (setf (route *web* "/why")
       #'(lambda (params)
           (render-why
-           `(,@*common-template-arguments*
-             :is-pjax ,(getf params :|_pjax|)))))
+           (list :categories *categories*
+                 :is-pjax (getf params :|_pjax|)))))
 
 (setf (route *web* "/how")
       #'(lambda (params)
           (render-how
-           `(,@*common-template-arguments*
-             :is-pjax ,(getf params :|_pjax|)))))
+           (list :categories *categories*
+                 :is-pjax (getf params :|_pjax|)))))
 
 (setf (route *web* "/submit")
       #'(lambda (params)
           (render-submit
-           `(,@*common-template-arguments*
-             :is-pjax ,(getf params :|_pjax|)
-             :csrf-html-tag ,(clack.middleware.csrf:csrf-html-tag *session*)))))
+           (list :categories *categories*
+                 :is-pjax (getf params :|_pjax|)
+                 :csrf-html-tag (clack.middleware.csrf:csrf-html-tag *session*)))))
 
 (setf (route *web* "/favorites")
       #'(lambda (params)
           (let ((*print-case* :downcase)
                 (favorites (gethash :favorites *session*)))
             (render-favorites
-             `(,@*common-template-arguments*
-               :is-pjax ,(getf params :|_pjax|)
-               :favorites ,(utility-plists
-                           #'(lambda (name utility)
-                               (declare (ignore utility))
-                               (member name favorites :test #'string-equal)))
-               :csrf-html-tag ,(clack.middleware.csrf:csrf-html-tag *session*))))))
+             (list
+              :is-pjax (getf params :|_pjax|)
+              :categories *categories*
+              :favorites (utility-plists
+                          #'(lambda (name utility)
+                              (declare (ignore utility))
+                              (member name favorites :test #'string-equal)))
+              :csrf-html-tag (clack.middleware.csrf:csrf-html-tag *session*))))))

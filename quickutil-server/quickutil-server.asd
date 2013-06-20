@@ -18,8 +18,7 @@
                :cl-fad
                :cl-markdown
                :dbi
-               :multival-plist
-               :trivial-shell)
+               :multival-plist)
   :components ((:module "src"
                 :components
                 ((:file "app")
