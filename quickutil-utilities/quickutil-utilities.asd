@@ -17,6 +17,7 @@
                (:module utilities
                 :serial t
                 :components ((:static-file "LICENSE")
+                             (:file "types")
                              (:file "arithmetic")
                              (:file "numbers")
                              (:file "primes")
