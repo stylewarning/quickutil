@@ -11,6 +11,8 @@
   (:import-from :alexandria
                 :when-let
                 :hash-table-keys)
+  (:import-from :trivial-shell
+                :shell-command)
   (:import-from :dbi
                 :connect
                 :disconnect
@@ -23,6 +25,7 @@
   (:import-from :quickutil-server.constants
                 :*config*
                 :*db*
+                :*static-files*
                 :load-config)
   (:import-from :quickutil-server.db
                 :utility-name-to-id)
@@ -118,9 +121,26 @@
          (loop for cat in (util.categories utility)
                do (dbi:execute query id (string cat)))))))
 
+(defun md5sum (file)
+  (shell-command (format nil "md5sum ~A | awk '{print $1}'"
+                         file)))
+
 @export
 (defun start (&rest args &key (debug t) (port 8080) &allow-other-keys)
   (load-config)
+
+  (setf *static-files*
+        (let ((static-root (asdf:system-relative-pathname
+                            :quickutil-server
+                            #p"static/")))
+          (flet ((filepaths (paths) (mapcar
+                                     #'(lambda (file)
+                                         (format nil "/~A?~A"
+                                                 file (md5sum (merge-pathnames file static-root))))
+                                     paths)))
+            (list
+             :javascripts (filepaths '("js/quickutil.js"))
+             :css (filepaths '("css/main.css"))))))
 
   (when-let (*db* (and (getf *config* :database-params)
                        (apply #'dbi:connect (getf *config* :database-params))))

@@ -13,6 +13,9 @@
 @export
 (defparameter *db* nil)
 
+@export
+(defparameter *static-files* nil)
+
 (defun slurp-file (path)
   "Read a specified file and return the content as a sequence."
   (with-open-file (stream path :direction :input)

@@ -4,10 +4,10 @@
         :ningle)
   (:import-from :clack.response
                 :headers)
-  (:import-from :trivial-shell
-                :shell-command)
   (:import-from :quickutil-server
                 :*categories*)
+  (:import-from :quickutil-server.constants
+                :*static-files*)
   (:import-from :quickutil-utilities
                 :*utility-registry*
                 :util.version
@@ -58,26 +58,10 @@
                                       :stream s))
           :dependencies ,(util-dependencies utility))))
 
-(defun md5sum (file)
-  (shell-command (format nil "md5sum ~A | awk '{print $1}'"
-                         file)))
 
-(defvar *static-files*
-    (let ((static-root (asdf:system-relative-pathname
-                        :quickutil-server
-                        #p"static/")))
-      (flet ((filepaths (paths) (mapcar
-                                 #'(lambda (file)
-                                     (format nil "/~A?~A"
-                                             file (md5sum (merge-pathnames file static-root))))
-                                 paths)))
-        (list
-         :javascripts (filepaths '("js/quickutil.js"))
-         :css (filepaths '("css/main.css"))))))
-
-(defvar *common-template-arguments*
-    `(:categories ,*categories*
-      :static-files ,*static-files*))
+(defun common-template-arguments ()
+  `(:categories ,*categories*
+    :static-files ,*static-files*))
 
 ;;
 ;; for Web interface
@@ -94,7 +78,7 @@
 (setf (route *web* "/")
       #'(lambda (params)
           (render-index
-           `(,@*common-template-arguments*
+           `(,@(common-template-arguments)
              :is-pjax ,(getf params :|_pjax|)))))
 
 (setf (route *web* "/list/?:category?")
@@ -102,7 +86,7 @@
           (let ((*print-case* :downcase)
                 (category (getf params :category)))
             (render-list
-             `(,@*common-template-arguments*
+             `(,@(common-template-arguments)
                :is-pjax ,(getf params :|_pjax|)
                :category ,category
                :q ,(getf params :|q|)
@@ -118,19 +102,19 @@
 (setf (route *web* "/why")
       #'(lambda (params)
           (render-why
-           `(,@*common-template-arguments*
+           `(,@(common-template-arguments)
              :is-pjax ,(getf params :|_pjax|)))))
 
 (setf (route *web* "/how")
       #'(lambda (params)
           (render-how
-           `(,@*common-template-arguments*
+           `(,@(common-template-arguments)
              :is-pjax ,(getf params :|_pjax|)))))
 
 (setf (route *web* "/submit")
       #'(lambda (params)
           (render-submit
-           `(,@*common-template-arguments*
+           `(,@(common-template-arguments)
              :is-pjax ,(getf params :|_pjax|)
              :csrf-html-tag ,(clack.middleware.csrf:csrf-html-tag *session*)))))
 
@@ -139,7 +123,7 @@
           (let ((*print-case* :downcase)
                 (favorites (gethash :favorites *session*)))
             (render-favorites
-             `(,@*common-template-arguments*
+             `(,@(common-template-arguments)
                :is-pjax ,(getf params :|_pjax|)
                :favorites ,(utility-plists
                            #'(lambda (name utility)
