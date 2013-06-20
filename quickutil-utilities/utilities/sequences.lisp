@@ -144,3 +144,18 @@ defined by the equivalence relation `equiv`."
         ;; Return the classes.
         classes)))
   %%%)
+
+(defutil doseq (:version (1 . 0)
+                :category sequences)
+  "Iterate across the sequence `seq`, binding the variable `var` to
+each element of the sequence and executing `body`. Return the value
+`return` from the iteration form."
+  #>%%%>
+  (defmacro doseq ((var seq &optional return) &body body)
+    %%DOC
+    `(progn
+       (map nil (lambda (,var)
+                  ,@body)
+            ,seq)
+       ,return))
+  %%%)
