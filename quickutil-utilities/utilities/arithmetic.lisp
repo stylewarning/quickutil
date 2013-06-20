@@ -178,3 +178,23 @@ group (i.e., group *m* has `k_m` objects)."
     %%DOC
     (* x 2))
   %%%)
+
+(defutil square (:version (1 . 0)
+                 :category math)
+  "Compute the square of `x`."
+  #>%%%>
+  (declaim (inline square))
+  (defun square (x)
+    %%DOC
+    (* x x))
+  %%%)
+
+(defutil cube (:version (1 . 0)
+               :category math)
+  "Compute the cube of `x`."
+  #>%%%>
+  (declaim (inline cube))
+  (defun cube (x)
+    %%DOC
+    (* x x x))
+  %%%)
