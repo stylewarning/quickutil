@@ -106,7 +106,8 @@ CATEGORY-NAME."
       (terpri file)
       (write-string ";;;; To regenerate:" file)
       (terpri file)
-      (format file  ";;;; (qtl:save-utils-as ~{~S~^ ~})~%"
+      (format file  ";;;; (qtl:save-utils-as ~S ~{~S~^ ~})~%~%"
+              filename
               (mapcar #'(lambda (symb)
                           (intern (symbol-name symb) :keyword))
                       util-names))
