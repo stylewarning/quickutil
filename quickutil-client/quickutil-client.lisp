@@ -95,7 +95,7 @@ CATEGORY-NAME."
   "Download the utilities listed in UTIL-NAMES to the file named
   FILENAME."
   (with-open-file (file filename :direction :output
-                                 :if-exists :overwrite
+                                 :if-exists :supersede
                                  :if-does-not-exist :create)
     (let ((file-contents (download-url-string (quickutil-query-url util-names))))
       ;; Header
