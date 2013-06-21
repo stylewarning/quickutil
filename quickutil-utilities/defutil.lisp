@@ -446,10 +446,9 @@ NIL, then emit all utility source code."
                                       :append (util.compilation-dependencies util) :into deps
                                       :finally (return (remove-duplicates deps)))))
          (flet ((compute-provided-symbols ()
-                  (mapcar #'symbol-name
-                          (mapcan #'(lambda (x)
-                                      (copy-list (util.provides (lookup-util x))))
-                                  utilities))))
+                  (mapcan #'(lambda (x)
+                              (copy-list (util.provides (lookup-util x))))
+                          utilities)))
            (with-output-to-string (*standard-output*)
              (write-string "(in-package #:quickutil)")
              (terpri)
