@@ -78,3 +78,28 @@ method."
                                        (reduce-aux (1+ mid) upper)))))))
       (reduce-aux 0 (1- (length vector)))))
   %%%)
+
+(defutil array-list (:version (1 . 0)
+                     :category (arrays lists))
+  "Convert a non-zero ranked array `array` to a list of the same shape."
+  #>%%%>
+  (defun array-list (array)
+    %%DOC
+    (labels ((collect-dimension (current-dim current-dims next-dims)
+               (if (null next-dims)
+                   (loop :for i :below current-dim
+                         :collect (apply #'aref array
+                                         (reverse
+                                          (cons i current-dims))))
+                   (loop :for i :below current-dim
+                         :collect (collect-dim
+                                   (car next-dims)
+                                   (cons i current-dims)
+                                   (cdr next-dims))))))
+      (if (zerop (array-rank array))
+          (error "Cannot convert a rank-0 array to a list.")
+          (let ((dims (array-dimensions array)))
+            (collect-dimension (car dims)
+                               nil
+                               (cdr dims))))))
+  %%%)
