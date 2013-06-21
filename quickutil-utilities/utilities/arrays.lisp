@@ -92,7 +92,7 @@ method."
                                          (reverse
                                           (cons i current-dims))))
                    (loop :for i :below current-dim
-                         :collect (collect-dim
+                         :collect (collect-dimension
                                    (car next-dims)
                                    (cons i current-dims)
                                    (cdr next-dims))))))
