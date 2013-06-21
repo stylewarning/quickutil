@@ -76,7 +76,7 @@
     (case (- upper lower)
       ((0) lower)
       ((1) (* lower upper))
-      (otherwise (let ((mid (floor (+ lower upper) 2)))
+      (otherwise (let ((mid (+ lower (floor (- upper lower) 2))))
                    (* (range-product lower mid)
                       (range-product (1+ mid) upper))))))
   %%%)
