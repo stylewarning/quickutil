@@ -106,13 +106,15 @@ CATEGORY-NAME."
       (terpri file)
       (write-string ";;;; To regenerate:" file)
       (terpri file)
-      (format file  ";;;; (qtl:save-utils-as ~{~S~^ ~})~%~%"
+      (format file  ";;;; (qtl:save-utils-as ~{~S~^ ~})~%"
               (mapcar #'(lambda (symb)
                           (intern (symbol-name symb) :keyword))
                       util-names))
       
       ;; Package definition
-      (write-string "(defpackage quickutil (:use #:cl) (:nicknames #:qtl))" file)
+      (write-string "(unless (find-package '#:quickutil)"  file)
+      (terpri file)
+      (write-string "  (defpackage quickutil (:use #:cl) (:nicknames #:qtl)))" file)
       (terpri file)
       
       ;; Code
