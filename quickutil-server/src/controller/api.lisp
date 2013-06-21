@@ -94,7 +94,7 @@
                                             utilities))
                        s)
                       s)
-                  (type-error () "(error \"An error occurred.\")")))))))
+                  (error () "(error \"An error occurred. Please file a bug report at https://github.com/tarballs-are-good/quickutil/issues\")")))))))
 
 (setf (route *api* "/reverse-lookup")
       #'(lambda (params)
