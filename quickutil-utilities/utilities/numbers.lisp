@@ -21,9 +21,9 @@
 ;;; Author: Goheeca (github: Goheeca)
 (defutil nth-digit (:version (1 . 0)
                     :category (math setters))
-  "Get the `n`th digit in a rational number `number`. If `n` is
-positive, it refers to digits to the left of the decimal point, and if
-negative, to the right."
+  "Get the `n`th digit in a rational number `number` in base
+`base`. If `n` is positive, it refers to digits to the left of the
+decimal point, and if negative, to the right."
   #>%%%>
   (declaim (ftype (function (integer rational &optional (integer 2)) integer)
                   nth-digit))
@@ -35,7 +35,7 @@ negative, to the right."
     (nth-value 0 (floor (/ (mod number (expt base (1+ n))) (expt base n)))))
   
   (define-setf-expander nth-digit (n number &optional (base 10) &environment env)
-    "Set integer's digit of certain base at the given index."
+    "Set the `n`th digit of a rational number `number` in base `base`."
     (multiple-value-bind (temps vals vars store-form access-form)
         (get-setf-expansion number env)
       (let ((store (gensym))
