@@ -448,8 +448,8 @@ NIL, then emit all utility source code."
          (flet ((compute-provided-symbols ()
                   (mapcar #'symbol-name
                           (mapcan #'(lambda (x)
-                                      (copy-list (util.provides x)))
-                                  load-order))))
+                                      (copy-list (util.provides (lookup-util x))))
+                                  utilities))))
            (with-output-to-string (*standard-output*)
              (write-string "(in-package #:quickutil)")
              (terpri)
@@ -465,7 +465,8 @@ NIL, then emit all utility source code."
                      (write-string ")                                        ; eval-when"))
                    
                    (terpri))))
-             (format t "(export '~A)~%" (compute-provided-symbols)))))))))
+             (let ((*print-case* :downcase))
+               (format t "(export '~A)~%" (compute-provided-symbols))))))))))
 
 (defun pretty-print-utility-code (code-string &optional stream)
   "Pretty print utility code string CODE-STRING to stream STREAM."
