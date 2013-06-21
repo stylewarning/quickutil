@@ -7,7 +7,8 @@
                 :getf-all)
   (:import-from :alexandria
                 :when-let
-                :ensure-list)
+                :ensure-list
+                :make-keyword)
   (:import-from :quickutil-server
                 :*db*)
   (:import-from :quickutil-server.db
@@ -87,10 +88,13 @@
                     (with-output-to-string (s)
                       (pretty-print-utility-code
                        (emit-utility-code
-                        :utilities (mapcar #'string-upcase utilities))
+                        :utilities (mapcar #'(lambda (s)
+                                               (make-keyword
+                                                (string-upcase s)))
+                                            utilities))
                        s)
                       s)
-                  (type-error () nil)))))))
+                  (type-error () "(error \"An error occurred.\")")))))))
 
 (setf (route *api* "/reverse-lookup")
       #'(lambda (params)
