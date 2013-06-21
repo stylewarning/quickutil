@@ -112,9 +112,11 @@ CATEGORY-NAME."
                       util-names))
       
       ;; Package definition
-      (write-string "(unless (find-package '#:quickutil)"  file)
+      (write-string "(eval-when (:compile-toplevel :load-toplevel :execute)" file)
       (terpri file)
-      (write-string "  (defpackage quickutil (:use #:cl) (:nicknames #:qtl)))" file)
+      (write-string "  (unless (find-package '#:quickutil)"  file)
+      (terpri file)
+      (write-string "    (defpackage quickutil (:use #:cl) (:nicknames #:qtl))))" file)
       (terpri file)
       
       ;; Code
