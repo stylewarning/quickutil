@@ -67,7 +67,7 @@ string as the argument."
 (defutil make-gensym-list (:version (1 . 0)
                            :category (alexandria symbols))
   "Returns a list of `length` gensyms, each generated as if with a call to `make-gensym`,
-using the second (optional, defaulting to \"G\") argument."
+using the second (optional, defaulting to `\"G\"`) argument."
   #>%%%>
   (defun make-gensym-list (length &optional (x "G"))
     %%DOC

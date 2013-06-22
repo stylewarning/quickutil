@@ -38,7 +38,7 @@ property list PLIST in the same order."
                       :depends-on (with-gensyms)
                       :provides (assoc-value rassoc-value)
                       :category (alexandria lists alists))
-  "Getters and setters for ASSOC and RASSOC values."
+  "Getters and setters for `assoc` and `rassoc` values."
   #>%%%>
   (declaim (inline racons))
   (defun racons (key value ralist)
@@ -95,9 +95,9 @@ be used with SETF."))
                   :compilation-depends-on (with-gensyms parse-body)
                   :depends-on with-gensyms
                   :category (alexandria lists plists))
-  "Iterates over elements of PLIST. BODY can be preceded by
-declarations, and is like a TAGBODY. RETURN may be used to terminate
-the iteration early. If RETURN is not used, returns VALUES."
+  "Iterates over elements of `plist`. `body` can be preceded by
+declarations, and is like a `tagbody`. `return` may be used to terminate
+the iteration early. If `return` is not used, returns `values`."
   #>%%%>
   (defun malformed-plist (plist)
     (error "Malformed plist: ~S" plist))
@@ -134,7 +134,7 @@ the iteration early. If RETURN is not used, returns VALUES."
 
 (defutil appendf (:version (1 . 0)
                   :category (alexandria lists))
-  "Modify-macro for APPEND. Appends LISTS to the place designated by the first
+  "Modify-macro for `append`. Appends `lists` to the place designated by the first
 argument."
   #>%%%>
   (define-modify-macro appendf (&rest lists) append
@@ -143,7 +143,7 @@ argument."
 
 (defutil nconcf (:version (1 . 0)
                  :category (alexandria lists))
-  "Modify-macro for NCONC. Concatenates LISTS to place designated by the first
+  "Modify-macro for `nconc`. Concatenates `lists` to place designated by the first
 argument."
   #>%%%>
   (define-modify-macro nconcf (&rest lists) nconc
@@ -152,7 +152,7 @@ argument."
 
 (defutil unionf (:version (1 . 0)
                  :category (alexandria lists sets))
-  "Modify-macro for UNION. Saves the union of LIST and the contents of the
+  "Modify-macro for `union`. Saves the union of `list` and the contents of the
 place designated by the first argument to the designated place."
   #>%%%>
   (define-modify-macro unionf (list &rest args) union
@@ -161,7 +161,7 @@ place designated by the first argument to the designated place."
 
 (defutil nunionf (:version (1 . 0)
                   :category (alexandria lists sets))
-  "Modify-macro for NUNION. Saves the union of LIST and the contents of the
+  "Modify-macro for `nunion`. Saves the union of `list` and the contents of the
 place designated by the first argument to the designated place. May modify
 either argument."
   #>%%%>
@@ -171,7 +171,7 @@ either argument."
 
 (defutil reversef (:version (1 . 0)
                    :category (alexandria lists))
-  "Modify-macro for REVERSE. Copies and reverses the list stored in the given
+  "Modify-macro for `reverse`. Copies and reverses the list stored in the given
 place and saves back the result into the place."
   #>%%%>
   (define-modify-macro reversef () reverse
@@ -180,7 +180,7 @@ place and saves back the result into the place."
 
 (defutil nreversef (:version (1 . 0)
                     :category (alexandria lists))
-  "Modify-macro for NREVERSE. Reverses the list stored in the given place by
+  "Modify-macro for `nreverse`. Reverses the list stored in the given place by
 destructively modifying it and saves back the result into the place."
   #>%%%>
   (define-modify-macro nreversef () nreverse
@@ -192,7 +192,7 @@ destructively modifying it and saves back the result into the place."
                                    circular-list-p
                                    make-circular-list)
                         :category (alexandria lists types))
-  "Creation and detection of circular lists, as ."
+  "Creation and detection of circular lists."
   #>%%%>
   (defun circular-list (&rest elements)
     "Creates a circular list of ELEMENTS."
@@ -224,7 +224,7 @@ expected-type designator of a TYPE-ERROR."
 
 (defutil circular-tree-p (:version (1 . 0)
                           :category (alexandria trees))
-  "Returns true if OBJECT is a circular tree, NIL otherwise."
+  "Returns true if `object` is a circular tree, `nil` otherwise."
   #>%%%>
   (defun circular-tree-p (object)
     %%DOC
@@ -405,8 +405,8 @@ provided plist."
 
 (defutil mappend (:version (1 . 0)
                   :category (alexandria lists orthogonality))
-  "Applies FUNCTION to respective element(s) of each LIST, appending all the
-all the result list to a single list. FUNCTION must return a list."
+  "Applies `function` to respective element(s) of each `list`, appending all the
+all the result list to a single list. `function` must return a list."
   #>%%%>
   (defun mappend (function &rest lists)
     %%DOC
@@ -416,8 +416,8 @@ all the result list to a single list. FUNCTION must return a list."
 
 (defutil setp (:version (1 . 0)
                :category (alexandria lists sets))
-  "Returns true if OBJECT is a list that denotes a set, NIL otherwise. A list
-denotes a set if each element of the list is unique under KEY and TEST."
+  "Returns true if `object` is a list that denotes a set, `nil` otherwise. A list
+denotes a set if each element of the list is unique under `key` and `test`."
   #>%%%>
   (defun setp (object &key (test #'eql) (key #'identity))
     %%DOC
@@ -432,8 +432,8 @@ denotes a set if each element of the list is unique under KEY and TEST."
 
 (defutil set-equal (:version (1 . 0)
                     :category (alexandria lists sets))
-  "Returns true if every element of LIST1 matches some element of LIST2 and
-every element of LIST2 matches some element of LIST1. Otherwise returns false."
+  "Returns true if every element of `list1` matches some element of `list2` and
+every element of `list2` matches some element of `list1`. Otherwise returns false."
   #>%%%>
   (defun set-equal (list1 list2 &key (test #'eql) (key nil keyp))
     %%DOC
@@ -450,16 +450,15 @@ every element of LIST2 matches some element of LIST1. Otherwise returns false."
 (defutil map-product (:version (1 . 0)
                       :depends-on (mappend curry ensure-function)
                       :category (alexandria lists))
-  "Returns a list containing the results of calling FUNCTION with one argument
-from LIST, and one from each of MORE-LISTS for each combination of arguments.
-In other words, returns the product of LIST and MORE-LISTS using FUNCTION.
+  "Returns a list containing the results of calling `function` with one argument
+from `list`, and one from each of `more-lists` for each combination of arguments.
+In other words, returns the product of `list` and `more-lists` using `function`.
 
 Example:
 
- (map-product 'list '(1 2) '(3 4) '(5 6))
-  => ((1 3 5) (1 3 6) (1 4 5) (1 4 6)
-      (2 3 5) (2 3 6) (2 4 5) (2 4 6))
-"
+    (map-product 'list '(1 2) '(3 4) '(5 6))
+     => ((1 3 5) (1 3 6) (1 4 5) (1 4 6)
+         (2 3 5) (2 3 6) (2 4 5) (2 4 6))"
   #>%%%>
   (defun map-product (function list &rest more-lists)
     %%DOC

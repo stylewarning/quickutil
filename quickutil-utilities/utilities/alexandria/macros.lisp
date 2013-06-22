@@ -7,11 +7,11 @@
   "Binds each variable named by a symbol in `names` to a unique symbol around
 `forms`. Each of `names` must either be either a symbol, or of the form:
 
- `(symbol string-designator)`
+    (symbol string-designator)
 
 Bare symbols appearing in `names` are equivalent to:
 
- `(symbol symbol)`
+    (symbol symbol)
 
 The string-designator is used as the argument to `gensym` when constructing the
 unique symbol the named variable will be bound to."
@@ -43,19 +43,16 @@ variables, ensuring that each initform is evaluated only once.
 Each of `specs` must either be a symbol naming the variable to be rebound, or of
 the form:
 
-  `(symbol initform)`
+    (symbol initform)
 
 Bare symbols in `specs` are equivalent to
 
-  `(symbol symbol)`
+    (symbol symbol)
 
 Example:
 
-```
-(defmacro cons1 (x) (once-only (x) `(cons ,x ,x)))
-  (let ((y 0)) (cons1 (incf y))) => (1 . 1)
-```
-"
+    (defmacro cons1 (x) (once-only (x) `(cons ,x ,x)))
+      (let ((y 0)) (cons1 (incf y))) => (1 . 1)"
   #>%%%>
   (defmacro once-only (specs &body forms)
     %%DOC
@@ -274,7 +271,7 @@ Signals a `program-error` if `lambda-list` is malformed."
 
 Clauses are of the form:
 
-  `((case-keys . destructuring-lambda-list) form*)`
+    ((case-keys . destructuring-lambda-list) form*)
 
 The clause whose `case-keys` matches `car` of `key`, as if by `case`, `ccase`, or `ecase`,
 is selected, and `form`s are then executed with `cdr` of `key` is destructured and
@@ -282,40 +279,37 @@ Bound By The `destructuring-lambda-list`.
 
 Example:
 
-```
- (defun dcase (x)
-   (destructuring-case x
-     ((:foo a b)
-      (format nil \"foo: ~S, ~S\" a b))
-     ((:bar &key a b)
-      (format nil \"bar, ~S, ~S\" a b))
-     (((:alt1 :alt2) a)
-      (format nil \"alt: ~S\" a))
-     ((t &rest rest)
-      (format nil \"unknown: ~S\" rest))))
+    (defun dcase (x)
+      (destructuring-case x
+        ((:foo a b)
+         (format nil \"foo: ~S, ~S\" a b))
+        ((:bar &key a b)
+         (format nil \"bar, ~S, ~S\" a b))
+        (((:alt1 :alt2) a)
+         (format nil \"alt: ~S\" a))
+        ((t &rest rest)
+         (format nil \"unknown: ~S\" rest))))
 
-  (dcase (list :foo 1 2))        ; => \"foo: 1, 2\"
-  (dcase (list :bar :a 1 :b 2))  ; => \"bar: 1, 2\"
-  (dcase (list :alt1 1))         ; => \"alt: 1\"
-  (dcase (list :alt2 2))         ; => \"alt: 2\"
-  (dcase (list :quux 1 2 3))     ; => \"unknown: 1, 2, 3\"
+     (dcase (list :foo 1 2))        ; => \"foo: 1, 2\"
+     (dcase (list :bar :a 1 :b 2))  ; => \"bar: 1, 2\"
+     (dcase (list :alt1 1))         ; => \"alt: 1\"
+     (dcase (list :alt2 2))         ; => \"alt: 2\"
+     (dcase (list :quux 1 2 3))     ; => \"unknown: 1, 2, 3\"
 
- (defun decase (x)
-   (destructuring-case x
-     ((:foo a b)
-      (format nil \"foo: ~S, ~S\" a b))
-     ((:bar &key a b)
-      (format nil \"bar, ~S, ~S\" a b))
-     (((:alt1 :alt2) a)
-      (format nil \"alt: ~S\" a))))
+    (defun decase (x)
+      (destructuring-case x
+        ((:foo a b)
+         (format nil \"foo: ~S, ~S\" a b))
+        ((:bar &key a b)
+         (format nil \"bar, ~S, ~S\" a b))
+        (((:alt1 :alt2) a)
+         (format nil \"alt: ~S\" a))))
 
-  (decase (list :foo 1 2))        ; => \"foo: 1, 2\"
-  (decase (list :bar :a 1 :b 2))  ; => \"bar: 1, 2\"
-  (decase (list :alt1 1))         ; => \"alt: 1\"
-  (decase (list :alt2 2))         ; => \"alt: 2\"
-  (decase (list :quux 1 2 3))     ; =| error
-```
-"
+     (decase (list :foo 1 2))        ; => \"foo: 1, 2\"
+     (decase (list :bar :a 1 :b 2))  ; => \"bar: 1, 2\"
+     (decase (list :alt1 1))         ; => \"alt: 1\"
+     (decase (list :alt2 2))         ; => \"alt: 2\"
+     (decase (list :quux 1 2 3))     ; =| error"
   #>%%%>
   (defun expand-destructuring-case (key clauses case)
     (once-only (key)
