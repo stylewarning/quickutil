@@ -106,7 +106,7 @@ CATEGORY-NAME."
       (terpri file)
       (write-string ";;;; To regenerate:" file)
       (terpri file)
-      (format file  ";;;; (qtl:save-utils-as ~S ~{~S~^ ~})~%~%"
+      (format file  ";;;; (qtlc:save-utils-as ~S ~{~S~^ ~})~%~%"
               filename
               (mapcar #'(lambda (symb)
                           (intern (symbol-name symb) :keyword))
@@ -117,7 +117,14 @@ CATEGORY-NAME."
       (terpri file)
       (write-string "  (unless (find-package '#:quickutil)"  file)
       (terpri file)
-      (write-string "    (defpackage quickutil (:use #:cl) (:nicknames #:qtl))))" file)
+      (write-string "    (defpackage quickutil" file)
+      (terpri file)
+      (write-string "      (:documentation \"Package that contains the actual utility functions.\")" file)
+      (terpri file)
+      (write-string "      (:nicknames #:qtl)" file)
+      (terpri file)
+      (write-string "      (:use #:cl))))" file)
+      (terpri file)
       (terpri file)
       
       ;; Code
@@ -126,7 +133,7 @@ CATEGORY-NAME."
       (terpri file)
       
       ;; End of file
-      (format file ";;;; END OF ~A~%" filename)
+      (format file ";;;; END OF ~A ;;;;~%" filename)
       
       ;; Return the pathname
       (pathname filename))))
