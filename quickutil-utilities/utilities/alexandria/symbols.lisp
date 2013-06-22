@@ -2,14 +2,14 @@
 
 (defutil ensure-symbol (:version (1 . 0)
                         :category (alexandria symbols))
-  "Returns a symbol with name designated by NAME, accessible in package
-designated by PACKAGE. If symbol is not already accessible in PACKAGE, it is
+  "Returns a symbol with name designated by `name`, accessible in package
+designated by `package`. If symbol is not already accessible in `package`, it is
 interned there. Returns a secondary value reflecting the status of the symbol
-in the package, which matches the secondary return value of INTERN.
+in the package, which matches the secondary return value of `intern`.
 
 Example:
 
-  (ensure-symbol :cons :cl) => cl:cons, :external
+  `(ensure-symbol :cons :cl) => cl:cons, :external`
 "
   #>%%%>
   (declaim (inline ensure-symbol))
@@ -20,13 +20,13 @@ Example:
 
 (defutil format-symbol (:version (1 . 0)
                         :category (alexandria symbols))
-  "Constructs a string by applying ARGUMENTS to string designator CONTROL as
-if by FORMAT within WITH-STANDARD-IO-SYNTAX, and then creates a symbol named
+  "Constructs a string by applying `arguments` to string designator `control` as
+if by `format` within `with-standard-io-syntax`, and then creates a symbol named
 by that string.
 
-If PACKAGE is NIL, returns an uninterned symbol, if package is T, returns a
+If `package` is `nil`, returns an uninterned symbol, if package is `t`, returns a
 symbol interned in the current package, and otherwise returns a symbol
-interned in the package designated by PACKAGE."
+interned in the package designated by `package`."
   #>%%%>
   (defun maybe-intern (name package)
     (values
@@ -44,7 +44,7 @@ interned in the package designated by PACKAGE."
 
 (defutil make-keyword (:version (1 . 0)
                        :category (alexandria symbols))
-  "Interns the string designated by NAME in the KEYWORD package."
+  "Interns the string designated by `name` in the `keyword` package."
   #>%%%>
   (defun make-keyword (name)
     %%DOC
@@ -53,8 +53,8 @@ interned in the package designated by PACKAGE."
 
 (defutil make-gensym (:version (1 . 0)
                       :category (alexandria symbols))
-  "If NAME is a non-negative integer, calls GENSYM using it. Otherwise NAME
-must be a string designator, in which case calls GENSYM using the designated
+  "If `name` is a non-negative integer, calls `gensym` using it. Otherwise `name`
+must be a string designator, in which case calls `gensym` using the designated
 string as the argument."
   #>%%%>
   (defun make-gensym (name)
@@ -66,7 +66,7 @@ string as the argument."
 
 (defutil make-gensym-list (:version (1 . 0)
                            :category (alexandria symbols))
-  "Returns a list of LENGTH gensyms, each generated as if with a call to MAKE-GENSYM,
+  "Returns a list of `length` gensyms, each generated as if with a call to `make-gensym`,
 using the second (optional, defaulting to \"G\") argument."
   #>%%%>
   (defun make-gensym-list (length &optional (x "G"))

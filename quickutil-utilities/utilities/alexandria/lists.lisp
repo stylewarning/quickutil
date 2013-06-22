@@ -331,7 +331,7 @@ list."
 
 (defutil ensure-car (:version (1 . 0)
                      :category (alexandria lists conses))
-  "If THING is a CONS, its CAR is returned. Otherwise THING is returned."
+  "If `thing` is a `cons`, its `car` is returned. Otherwise `thing` is returned."
   #>%%%>
   (defun ensure-car (thing)
     %%DOC
@@ -342,8 +342,8 @@ list."
 
 (defutil ensure-cons (:version (1 . 0)
                       :category (alexandria lists conses))
-  "If CONS is a cons, it is returned. Otherwise returns a fresh cons with CONS
-  in the car, and NIL in the cdr."
+  "If `cons` is a cons, it is returned. Otherwise returns a fresh cons with `cons`
+  in the car, and `nil` in the cdr."
   #>%%%>
   (defun ensure-cons (cons)
     %%DOC
@@ -354,7 +354,7 @@ list."
 
 (defutil ensure-list (:version (1 . 0)
                       :category (alexandria lists))
-  "If LIST is a list, it is returned. Otherwise returns the list designated by LIST."
+  "If `list` is a list, it is returned. Otherwise returns the list designated by `list`."
   #>%%%>
   (defun ensure-list (list)
     %%DOC
