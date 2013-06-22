@@ -2,7 +2,7 @@
 
 (defutil required-argument (:version (1 . 0)
                             :category (alexandria conditions))
-  "Signals an error for a missing argument of NAME. Intended for
+  "Signals an error for a missing argument of `name`. Intended for
 use as an initialization form for structure and class-slots, and
 a default value for required keyword arguments."
   #>%%%>
@@ -68,7 +68,7 @@ a default value for required keyword arguments."
 
 (defutil ignore-some-conditions (:version (1 . 0)
                                  :category (alexandria conditions))
-  "Similar to CL:IGNORE-ERRORS but the (unevaluated) CONDITIONS
+  "Similar to `cl:ignore-errors` but the (unevaluated) `conditions`
 list determines which specific conditions are to be ignored."
   #>%%%>
   (defmacro ignore-some-conditions ((&rest conditions) &body body)

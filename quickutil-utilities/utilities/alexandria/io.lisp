@@ -6,8 +6,8 @@
 (defutil with-open-file* (:version (1 . 0)
                           :depends-on once-only
                           :category (alexandria files io))
-  "Just like WITH-OPEN-FILE, but NIL values in the keyword arguments mean to use
-the default value specified for OPEN."
+  "Just like `with-open-file`, but `nil` values in the keyword arguments mean to use
+the default value specified for `open`."
   #>%%%>
   (defmacro with-open-file* ((stream filespec &key direction element-type
                                                    if-exists if-does-not-exist external-format)
@@ -33,9 +33,9 @@ the default value specified for OPEN."
 (defutil with-input-from-file (:version (1 . 0)
                                :depends-on with-open-file*
                                :category (alexandria files io))
-  "Evaluate BODY with STREAM-NAME to an input stream on the file
-FILE-NAME. ARGS is sent as is to the call to OPEN except EXTERNAL-FORMAT,
-which is only sent to WITH-OPEN-FILE when it's not NIL."
+  "Evaluate `body` with `stream-name` to an input stream on the file
+`file-name`. `args` is sent as is to the call to `open` except `external-format`,
+which is only sent to `with-open-file` when it's not `nil`."
   #>%%%>
   (defmacro with-input-from-file ((stream-name file-name &rest args
                                                          &key (direction nil direction-p)
@@ -52,9 +52,9 @@ which is only sent to WITH-OPEN-FILE when it's not NIL."
 (defutil with-output-to-file (:version (1 . 0)
                               :depends-on with-open-file*
                               :category (alexandria files io))
-  "Evaluate BODY with STREAM-NAME to an output stream on the file
-FILE-NAME. ARGS is sent as is to the call to OPEN except EXTERNAL-FORMAT,
-which is only sent to WITH-OPEN-FILE when it's not NIL."
+  "Evaluate `body` with `stream-name` to an output stream on the file
+`file-name`. `args` is sent as is to the call to `open` except `external-format`,
+which is only sent to `with-open-file` when it's not `nil`."
   #>%%%>
   (defmacro with-output-to-file ((stream-name file-name &rest args
                                                         &key (direction nil direction-p)
@@ -71,10 +71,10 @@ which is only sent to WITH-OPEN-FILE when it's not NIL."
 (defutil read-file-into-string (:version (1 . 0)
                                 :depends-on with-input-from-file
                                 :category (alexandria files io strings))
-  "Return the contents of the file denoted by PATHNAME as a fresh string.
+  "Return the contents of the file denoted by `pathname` as a fresh string.
 
-The EXTERNAL-FORMAT parameter will be passed directly to WITH-OPEN-FILE
-unless it's NIL, which means the system default."
+The `external-format` parameter will be passed directly to `with-open-file`
+unless it's `nil`, which means the system default."
   #>%%%>
   (defun read-file-into-string (pathname &key (buffer-size 4096) external-format)
     %%DOC
@@ -92,10 +92,10 @@ unless it's NIL, which means the system default."
 (defutil write-string-into-file (:version (1 . 0)
                                  :depends-on with-output-to-file
                                  :category (alexandria files io strings))
-  "Write STRING to PATHNAME.
+  "Write `string` to `pathname`.
 
-The EXTERNAL-FORMAT parameter will be passed directly to WITH-OPEN-FILE
-unless it's NIL, which means the system default."
+The `external-format` parameter will be passed directly to `with-open-file`
+unless it's `nil`, which means the system default."
   #>%%%>
   (defun write-string-into-file (string pathname &key (if-exists :error)
                                                       if-does-not-exist
@@ -110,7 +110,7 @@ unless it's NIL, which means the system default."
 (defutil read-file-into-byte-vector (:version (1 . 0)
                                      :depends-on with-input-from-file
                                      :category (alexandria files io))
-  "Read PATHNAME into a freshly allocated (unsigned-byte 8) vector."
+  "Read `pathname` into a freshly allocated `(unsigned-byte 8)` vector."
   #>%%%>
   (defun read-file-into-byte-vector (pathname)
     %%DOC
@@ -125,7 +125,7 @@ unless it's NIL, which means the system default."
 (defutil write-byte-vector-into-file (:version (1 . 0)
                                       :depends-on with-output-to-file
                                       :category (alexandria files io))
-  "Write BYTES to PATHNAME."
+  "Write `bytes` to `pathname`."
   #>%%%>
   (defun write-byte-vector-into-file (bytes pathname &key (if-exists :error)
                                                           if-does-not-exist)
@@ -156,9 +156,9 @@ unless it's NIL, which means the system default."
 (defutil copy-stream (:version (1 . 0)
                       :depends-on sub-interval-numeric-types
                       :category (alexandria files io orthogonality))
-  "Reads data from INPUT and writes it to OUTPUT. Both INPUT and OUTPUT must
-be streams, they will be passed to READ-SEQUENCE and WRITE-SEQUENCE and must have
-compatible element-types."
+  "Reads data from `input` and writes it to `output`. Both `input` and `output` must
+be streams, they will be passed to `read-sequence` and `write-sequence` and must have
+compatible `element-type`s."
   #>%%%>
   (defun copy-stream (input output &key (element-type (stream-element-type input))
                                         (buffer-size 4096)
