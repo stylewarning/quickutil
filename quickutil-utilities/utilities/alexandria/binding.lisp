@@ -5,7 +5,7 @@
   "Creates new variable bindings, and conditionally executes either
 `then-form` or `else-form`. `else-form` defaults to `nil`.
 
-Bindings must be either single binding of the form:
+`bindings` must be either single binding of the form:
 
  (variable initial-form)
 
