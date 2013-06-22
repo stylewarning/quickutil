@@ -8,7 +8,8 @@
   :license "BSD 3-clause. See LICENSE file."
   :components ((:file "package")
                (:file "conditions")
-               (:file "host")
+               (:file "http")
+               (:file "web-api")
                (:file "quickutil-client")
                (:file "autoload"))
   :depends-on ("drakma" "cl-fad"))
