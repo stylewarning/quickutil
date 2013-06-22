@@ -39,7 +39,8 @@ it must be a function name and its `fdefinition` is returned."
 `more-predicate` functions in turn to its arguments, returning the
 primary value of the first predicate that returns true, without
 calling the remaining predicates. If none of the predicates returns
-true, `nil` is returned."  #>%%%>
+true, `nil` is returned."
+  #>%%%>
   (defun disjoin (predicate &rest more-predicates)
     %%DOC
     (declare (optimize (speed 3) (safety 1) (debug 1)))
