@@ -18,7 +18,7 @@
         (if (and found (eql type :external))
             found
             (progn
-              (quickutil-client:utilize (intern originating-util '#:keyword))
+              (utilize-utilities (intern originating-util '#:keyword))
               (find-symbol name '#:quickutil)))))))
 
 (defun enable-autoload-syntax ()
