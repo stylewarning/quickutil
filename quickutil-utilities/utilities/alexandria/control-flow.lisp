@@ -47,24 +47,24 @@ like `#'eq` and `'eq`."
   (defmacro switch (&whole whole (object &key (test 'eql) (key 'identity))
                     &body clauses)
     "Evaluates first matching clause, returning its values, or evaluates and
-returns the values of DEFAULT if no keys match."
+returns the values of `default` if no keys match."
     (generate-switch-body whole object clauses test key))
 
   (defmacro eswitch (&whole whole (object &key (test 'eql) (key 'identity))
                      &body clauses)
-    "Like SWITCH, but signals an error if no key matches."
+    "Like `switch`, but signals an error if no key matches."
     (generate-switch-body whole object clauses test key '(error)))
 
   (defmacro cswitch (&whole whole (object &key (test 'eql) (key 'identity))
                      &body clauses)
-    "Like SWITCH, but signals a continuable error if no key matches."
+    "Like `switch`, but signals a continuable error if no key matches."
     (generate-switch-body whole object clauses test key '(cerror "Return NIL from CSWITCH.")))
   %%%)
 
 (defutil whichever (:version (1 . 0)
                     :depends-on with-gensyms
                     :category (alexandria control))
-  "Evaluates exactly one of POSSIBILITIES, chosen at random."
+  "Evaluates exactly one of `possibilities`, chosen at random." ;
   #>%%%>
   (defmacro whichever (&rest possibilities &environment env)
     %%DOC
@@ -91,11 +91,11 @@ returns the values of DEFAULT if no keys match."
               :depends-on with-gensyms
               :category (alexandria control orthogonality))
   "Evaluates its arguments one at a time, from left to right. If more then one
-argument evaluates to a true value no further DATUMS are evaluated, and NIL is
+argument evaluates to a true value no further `datums` are evaluated, and `nil` is
 returned as both primary and secondary value. If exactly one argument
 evaluates to true, its value is returned as the primary value after all the
-arguments have been evaluated, and T is returned as the secondary value. If no
-arguments evaluate to true NIL is retuned as primary, and T as secondary
+arguments have been evaluated, and `t` is returned as the secondary value. If no
+arguments evaluate to true `nil` is retuned as primary, and `t` as secondary
 value."
   #>%%%>
   (defmacro xor (&rest datums)
@@ -115,10 +115,10 @@ value."
 (defutil nth-value-or (:version (1 . 0)
                        :depends-on (once-only with-gensyms)
                        :category (alexandria control))
-  "Evaluates FORM arguments one at a time, until the NTH-VALUE returned by one
+  "Evaluates `form` arguments one at a time, until the `nth-value` returned by one
 of the forms is true. It then returns all the values returned by evaluating
 that form. If none of the forms return a true nth value, this form returns
-NIL."
+`nil`."
   #>%%%>
   (defmacro nth-value-or (nth-value &body forms)
     %%DOC
@@ -134,8 +134,8 @@ NIL."
 
 (defutil multiple-value-prog2 (:version (1 . 0)
                                :category (alexandria control orthogonality))
-  "Evaluates FIRST-FORM, then SECOND-FORM, and then FORMS. Yields as its value
-all the value returned by SECOND-FORM."
+  "Evaluates `first-form`, then `second-form`, and then `forms`. Yields as its value
+all the value returned by `second-form`."
   #>%%%>
   (defmacro multiple-value-prog2 (first-form second-form &body forms)
     %%DOC

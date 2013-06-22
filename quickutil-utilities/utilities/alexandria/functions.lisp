@@ -2,9 +2,9 @@
 
 (defutil ensure-function (:version (1 . 0)
                           :category (alexandria functional))
-  "Returns the function designated by FUNCTION-DESIGNATOR:
-if FUNCTION-DESIGNATOR is a function, it is returned, otherwise
-it must be a function name and its FDEFINITION is returned."
+  "Returns the function designated by `function-designator`:
+if `function-designator` is a function, it is returned, otherwise
+it must be a function name and its `fdefinition` is returned."
   #>%%%>
   ;;; To propagate return type and allow the compiler to eliminate the IF when
   ;;; it is known if the argument is function or not.
@@ -22,8 +22,8 @@ it must be a function name and its FDEFINITION is returned."
 (defutil ensure-functionf (:version (1 . 0)
                            :depends-on ensure-function
                            :category (alexandria functional))
-  "Multiple-place modify macro for ENSURE-FUNCTION: ensures that each of
-PLACES contains a function."
+  "Multiple-place modify macro for `ensure-function`: ensures that each of
+`places` contains a function."
   #>%%%>
   (define-modify-macro ensure-functionf/1 () ensure-function)
 
@@ -35,10 +35,11 @@ PLACES contains a function."
 (defutil disjoin (:version (1 . 0)
                   :depends-on ensure-function
                   :category (alexandria functional orthogonality))
-  "Returns a function that applies each of PREDICATE and MORE-PREDICATE
-functions in turn to its arguments, returning the primary value of the first
-predicate that returns true, without calling the remaining predicates.
-If none of the predicates returns true, NIL is returned."
+  "Returns a function that applies each of `predicate` and
+`more-predicate` functions in turn to its arguments, returning the
+primary value of the first predicate that returns true, without
+calling the remaining predicates. If none of the predicates returns
+true, `nil` is returned."
   #>%%%>
   (defun disjoin (predicate &rest more-predicates)
     %%DOC
@@ -55,8 +56,8 @@ If none of the predicates returns true, NIL is returned."
 
 (defutil conjoin (:version (1 . 0)
                   :category (alexandria functional orthogonality))
-  "Returns a function that applies each of PREDICATE and MORE-PREDICATE
-functions in turn to its arguments, returning NIL if any of the predicates
+  "Returns a function that applies each of `predicate` and `more-predicate`
+functions in turn to its arguments, returning `nil` if any of the predicates
 returns false, without calling the remaining predicates. If none of the
 predicates returns false, returns the primary value of the last predicate."
   #>%%%>
@@ -79,8 +80,8 @@ predicates returns false, returns the primary value of the last predicate."
 (defutil compose (:version (1 . 0)
                   :depends-on (ensure-function make-gensym-list)
                   :category (alexandria functional orthogonality))
-  "Returns a function composed of FUNCTION and MORE-FUNCTIONS that applies its
-arguments to to each in turn, starting from the rightmost of MORE-FUNCTIONS,
+  "Returns a function composed of `function` and `more-functions` that applies its ;
+arguments to to each in turn, starting from the rightmost of `more-functions`,
 and then calling the next one with the primary value of the last."
   #>%%%>
   (defun compose (function &rest more-functions)
@@ -113,9 +114,9 @@ and then calling the next one with the primary value of the last."
 (defutil multiple-value-compose (:version (1 . 0)
                                  :depends-on (ensure-function make-gensym-list)
                                  :category (alexandria functional orthogonality))
-  "Returns a function composed of FUNCTION and MORE-FUNCTIONS that applies
+  "Returns a function composed of `function` and `more-functions` that applies
 its arguments to each in turn, starting from the rightmost of
-MORE-FUNCTIONS, and then calling the next one with all the return values of
+`more-functions`, and then calling the next one with all the return values of
 the last."
   #>%%%>
   (defun multiple-value-compose (function &rest more-functions)
@@ -147,8 +148,8 @@ the last."
 (defutil curry (:version (1 . 0)
                 :compilation-depends-on (ensure-function make-gensym-list)
                 :category (alexandria functional))
-  "Returns a function that applies ARGUMENTS and the arguments
-it is called with to FUNCTION."
+  "Returns a function that applies `arguments` and the arguments
+it is called with to `function`."
   #>%%%>
   (defun curry (function &rest arguments)
     %%DOC
@@ -173,7 +174,7 @@ it is called with to FUNCTION."
                  :depends-on ensure-function
                  :category (alexandria functional))
   "Returns a function that applies the arguments it is called
-with and ARGUMENTS to FUNCTION."
+with and `arguments` to `function`."
   #>%%%>
   (defun rcurry (function &rest arguments)
     %%DOC
@@ -186,7 +187,7 @@ with and ARGUMENTS to FUNCTION."
 
 (defutil named-lambda (:version (1 . 0)
                        :category (alexandria functional))
-  "Expands into a lambda-expression within whose BODY NAME denotes the
+  "Expands into a lambda-expression within whose `body` `name` denotes the
 corresponding function."
   #>%%%>
   (defmacro named-lambda (name lambda-list &body body)

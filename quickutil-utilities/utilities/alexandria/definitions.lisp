@@ -2,15 +2,15 @@
 
 (defutil define-constant (:version (1 . 0)
                           :category (alexandria definitions))
-  "Ensures that the global variable named by NAME is a constant with a value
-that is equal under TEST to the result of evaluating INITIAL-VALUE. TEST is a
-/function designator/ that defaults to EQL. If DOCUMENTATION is given, it
+  "Ensures that the global variable named by `name` is a constant with a value
+that is equal under `test` to the result of evaluating `initial-value`. `test` is a
+function designator that defaults to `eql`. If `documentation` is given, it
 becomes the documentation string of the constant.
 
-Signals an error if NAME is already a bound non-constant variable.
+Signals an error if `name` is already a bound non-constant variable.
 
-Signals an error if NAME is already a constant variable whose value is not
-equal under TEST to result of evaluating INITIAL-VALUE."
+Signals an error if `name` is already a constant variable whose value is not
+equal under `test` to result of evaluating `initial-value`."
   #>%%%>
   (defun %reevaluate-constant (name value test)
     (if (not (boundp name))

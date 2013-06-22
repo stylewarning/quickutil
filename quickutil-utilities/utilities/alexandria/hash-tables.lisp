@@ -2,12 +2,12 @@
 
 (defutil copy-hash-table (:version (1 . 0)
                           :category (alexandria hash-tables orthogonality))
-  "Returns a copy of hash table TABLE, with the same keys and values
-as the TABLE. The copy has the same properties as the original, unless
+  "Returns a copy of hash table `table`, with the same keys and values
+as the `table`. The copy has the same properties as the original, unless
 overridden by the keyword arguments.
 
-Before each of the original values is set into the new hash-table, KEY
-is invoked on the value. As KEY defaults to CL:IDENTITY, a shallow
+Before each of the original values is set into the new hash-table, `key`
+is invoked on the value. As `key` defaults to `cl:identity`, a shallow
 copy is returned by default."
   #>%%%>
   (defun copy-hash-table (table &key key test size
@@ -29,7 +29,7 @@ copy is returned by default."
 
 (defutil maphash-keys (:version (1 . 0)
                        :category (alexandria hash-tables))
-  "Like MAPHASH, but calls FUNCTION with each key in the hash table TABLE."
+  "Like `maphash`, but calls `function` with each key in the hash table `table`."
   #>%%%>
   (declaim (inline maphash-keys))
   (defun maphash-keys (function table)
@@ -56,7 +56,7 @@ copy is returned by default."
 (defutil hash-table-keys (:version (1 . 0)
                           :depends-on maphash-keys
                           :category (alexandria hash-tables))
-  "Returns a list containing the keys of hash table TABLE."
+  "Returns a list containing the keys of hash table `table`."
   #>%%%>
   (defun hash-table-keys (table)
     %%DOC
@@ -70,7 +70,7 @@ copy is returned by default."
 (defutil hash-table-values (:version (1 . 0)
                             :depends-on maphash-values
                             :category (alexandria hash-tables))
-  "Returns a list containing the values of hash table TABLE."
+  "Returns a list containing the values of hash table `table`."
   #>%%%>
   (defun hash-table-values (table)
     %%DOC
@@ -84,7 +84,7 @@ copy is returned by default."
 (defutil hash-table-alist (:version (1 . 0)
                            :category (alexandria hash-tables))
   "Returns an association list containing the keys and values of hash table
-TABLE."
+`table`."
   #>%%%>
   (defun hash-table-alist (table)
     %%DOC
@@ -98,7 +98,7 @@ TABLE."
 (defutil hash-table-plist (:version (1 . 0)
                            :category (alexandria hash-tables))
   "Returns a property list containing the keys and values of hash table
-TABLE."
+`table`."
   #>%%%>
   (defun hash-table-plist (table)
     %%DOC
@@ -112,7 +112,7 @@ TABLE."
 (defutil alist-hash-table (:version (1 . 0)
                            :category (alexandria hash-tables))
   "Returns a hash table containing the keys and values of the association list
-ALIST. Hash table is initialized using the HASH-TABLE-INITARGS."
+`alist`. Hash table is initialized using the `hash-table-initargs`."
   #>%%%>
   (defun alist-hash-table (alist &rest hash-table-initargs)
     %%DOC
@@ -125,7 +125,7 @@ ALIST. Hash table is initialized using the HASH-TABLE-INITARGS."
 (defutil plist-hash-table (:version (1 . 0)
                            :category (alexandria hash-tables))
   "Returns a hash table containing the keys and values of the property list
-PLIST. Hash table is initialized using the HASH-TABLE-INITARGS."
+`plist`. Hash table is initialized using the `hash-table-initargs`."
   #>%%%>
   (defun plist-hash-table (plist &rest hash-table-initargs)
     %%DOC
@@ -138,7 +138,7 @@ PLIST. Hash table is initialized using the HASH-TABLE-INITARGS."
 
 (defutil ensure-gethash (:version (1 . 0)
                          :category (alexandria hash-tables))
-  "Like GETHASH, but if KEY is not found in the HASH-TABLE saves the DEFAULT
+  "Like `gethash`, but if `key` is not found in the `hash-table` saves the `default`
 under key before returning it. Secondary return value is true if key was
 already in the table."
   #>%%%>

@@ -213,9 +213,9 @@ of TYPE."
 
 (defutil type= (:version (1 . 0)
                 :category (alexandria types))
-  "Returns a primary value of T is TYPE1 and TYPE2 are the same type,
+  "Returns a primary value of `t` is `type1` and `type2` are the same type,
 and a secondary value that is true is the type equality could be reliably
-determined: primary value of NIL and secondary value of T indicates that the
+determined: primary value of `nil` and secondary value of `t` indicates that the
 types are not equivalent."
   #>%%%>
   (declaim (inline type=))
@@ -234,7 +234,7 @@ types are not equivalent."
 
 (defutil coercef (:version (1 . 0)
                   :category (alexandria types))
-  "Modify-macro for COERCE."
+  "Modify-macro for `coerce`."
   #>%%%>
   (define-modify-macro coercef (type-spec) coerce
     %%DOC)

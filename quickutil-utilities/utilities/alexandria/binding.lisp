@@ -3,9 +3,9 @@
 (defutil if-let (:version (1 . 0)
                  :category (binding alexandria))
   "Creates new variable bindings, and conditionally executes either
-THEN-FORM or ELSE-FORM. ELSE-FORM defaults to NIL.
+`then-form` or `else-form`. `else-form` defaults to `nil`.
 
-BINDINGS must be either single binding of the form:
+`bindings` must be either single binding of the form:
 
  (variable initial-form)
 
@@ -19,8 +19,8 @@ or a list of bindings of the form:
 All initial-forms are executed sequentially in the specified order. Then all
 the variables are bound to the corresponding values.
 
-If all variables were bound to true values, the THEN-FORM is executed with the
-bindings in effect, otherwise the ELSE-FORM is executed with the bindings in
+If all variables were bound to true values, the `then-form` is executed with the
+bindings in effect, otherwise the `else-form` is executed with the bindings in
 effect."
   #>%%%>
   (defmacro if-let (bindings &body (then-form &optional else-form))
