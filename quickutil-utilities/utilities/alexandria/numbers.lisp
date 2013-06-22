@@ -2,8 +2,8 @@
 
 (defutil clamp (:version (1 . 0)
                 :category (alexandria math))
-  "Clamps the NUMBER into [min, max] range. Returns MIN if NUMBER is lesser then
-MIN and MAX if NUMBER is greater then MAX, otherwise returns NUMBER."
+  "Clamps the `number` into [min, max] range. Returns `min` if `number` is lesser then
+`min` and `max` if `number` is greater then `max`, otherwise returns `number`."
   (declaim (inline clamp))
   (defun clamp (number min max)
     %%DOC

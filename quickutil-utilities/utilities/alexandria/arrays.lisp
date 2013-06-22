@@ -2,7 +2,7 @@
 
 (defutil copy-array (:version (1 . 0)
                      :category (alexandria arrays orthogonality))
-  "Returns an undisplaced copy of ARRAY, with same fill-pointer and
+  "Returns an undisplaced copy of `array`, with same `fill-pointer` and
 adjustability (if any) as the original, unless overridden by the keyword
 arguments."
   #>%%%>
