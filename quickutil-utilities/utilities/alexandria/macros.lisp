@@ -4,16 +4,16 @@
                        :depends-on string-designator
                        :provides (with-gensyms with-unique-names)
                        :category (alexandria macro-writing))
-  "Binds each variable named by a symbol in NAMES to a unique symbol around
-FORMS. Each of NAMES must either be either a symbol, or of the form:
+  "Binds each variable named by a symbol in `names` to a unique symbol around
+`forms`. Each of `names` must either be either a symbol, or of the form:
 
- (symbol string-designator)
+ `(symbol string-designator)`
 
-Bare symbols appearing in NAMES are equivalent to:
+Bare symbols appearing in `names` are equivalent to:
 
- (symbol symbol)
+ `(symbol symbol)`
 
-The string-designator is used as the argument to GENSYM when constructing the
+The string-designator is used as the argument to `gensym` when constructing the
 unique symbol the named variable will be bound to."
   #>%%%>
   (defmacro with-gensyms (names &body forms)
@@ -37,22 +37,24 @@ unique symbol the named variable will be bound to."
 (defutil once-only (:version (1 . 0)
                     :compilation-depends-on make-gensym-list
                     :category (alexandria macro-writing))
-  "Evaluates FORMS with symbols specified in SPECS rebound to temporary
+  "Evaluates `forms` with symbols specified in `specs` rebound to temporary
 variables, ensuring that each initform is evaluated only once.
 
-Each of SPECS must either be a symbol naming the variable to be rebound, or of
+Each of `specs` must either be a symbol naming the variable to be rebound, or of
 the form:
 
-  (symbol initform)
+  `(symbol initform)`
 
-Bare symbols in SPECS are equivalent to
+Bare symbols in `specs` are equivalent to
 
-  (symbol symbol)
+  `(symbol symbol)`
 
 Example:
 
-  (defmacro cons1 (x) (once-only (x) `(cons ,x ,x)))
+```
+(defmacro cons1 (x) (once-only (x) `(cons ,x ,x)))
   (let ((y 0)) (cons1 (incf y))) => (1 . 1)
+```
 "
   #>%%%>
   (defmacro once-only (specs &body forms)
@@ -81,9 +83,9 @@ Example:
 
 (defutil parse-body (:version (1 . 0)
                      :category (alexandria macro-writing))
-  "Parses BODY into (values remaining-forms declarations doc-string).
-Documentation strings are recognized only if DOCUMENTATION is true.
-Syntax errors in body are signalled and WHOLE is used in the signal
+  "Parses `body` into `(values remaining-forms declarations doc-string)`.
+Documentation strings are recognized only if `documentation` is true.
+Syntax errors in body are signalled and `whole` is used in the signal
 arguments when given."
   #>%%%>
   (defun parse-body (body &key documentation whole)
@@ -116,23 +118,23 @@ arguments when given."
 
 2. Optional parameter specifications, normalized into form:
 
-   (name init suppliedp)
+   `(name init suppliedp)`
 
-3. Name of the rest parameter, or NIL.
+3. Name of the rest parameter, or `nil`.
 
 4. Keyword parameter specifications, normalized into form:
 
-   ((keyword-name name) init suppliedp)
+   `((keyword-name name) init suppliedp)`
 
-5. Boolean indicating &ALLOW-OTHER-KEYS presence.
+5. Boolean indicating `&allow-other-keys` presence.
 
-6. &AUX parameter specifications, normalized into form
+6. `&aux` parameter specifications, normalized into form
 
-   (name init).
+   `(name init)`.
 
-7. Existence of &KEY in the lambda-list.
+7. Existence of `&key` in the `lambda-list`.
 
-Signals a PROGRAM-ERROR is the lambda-list is malformed."
+Signals a `program-error` if `lambda-list` is malformed."
   #>%%%>
   (defun parse-ordinary-lambda-list (lambda-list &key (normalize t)
                                                       allow-specializers
@@ -267,19 +269,20 @@ Signals a PROGRAM-ERROR is the lambda-list is malformed."
                                         destructuring-ccase
                                         destructuring-ecase)
                              :category (alexandria macro-writing))
-  "DESTRUCTURING-CASE, -CCASE, and -ECASE are a combination of CASE and DESTRUCTURING-BIND.
-KEYFORM must evaluate to a CONS.
+  "`destructuring-case`, 'destructuring-ccase` and 'destructuring-ecase` are a combination of `case` and `destructuring-bind`.
+`keyform` must evaluate to af `cons`.
 
 Clauses are of the form:
 
-  ((CASE-KEYS . DESTRUCTURING-LAMBDA-LIST) FORM*)
+  `((case-keys . destructuring-lambda-list) form*)`
 
-The clause whose CASE-KEYS matches CAR of KEY, as if by CASE, CCASE, or ECASE,
-is selected, and FORMs are then executed with CDR of KEY is destructured and
-bound by the DESTRUCTURING-LAMBDA-LIST.
+The clause whose `case-keys` matches `car` of `key`, as if by `case`, `ccase`, or `ecase`,
+is selected, and `form`s are then executed with `cdr` of `key` is destructured and
+Bound By The `destructuring-lambda-list`.
 
 Example:
 
+```
  (defun dcase (x)
    (destructuring-case x
      ((:foo a b)
@@ -311,6 +314,7 @@ Example:
   (decase (list :alt1 1))         ; => \"alt: 1\"
   (decase (list :alt2 2))         ; => \"alt: 2\"
   (decase (list :quux 1 2 3))     ; =| error
+```
 "
   #>%%%>
   (defun expand-destructuring-case (key clauses case)
