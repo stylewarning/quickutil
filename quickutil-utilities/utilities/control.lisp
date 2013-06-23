@@ -12,6 +12,7 @@
   %%%)
 
 (defutil while (:version (1 . 0)
+                :depends-on until
                 :category (language control))
   "Executes `body` while `expression` is true."
   #>%%%>
