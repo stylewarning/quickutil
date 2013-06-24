@@ -40,11 +40,10 @@ provided, then apply it to each number."
   #>%%%>
   (defun replicate (n x)
     %%DOC
-    (declare (type (integer 0) n))
     (make-list n :initial-element x))
   %%%)
 
-;;; XXX: Make generic?
+;;; XXX: Make generic? Rename?
 (defutil slice (:version (1 . 0)
                 :category lists)
   "Compute the slice of a list `list` at indexes `indexes`."
