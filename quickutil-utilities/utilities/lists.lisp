@@ -113,13 +113,16 @@ provided, then apply it to each number."
   %%%)
   
 (defutil flatten-once (:version (1 . 0)
-                       :depends-on ensure-list
                        :category lists)
   "Flatten `list` once."
   #>%%%>
   (defun flatten-once (list)
     %%DOC
-    (reduce #'append list :key #'ensure-list))
+    (loop :for x :in list
+          :if (listp x)
+            :append x 
+          :else
+            :collect x))
   %%%)
 
 (defutil flatten-tagged-once (:version (1 . 0)
@@ -294,13 +297,15 @@ SML function of the same name."
   %%%)
 
 (defutil riffle (:version (1 . 0)
-                 :depends-on (weave replicate)
                  :category lists)
-  "Insert the item `x` in between each element of `list`."
+  "Insert the item `obj` in between each element of `list`."
   #>%%%>
-  (defun riffle (list x)
+  (defun riffle (list obj)
     %%DOC
-    (butlast (weave list (replicate (length list) x))))
+    (loop :for (x . xs) :on list
+          :collect x
+          :when xs
+            :collect obj))
   %%%)
 
 (defutil extend (:version (1 . 0)
