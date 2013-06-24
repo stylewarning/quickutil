@@ -68,7 +68,8 @@ provided, then apply it to each number."
 (defutil zip (:version (1 . 0)
               :depends-on transpose
               :category lists)
-  "Equivalent to `unzip`."
+  "Take a tuple of lists and turn them into a list of
+tuples. Equivalent to `unzip`."
   #>%%%>
   (defun zip (&rest lists)
     %%DOC
@@ -78,7 +79,8 @@ provided, then apply it to each number."
 (defutil unzip (:version (1 . 0)
                 :depends-on transpose
                 :category lists)
-  "Equivalent to `zip`."
+  "Take a list of tuples and return a tuple of lists. Equivalent to
+`zip`."
   #>%%%>
   (defun unzip (&rest lists)
     %%DOC
