@@ -140,7 +140,8 @@
                                      paths)))
             (list
              :javascripts (filepaths '("js/quickutil.js"))
-             :css (filepaths '("css/main.css"))))))
+             :css (filepaths '("css/LigatureSymbols/style.css"
+                               "css/main.css"))))))
 
   (when-let (*db* (and (getf *config* :database-params)
                        (apply #'dbi:connect (getf *config* :database-params))))
