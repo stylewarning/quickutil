@@ -62,10 +62,7 @@ provided, then apply it to each number."
   #>%%%>
   (defun transpose (lists)
     %%DOC
-    (loop
-      :for ls := lists :then (mapcar #'cdr ls)
-      :until (position-if #'null ls)
-      :collecting (mapcar #'car ls)))
+    (apply #'mapcar #'list lists))
   %%%)
 
 (defutil zip (:version (1 . 0)
@@ -271,14 +268,13 @@ SML function of the same name."
   %%%)
 
 (defutil weave (:version (1 . 0)
-                :depends-on (flatten-once transpose)
                 :category lists)
   "Return a list whose elements alternate between each of the lists
 `lists`. Weaving stops when any of the lists has been exhausted."
   #>%%%>
   (defun weave (&rest lists)
     %%DOC
-    (flatten-once (transpose lists)))
+    (apply #'mapcan #'list lists))
   %%%)
 
 ;;; Author: Paul Khuong (github: pkhuong)
