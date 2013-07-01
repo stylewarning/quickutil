@@ -12,112 +12,76 @@
       <h2>How to use <span class="logo">Quickutil</span></h2>
 
       <ul class="toc">
-        <li><a href="#quickstart">Quickstart</a></li>
-        <li><a href="#categories">Utilizing Categories</a></li>
-        <li><a href="#integrating">Integrating <span class="logo">Quickutil</span> With Your Project</a></li>
-        <li><a href="#offline">Offline Use of Utilities</a></li>
+        <li><a href="#utils-categories-syms">Utilities, Categories, and Symbols</a></li>
+        <li><a href="#loading-quickutil">Loading <span class="logo">Quickutil</span></a></li>
+        <li><a href="#generating">Generating a Utility File</a></li>
+        <li><a href="#interactive">Interactive Development</a></li>
         <li><a href="#autoloading">Autoloading Utilities</a></li>
-        <li><a href="#provides">Finding the Right Utility to Load</a></li>
+        <!-- <li><a href="#provides">Finding the Right Utility to Load</a></li> -->
       </ul>
 
-      <a id="quickstart"></a>
-      <h3>Quickstart</h3>
-      
-      <p><span class="logo">Quickutil</span> is very easy to use, and accommodates the different kinds of ways one would want to use utilities.</p>
-      
-      <p>The simplest way to get started is to load the <code>quickutil</code> package via Quicklisp, like so.</p>
-      
+      <a id="utils-categories-syms"></a>
+      <h3>Utilities, Categories, and Symbols</h3>
+
+      <p><span class="logo">Quickutil</span> is centered around the idea of a <strong>utility</strong>, a self-contained piece of functionality or very related functionalities that typically solve a small, generic problem. Utilities are assigned a variety of <strong>categories</strong>, such as <code>math</code> or <code>sequences</code>. Categories can also act as <em>micro-libraries</em>, such as <code>split-sequence</code>. Finally, utilities provide <strong>symbols</strong>, which might be functions, macros, constants, etc.</p>
+
+      <p>While it is most often the case, it is not necessarily true that a utility corresponds to a single symbol. For example, the utility <code>:exponential-e</code> actually provides two symbols: <code>exponential-e</code> and <code>ee</code>.</p>
+
+      <p><span class="logo">Quickutil</span> allows one to query for functionality based on the three above granularities, all at the same time. It queries efficiently, too. So if you want the symbol <code>ee</code> specifically, as well as everything in the <code>math</code> category, it will still only load the utility containing <code>ee</code> once.</p>
+
+      <a id="loading-quickutil"></a>
+      <h3>Loading <span class="logo">Quickutil</span></h3>
+
+      <p>Currently, <span class="logo">Quickutil</span> is in beta, and not a part of Quicklisp. The latest <span class="logo">Quickutil</span> tarball can be downloaded into a place Quicklisp can see it, and it can be loaded via:</p>
+
       <pre class="example-code">
         <code>(ql:quickload :quickutil)</code>
       </pre>
-      
-      <p>After it has loaded, you can now load and use utilities from the <a href="/list" data-pjax="#main">utilities listing</a> with <code>quickutil-client:utilize</code> or <code>qtlc:utilize</code> for short.</p>
-      
+
+      <p>Loading this will create two packages: <code>quickutil-client</code> or <code>qtlc</code> for all of the downloading and management functions, and <code>quickutil</code> or <code>qtl</code> for all of the installed utilities.</p>
+
+      <a id="generating"></a>
+      <h3>Generating a Utility File</h3>
+
+      <p>Almost every project has a <code>utils.lisp</code> file or section, and <span class="logo">Quickutil</span> aims to manage that by generating it automatically based off of what you need.</p>
+
+      <p>Generating the utilities file is done with <code>qtlc:save-utils-as</code>, which takes the utilities, categories, and symbols that you want to save.</p>
+
       <pre class="example-code">
-        <code>(qtlc:utilize :riffle :iota)</code>
+        <code>(qtlc:save-utils-as "utils.lisp"</code></br>
+        <code>&nbsp;&nbsp;:utilities '(:iota :riffle)</code><br/>
+        <code>&nbsp;&nbsp;:categories '(:alexandria)</code><br>
+        <code>&nbsp;&nbsp;:symbols '(:split-sequence-if-not)</code>
       </pre>
-      
-      <p>Now they can be used. Pay careful attention; the utilities are put in the <code>quickutil</code> package, which has the nickname <code>qtl</code>, and <em>not</em> the <code>quickutil-client</code> package.</p>
-      
+
+      <p>Now, the file <code>utils.lisp</code> will be saved to disk and can be added to your project. <strong>This file does <em>not</em> depend on <span class="logo">Quickutil</span> or have any network dependencies!</strong> It is a completely self-contained, readable, and modifiable source file. (However, we don't recommend modifying it so it can be regenerated in the future.)</p>
+
+      <p>To use it, simply add it as a dependency to your ASD file, or load it into the REPL. All of the utilities that you saved will be in the package <code>quickutil</code> or <code>qtl</code>.</p>
+
+      <a id="interactive"></a>
+      <h3>Interactive Development</h3>
+
+      <p>Sometimes when interactively developing your program, you do not want to keep generating a new utility file every time you need a new function. <span class="logo">Quickutil</span> includes a function <code>qtlc:utilize</code> which is very similar to <code>save-utils-as</code> and allows one to directly download and install the utilities right into the running image.</p>
+
       <pre class="example-code">
-        <code>> (qtl:riffle (qtl:iota 4) 'and-a)</code><br/>
-        <code>(0 AND-A 1 AND-A 2 AND-A 3)</code>
+        <code>(qtlc:utilize</code></br>
+        <code>&nbsp;&nbsp;:utilities '(:iota :riffle)</code><br/>
+        <code>&nbsp;&nbsp;:categories '(:alexandria)</code><br>
+        <code>&nbsp;&nbsp;:symbols '(:split-sequence-if-not)</code>
       </pre>
+
+      <p>This has the same effect as downloading the utilities to a file as if by <code>save-utils-as</code> and compiling/loading it right away.</p>
       
-      <p>Note that there is not necessarily a one-to-one correspondence between utilities and usable symbols (functions, macros, etc.). For example, the utility <code>split-sequence</code> makes the symbols <code>split-sequence</code>, <code>split-sequence-if</code>, and <code>split-sequence-if-not</code> available for use. You can check which symbols a utility provides by looking at the <em>provides</em> heading with each utility in the utilities listing. Despite this, most utilities and provided symbols are the same.</p>
-      
-      <a id="categories"></a>
-      <h3>Utilizing Categories</h3>
-      
-      <p><span class="logo">Quickutil</span>'s utilities are designated particular <em>categories</em>. Each utility can have as many categories as needed to describe the utility. For example, the utility <code>copy-array</code> has the categories <strong>alexandria</strong>, <strong>arrays</strong>, and <strong>orthogonality</strong>. Sometimes, especially if one wants to utilize a large number of utilities, it is easiest to use a category as a sort of <em>micro-library</em>&mdash;a loose collection of categorically related utilities.</p>
-      
-      <p><span class="logo">Quickutil</span> provides a function to utilize an entire category: <code>qtlc:utilize-categories</code>. If we want to utilize all of Alexandria and all of <span class="logo">Quickutil</span>'s synonyms, we can simply do the following:</p>
-      
-      <pre class="example-code">
-        <code>(qtlc:utilize-categories :alexandria :synonyms)</code>
-      </pre>
-      
-      <p>Now we may use the categories' respective utilities:</p>
-      
-      <pre class="example-code">
-        <code>&gt; (funcall (qtl:conjoin 'qtl:positivep 'integerp) 5)</code><br/>
-        <code>T</code>
-      </pre>
-      
-      <p>We can also get a list of utilities that a category provides by calling <code>qtlc:category-utilities</code>:</p>
-      
-      <pre class="example-code">
-        <code>&gt; (qtlc:category-utilities :constants)</code><br/>
-        <code>(:TRUE-FALSE :EXPONENTIAL-E :IMAGINARY-I)</code>
-      </pre>
-      
-      <p>This will be useful later if we want to <a href="#offline">save categories</a> to files.</p>
-      
-      <a id="integrating"></a>
-      <h3>Integrating <span class="logo">Quickutil</span> With Your Project</h3>
-      
-      <p>Integrating <span class="logo">Quickutil</span> is done simply by making your ASDF system depend on <code>quickutil</code>, and then adding a <code>utilities.lisp</code> file which contains the <code>qtlc:utilize</code> form, along with any other project-specific utilities. For example:</p>
-      
-      <pre class="example-code">
-        <code>(qtlc:utilize :split-sequence</code><br/>
-        <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:ensure-list</code><br/>
-        <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:transpose)</code><br/><br/>
-        <code>(defun half (x)</code><br/>
-        <code>&nbsp;&nbsp;(/ x 2))</code>
-      </pre>
-      
-      <a id="offline"></a>
-      <h3>Offline Use of Utilities</h3>
-      <p>Sometimes an Internet connection is not always available when compiling or loading a program, so it is necessary to have a static file with the utilities. This is done by using <code>qtlc:save-utils-as</code>, which will download the utilities to a file, which can be compiled or loaded. For example:</p>
-      
-      <pre class="example-code">
-        <code>&gt; (qtlc:save-utils-as "~/utils.lisp" :range :weave)</code>
-      </pre>
-      
-      <p>And then later, we can do the following:</p>
-      
-      <pre class="example-code">
-        <code>&gt; (load "~/utils.lisp")</code><br/>
-        <code>&gt; (qtl:weave '(a b c) (qtl:range 1 4))</code><br/>
-        <code>(A 1 B 2 C 3)</code>
-      </pre>
-      
-      <p>There are no network dependencies by loading <code>utils.lisp</code> here, and it can be added to any project, even those without <span class="logo">Quickutil</span>. The utilities themselves downloaded by this method are in the public domain, so there are no restrictions on the way they can be used.</p>
-      
-      <p>We can save entire categories by using <code>qtlc:category-utilities</code>:</p>
-      
-      <pre class="example-code">
-        <code>&gt; (apply #'qtlc:save-utils-as</code><br/>
-        <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"constants.lisp"</code><br/>
-        <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(qtlc:category-utilities :constants))</code><br/>
-        <code>#P"constants.lisp"</code>
-      </pre>
-      
-      <p>Like before, we now have a file we can load at any time without dependencies. This time, however, an entire category of symbols was saved. We can save multiple categories to the same file by providing more category names to <code>qtlc:category-utilities</code>.</p>
+      <p>For convenience, there are three functions with a subset of functionality for special cases:</p>
+      <ul>
+        <li><code>(qtlc:utilize-utilities :riffle :weave)</code>: download and install the utilities <code>:riffle</code> and <code>:weave</code>.</li>
+        <li><code>(qtlc:utilize-categories :math :alexandria)</code>: download and install everything in the categories <code>math</code> and <code>alexandria</code>.</li>
+        <li><code>(qtlc:utilize-symbols :split-sequence-if-not)</code>: download and install the utility containing the function <code>split-sequence-if-not</code>.</li>
+      </ul>
       
       <a id="autoloading"></a>
       <h3>Autoloading Utilities</h3>
-      <p>Especially for scripts and REPL interactions, it is nice to be able to use utilities without previously loading them. <span class="logo">Quickutil</span> provides <em>autoload syntax</em>, <code>#?</code>, which autoloads the symbol right after it. The syntax is disabled by default, and can be enabled with <code>qtlc:enable-autoload-syntax</code>. For example:</p>
+      <p>Especially for quick REPL interactions, it is nice to be able to use utilities without explicitly loading them simply because it is faster and requires less typing. <span class="logo">Quickutil</span> provides an optional <em>autoload syntax</em>, <code>#?</code>, which autoloads the symbol right after it. The syntax is disabled by default, and can be enabled with <code>qtlc:enable-autoload-syntax</code>. For example:</p>
 
       <pre class="example-code">
         <code>&gt; (qtlc:enable-autoload-syntax)</code><br/>
@@ -125,10 +89,10 @@
         <code>"lolhe"</code>
       </pre>
 
-      <p>Autoloading only uses the network when it needs to; already loaded symbols are recycled.</p>
+      <p>Autoloading only uses the network when it needs to; already-loaded symbols are recycled.</p>
       
       <p>You can permanently enable autoload syntax by loading <span class="logo">Quickutil</span> and putting the <code>qtlc:enable-autoload-syntax</code> call in your Lisp's initialization file.</p>
-      
+<!--      
       <a id="provides"></a>
       <h3>Finding the Right Utility to Load</h3>
       <p>If you know which function, macro, etc. that you want, but you neither know nor remember which utility it originates from, you can use <code>qtlc:who-provides</code>.</p>
@@ -151,7 +115,7 @@
       <div class="footer-next-link">
         <a href="/list" class="lsf-icon" data-pjax="#main">Discover utilities</a>
       </div>
-      
+-->  
     {/param}
   {/call}
 {/template}
