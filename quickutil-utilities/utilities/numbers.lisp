@@ -1,7 +1,7 @@
 (in-package #:quickutil)
 
 (defutil digits (:version (1 . 0)
-                 :category math)
+                 :category (math integers))
   "Return a list of the decimal digits of the non-negative integer `n`."
   #>%%%>
   (defun digits (n)
@@ -51,4 +51,59 @@ decimal point, and if negative, to the right."
                    ,store-form
                    ,store)
                 `(nth-digit ,ntemp ,access-form ,basetemp)))))
+  %%%)
+
+;;; TODO: Allow integer/bit-vector routines to take another value to
+;;; allow conversion between negative integers and two's complement
+;;; bit vectors.
+
+;;; Author: Juanito Fatas (github: JuanitoFatas)
+;;; Modified: Robert Smith
+(defutil bit-vector-integer (:version (1 . 0)
+                             :category (math integers sequences bit-vectors))
+  "Convert a bit vector `bv` to a positive integer. The bits of the
+integer are ordered from most significant to least significant, unless
+`least-significant-first` is true."
+  #>%%%>
+  (defun bit-vector-integer (bv &key least-significant-first)
+    %%DOC
+    (check-type bv bit-vector)
+    (flet ((forward-horner (sum next)
+             (+ (ash sum 1)
+                next))
+           (reverse-horner (next sum)
+             (+ (ash sum 1)
+                next)))
+      (declare (dynamic-extent (function forward-horner)
+                               (function reverse-horner))
+               (inline forward-horner reverse-horner))
+      (if least-significant-first
+          (reduce #'reverse-horner bv :initial-value 0 :from-end t)
+          (reduce #'forward-horner bv :initial-value 0))))
+  %%%)
+
+(defutil integer-bit-vector (:version (1 . 0)
+                             :category (math integers sequences bit-vectors))
+  "Convert a positive integer `n` to a bit vector. The least
+significant bits will be first if `least-significant-first` is true."
+#>%%%>
+  (defun integer-bit-vector (n &key least-significant-first)
+    %%DOC
+    (declare (optimize speed))
+    (check-type n unsigned-byte)
+    
+    (let* ((len (integer-length n))
+           (bv (make-array (if (zerop len) 1 len) :element-type 'bit
+                                                  :initial-element 0))
+           (inc-by (if least-significant-first 1 -1)))
+      (labels ((rec (n i)
+                 (declare (type unsigned-byte n)
+                          (type (integer -1 #.array-total-size-limit) i))
+                 (if (zerop n)
+                     bv
+                     (multiple-value-bind (quo rem) (floor n 2)
+                       (when (= 1 rem)
+                         (setf (sbit bv i) 1))
+                       (rec quo (+ i inc-by))))))
+        (rec n (if least-significant-first 0 (1- len))))))
   %%%)
