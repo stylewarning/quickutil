@@ -74,9 +74,12 @@ STREAM."
     (terpri stream)))
 
 (defun ensure-keyword-list (list)
-  (mapcar #'(lambda (symb)
-              (intern (symbol-name symb) '#:keyword))
-          list))
+  "Ensure that LIST is a list of keywords."
+  (if (listp list)
+      (mapcar #'(lambda (symb)
+                  (intern (symbol-name symb) '#:keyword))
+              list)
+      (ensure-keyword-list (list list))))
 
 (defun save-utils-as (filename &key utilities categories symbols)
   (with-open-file (file filename :direction :output
