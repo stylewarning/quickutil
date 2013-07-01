@@ -11,3 +11,13 @@ to the function `F : (A -> B) -> A -> B`."
      (lambda (x) (funcall f (lambda (y)
                               (funcall (funcall x x) y))))))
   %%%)
+
+(defutil flip (:version (1 . 0)
+               :category functional)
+  "Return a function whose argument order of a binary function `f` is reversed."
+  #>%%%>
+  (defun flip (f)
+    %%DOC
+    #'(lambda (y x)
+        (funcall f x y)))
+  %%%)
