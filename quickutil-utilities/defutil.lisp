@@ -465,7 +465,9 @@ NIL, then emit all utility source code."
                    
                    (terpri))))
              (let ((*print-case* :downcase))
-               (format t "(export '~A)~%" (compute-provided-symbols))))))))))
+               (write-string "(eval-when (:compile-toplevel :load-toplevel :execute)")
+               (terpri)
+               (format t "  (export '~A))~%" (compute-provided-symbols))))))))))
 
 (defun pretty-print-utility-code (code-string &optional stream)
   "Pretty print utility code string CODE-STRING to stream STREAM."
