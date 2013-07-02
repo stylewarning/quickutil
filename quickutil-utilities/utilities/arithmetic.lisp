@@ -6,7 +6,6 @@
   #>%%%>
   (defun positivep (n)
     %%DOC
-    (declare (type real n))
     (plusp n))
   %%%)
 
@@ -16,7 +15,6 @@
   #>%%%>
   (defun negativep (n)
     %%DOC
-    (declare (type real n))
     (minusp n))
   %%%)
 
@@ -26,7 +24,6 @@
   #>%%%>
   (defun non-negative-p (n)
     %%DOC
-    (declare (type real n))
     (>= n 0))
   %%%)
 
@@ -36,7 +33,6 @@
   #>%%%>
   (defun non-positive-p (n)
     %%DOC
-    (declare (type real n))
     (<= n 0))
   %%%)
 
@@ -46,7 +42,6 @@
   #>%%%>
   (defun non-zero-p (n)
     %%DOC
-    (declare (type real n))
     (not (zerop n)))
   %%%)
 
