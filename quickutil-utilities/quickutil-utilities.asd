@@ -60,5 +60,4 @@
                                            (:file "lists")
                                            (:file "io")
                                            (:file "sequences")
-                                           ;; (:file "numbers" :depends-on ("sequences"))
-                                           ))))))
+                                           (:file "numbers")))))))

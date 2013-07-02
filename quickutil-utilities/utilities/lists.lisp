@@ -12,28 +12,6 @@ provided, then apply it to each number."
     (loop :for i :from start :below end :by step :collecting (funcall key i)))
   %%%)
 
-(defutil iota (:version (1 . 0)
-               :depends-on (range non-negative-p)
-               :category lists)
-  "Return `[0, ..., n-1]`."
-  #>%%%>
-  (defun iota (n)
-    %%DOC
-    (assert (non-negative-p n))
-    (range 0 n))
-  %%%)
-
-(defutil iota+1 (:version (1 . 0)
-                 :depends-on range
-                 :category lists)
-  "Return `[1, ..., n]`."
-  #>%%%>
-  (defun iota+1 (n)
-    %%DOC
-    (assert (>= n 1))
-    (range 1 (1+ n)))
-  %%%)
-
 (defutil replicate (:version (1 . 0)
                     :category lists)
   "Make a list of `n` copies of `x`."

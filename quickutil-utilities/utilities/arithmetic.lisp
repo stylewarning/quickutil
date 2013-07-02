@@ -78,7 +78,8 @@
 
 (defutil factorial (:version (1 . 0)
                     :depends-on range-product
-                    :category math)
+                    ;; This actually supersedes Alexandria.
+                    :category (alexandria math))
   "Compute the factorial of `n`, where `n! = 1 * 2 * ... * n`."
   #>%%%>
   (declaim (ftype (function ((integer 0)) (integer 1))
@@ -92,7 +93,8 @@
 
 (defutil binomial-coefficient (:version (1 . 0)
                                :depends-on (range-product factorial)
-                               :category math)
+                               ;; This actually supersedes Alexandria.
+                               :category (alexandria math))
   "Binomial coefficient of `n` and `k`."
   #>%%%>
   (declaim (ftype (function ((integer 0) (integer 0)) (integer 0))

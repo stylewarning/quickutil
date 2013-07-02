@@ -2,8 +2,9 @@
 
 (defutil clamp (:version (1 . 0)
                 :category (alexandria math))
-  "Clamps the `number` into [min, max] range. Returns `min` if `number` is lesser then
+  "Clamps the `number` into [`min`, `max`] range. Returns `min` if `number` is lesser then
 `min` and `max` if `number` is greater then `max`, otherwise returns `number`."
+  #>%%%>
   (declaim (inline clamp))
   (defun clamp (number min max)
     %%DOC
@@ -11,140 +12,198 @@
         min
         (if (> number max)
             max
-            number))))
+            number)))
+  %%%)
 
-(defun gaussian-random (&optional min max)
+(defutil gaussian-random (:version (1 . 0)
+                          :category (alexandria math random))
   "Returns two gaussian random double floats as the primary and secondary value,
-optionally constrained by MIN and MAX. Gaussian random numbers form a standard
-normal distribution around 0.0d0.
+optionally constrained by `min` and `max`. Gaussian random numbers form a standard
+normal distribution around `0.0d0`.
 
-Sufficiently positive MIN or negative MAX will cause the algorithm used to
-take a very long time. If MIN is positive it should be close to zero, and
-similarly if MAX is negative it should be close to zero."
-  (labels ((gauss ()
-             (loop
-                for x1 = (- (random 2.0d0) 1.0d0)
-                for x2 = (- (random 2.0d0) 1.0d0)
-                for w = (+ (expt x1 2) (expt x2 2))
-                when (< w 1.0d0)
-                do (let ((v (sqrt (/ (* -2.0d0 (log w)) w))))
-                     (return (values (* x1 v) (* x2 v))))))
-           (guard (x min max)
-             (unless (<= min x max)
-               (tagbody
-                :retry
-                  (multiple-value-bind (x1 x2) (gauss)
-                    (when (<= min x1 max)
-                      (setf x x1)
-                      (go :done))
-                    (when (<= min x2 max)
-                      (setf x x2)
-                      (go :done))
-                    (go :retry))
-                :done))
-             x))
-    (multiple-value-bind (g1 g2) (gauss)
-      (values (guard g1 (or min g1) (or max g1))
-              (guard g2 (or min g2) (or max g2))))))
+Sufficiently positive `min` or negative `max` will cause the algorithm used to
+take a very long time. If `min` is positive it should be close to zero, and
+similarly if `max` is negative it should be close to zero."
+  #>%%%>
+  (defun gaussian-random (&optional min max)
+    %%DOC
+    (labels ((gauss ()
+               (loop
+                 for x1 = (- (random 2.0d0) 1.0d0)
+                 for x2 = (- (random 2.0d0) 1.0d0)
+                 for w = (+ (expt x1 2) (expt x2 2))
+                 when (< w 1.0d0)
+                   do (let ((v (sqrt (/ (* -2.0d0 (log w)) w))))
+                        (return (values (* x1 v) (* x2 v))))))
+             (guard (x min max)
+               (unless (<= min x max)
+                 (tagbody
+                  :retry
+                    (multiple-value-bind (x1 x2) (gauss)
+                      (when (<= min x1 max)
+                        (setf x x1)
+                        (go :done))
+                      (when (<= min x2 max)
+                        (setf x x2)
+                        (go :done))
+                      (go :retry))
+                  :done))
+               x))
+      (multiple-value-bind (g1 g2) (gauss)
+        (values (guard g1 (or min g1) (or max g1))
+                (guard g2 (or min g2) (or max g2))))))
+  %%%)
 
-(declaim (inline iota))
-(defun iota (n &key (start 0) (step 1))
-  "Return a list of n numbers, starting from START (with numeric contagion
-from STEP applied), each consequtive number being the sum of the previous one
-and STEP. START defaults to 0 and STEP to 1.
 
-Examples:
-
-  (iota 4)                      => (0 1 2 3)
-  (iota 3 :start 1 :step 1.0)   => (1.0 2.0 3.0)
-  (iota 3 :start -1 :step -1/2) => (-1 -3/2 -2)
-"
-  (declare (type (integer 0) n) (number start step))
-  (loop repeat n
-        ;; KLUDGE: get numeric contagion right for the first element too
-        for i = (+ (- (+ start step) step)) then (+ i step)
-        collect i))
-
-(declaim (inline map-iota))
-(defun map-iota (function n &key (start 0) (step 1))
-  "Calls FUNCTION with N numbers, starting from START (with numeric contagion
-from STEP applied), each consequtive number being the sum of the previous one
-and STEP. START defaults to 0 and STEP to 1. Returns N.
+(defutil iota (:version (1 . 0)
+               :category (alexandria lists))
+  "Return a list of `n` numbers, starting from `start` (with numeric contagion
+from `step` applied), each consequtive number being the sum of the previous one
+and `step`. `start` defaults to `0` and `step` to `1`.
 
 Examples:
 
-  (map-iota #'print 3 :start 1 :step 1.0) => 3
-    ;;; 1.0
-    ;;; 2.0
-    ;;; 3.0
+    (iota 4)                      => (0 1 2 3)
+    (iota 3 :start 1 :step 1.0)   => (1.0 2.0 3.0)
+    (iota 3 :start -1 :step -1/2) => (-1 -3/2 -2)"
+  #>%%%>
+  (declaim (inline iota))
+  (defun iota (n &key (start 0) (step 1))
+    %%DOC
+    (declare (type (integer 0) n) (number start step))
+    (loop repeat n
+          ;; KLUDGE: get numeric contagion right for the first element too
+          for i = (+ (- (+ start step) step)) then (+ i step)
+          collect i))
+  %%%)
+
+(defutil map-iota (:version (1 . 0)
+                   :category alexandria)
+  "Calls `function` with `n` numbers, starting from `start` (with numeric contagion
+from `step` applied), each consequtive number being the sum of the previous one
+and `step`. `start` defaults to `0` and `step` to `1`. Returns `n`.
+
+Examples:
+
+    (map-iota #'print 3 :start 1 :step 1.0) => 3
+      ;;; 1.0
+      ;;; 2.0
+      ;;; 3.0
 "
-  (declare (type (integer 0) n) (number start step))
-  (loop repeat n
-        ;; KLUDGE: get numeric contagion right for the first element too
-        for i = (+ start (- step step)) then (+ i step)
-        do (funcall function i))
-  n)
+  #>%%%>
+  (declaim (inline map-iota))
+  (defun map-iota (function n &key (start 0) (step 1))
+    %%DOC
+    (declare (type (integer 0) n) (number start step))
+    (loop repeat n
+          ;; KLUDGE: get numeric contagion right for the first element too
+          for i = (+ start (- step step)) then (+ i step)
+          do (funcall function i))
+    n)
+  %%%)
 
-(declaim (inline lerp))
-(defun lerp (v a b)
-  "Returns the result of linear interpolation between A and B, using the
-interpolation coefficient V."
-   (+ a (* v (- b a))))
+(defutil lerp (:version (1 . 0)
+               :category (alexandria math))
+  "Returns the result of linear interpolation between `a` and `b`, using the
+interpolation coefficient `v`."
+  #>%%%>
+  (declaim (inline lerp))
+  (defun lerp (v a b)
+    %%DOC
+    (+ a (* v (- b a))))
+  %%%)
 
-(declaim (inline mean))
-(defun mean (sample)
-  "Returns the mean of SAMPLE. SAMPLE must be a sequence of numbers."
-  (/ (reduce #'+ sample) (length sample)))
+(defutil mean (:version (1 . 0)
+               :category (alexandria math statistics))
+  "Returns the mean of `sample`. `sample` must be a sequence of numbers."
+  #>%%%>
+  (declaim (inline mean))
+  (defun mean (sample)
+    %%DOC
+    (/ (reduce #'(lambda (x y) (+ x y)) sample) (length sample)))
+  %%%)
 
-(declaim (inline median))
-(defun median (sample)
-  "Returns median of SAMPLE. SAMPLE must be a sequence of real numbers."
-  (let* ((vector (sort (copy-sequence 'vector sample) #'<))
-         (length (length vector))
-         (middle (truncate length 2)))
-    (if (oddp length)
-        (aref vector middle)
-        (/ (+ (aref vector middle) (aref vector (1- middle))) 2))))
+(defutil median (:version (1 . 0)
+                 :depends-on copy-sequence
+                 :category (alexandria math statistics))
+  "Returns median of `sample`. `sample` must be a sequence of real numbers."
+  #>%%%>
+  (declaim (inline median))
+  (defun median (sample)
+    %%DOC
+    (let* ((vector (sort (copy-sequence 'vector sample) #'<))
+           (length (length vector))
+           (middle (truncate length 2)))
+      (if (oddp length)
+          (aref vector middle)
+          (/ (+ (aref vector middle) (aref vector (1- middle))) 2))))
+  %%%)
 
-(declaim (inline variance))
-(defun variance (sample &key (biased t))
-  "Variance of SAMPLE. Returns the biased variance if BIASED is true (the default),
-and the unbiased estimator of variance if BIASED is false. SAMPLE must be a
+(defutil variance (:version (1 . 0)
+                   :depends-on mean
+                   :category (alexandria math statistics))
+  "Variance of `sample`. Returns the biased variance if `biased` is true (the default),
+and the unbiased estimator of variance if `biased` is false. `sample` must be a
 sequence of numbers."
-  (let ((mean (mean sample)))
-    (/ (reduce (lambda (a b)
-                 (+ a (expt (- b mean) 2)))
-               sample
-               :initial-value 0)
-       (- (length sample) (if biased 0 1)))))
+  #>%%%>
+  (declaim (inline variance))
+  (defun variance (sample &key (biased t))
+    %%DOC
+    (let ((mean (mean sample)))
+      (/ (reduce (lambda (a b)
+                   (+ a (expt (- b mean) 2)))
+                 sample
+                 :initial-value 0)
+         (- (length sample) (if biased 0 1)))))
+  %%%)
 
-(declaim (inline standard-deviation))
-(defun standard-deviation (sample &key (biased t))
-  "Standard deviation of SAMPLE. Returns the biased standard deviation if
-BIASED is true (the default), and the square root of the unbiased estimator
-for variance if BIASED is false (which is not the same as the unbiased
-estimator for standard deviation). SAMPLE must be a sequence of numbers."
-  (sqrt (variance sample :biased biased)))
+(defutil standard-deviation (:version (1 . 0)
+                             :depends-on variance
+                             :category (alexandria math statistics))
+  "Standard deviation of `sample`. Returns the biased standard deviation if
+`biased` is true (the default), and the square root of the unbiased estimator
+for variance if `biased` is false (which is not the same as the unbiased
+estimator for standard deviation). `sample` must be a sequence of numbers."
+  #>%%%>
+  (declaim (inline standard-deviation))
+  (defun standard-deviation (sample &key (biased t))
+    %%DOC
+    (sqrt (variance sample :biased biased)))
+  %%%)
 
-(define-modify-macro maxf (&rest numbers) max
-  "Modify-macro for MAX. Sets place designated by the first argument to the
-maximum of its original value and NUMBERS.")
+(defutil maxf (:version (1 . 0)
+               :category (alexandria math orthogonality))
+  "Modify-macro for `max`. Sets place designated by the first argument to the
+maximum of its original value and `numbers`."
+  #>%%%>
+  (define-modify-macro maxf (&rest numbers) max
+    %%DOC)
+  %%%)
 
-(define-modify-macro minf (&rest numbers) min
-  "Modify-macro for MIN. Sets place designated by the first argument to the
-minimum of its original value and NUMBERS.")
+(defutil minf (:version (1 . 0)
+               :category (alexandria math orthogonality))
+  "Modify-macro for `min`. Sets place designated by the first argument to the
+minimum of its original value and `numbers`."
+  #>%%%>
+  (define-modify-macro minf (&rest numbers) min
+    %%DOC)
+  %%%)
 
 ;;;; Factorial
+
+;;;; Factorial from qtility benchmarked to be faster than this.
 
 ;;; KLUDGE: This is really dependant on the numbers in question: for
 ;;; small numbers this is larger, and vice versa. Ideally instead of a
 ;;; constant we would have RANGE-FAST-TO-MULTIPLY-DIRECTLY-P.
+#+#:ignore
 (defconstant +factorial-bisection-range-limit+ 8)
 
 ;;; KLUDGE: This is really platform dependant: ideally we would use
 ;;; (load-time-value (find-good-direct-multiplication-limit)) instead.
+#+#:ignore
 (defconstant +factorial-direct-multiplication-limit+ 13)
-
+#+#:ignore
 (defun %multiply-range (i j)
   ;; We use a a bit of cleverness here:
   ;;
@@ -193,13 +252,14 @@ minimum of its original value and NUMBERS.")
                (declare (type (integer 0 (#.most-positive-fixnum)) m)
                         (type unsigned-byte f)))))
     (bisect i j)))
-
+#+#:ignore
 (declaim (inline factorial))
+#+#:ignore
 (defun %factorial (n)
   (if (< n 2)
       1
       (%multiply-range 1 n)))
-
+#+#:ignore
 (defun factorial (n)
   "Factorial of non-negative integer N."
   (check-type n (integer 0))
@@ -207,6 +267,7 @@ minimum of its original value and NUMBERS.")
 
 ;;;; Combinatorics
 
+#+#:ignore
 (defun binomial-coefficient (n k)
   "Binomial coefficient of N and K, also expressed as N choose K. This is the
 number of K element combinations given N choises. N must be equal to or
@@ -231,20 +292,31 @@ greater then K."
             (/ (%multiply-range (+ k 1) n)
                (%factorial n-k))))))
 
-(defun subfactorial (n)
-  "Subfactorial of the non-negative integer N."
-  (check-type n (integer 0))
-  (if (zerop n)
-      1
-      (do ((x 1 (1+ x))
-           (a 0 (* x (+ a b)))
-           (b 1 a))
-          ((= n x) a))))
+(defutil subfactorial (:version (1 . 0)
+                       :category (alexandria math))
+  "Subfactorial of the non-negative integer `n`."
+  #>%%%>
+  (defun subfactorial (n)
+    %%DOC
+    (check-type n (integer 0))
+    (if (zerop n)
+        1
+        (do ((x 1 (1+ x))
+             (a 0 (* x (+ a b)))
+             (b 1 a))
+            ((= n x) a))))
+  %%%)
 
-(defun count-permutations (n &optional (k n))
-  "Number of K element permutations for a sequence of N objects.
-K defaults to N"
-  (check-type n (integer 0))
-  (check-type k (integer 0))
-  (assert (>= n k))
-  (%multiply-range (1+ (- n k)) n))
+(defutil count-permutations (:version (1 . 0)
+                             :depends-on range-product
+                             :category (alexandria math))
+  "Number of `k` element permutations for a sequence of `n` objects.
+`k` defaults to `n`"
+  #>%%%>
+  (defun count-permutations (n &optional (k n))
+    %%DOC
+    (check-type n (integer 0))
+    (check-type k (integer 0))
+    (assert (>= n k))
+    (range-product (1+ (- n k)) n))
+  %%%)
