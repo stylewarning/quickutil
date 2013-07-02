@@ -246,12 +246,11 @@ expected-type designator of a TYPE-ERROR."
   %%%)
 
 (defutil proper-list-p (:version (1 . 0)
-                        :provides (proper-list-p proper-list)
                         :category (alexandria lists orthogonality))
-  "Type and function to detect if a list is proper."
+  "Returns true if `object` is a proper list."
   #>%%%>
   (defun proper-list-p (object)
-    "Returns true if OBJECT is a proper list."
+    %%DOC
     (cond ((not object)
            t)
           ((consp object)
@@ -264,11 +263,17 @@ expected-type designator of a TYPE-ERROR."
                (return nil))))
           (t
            nil)))
+  %%%)
 
+(defutil proper-list (:version (1 . 0)
+                      :depends-on proper-list-p
+                      :category (alexandria types lists orthogonality))
+  "Type designator for proper lists. Implemented as a `satisfies` type, hence
+not recommended for performance intensive use. Main usefulness as a type
+designator of the expected type in a `type-error`."
+  #>%%%>
   (deftype proper-list ()
-    "Type designator for proper lists. Implemented as a SATISFIES type, hence
-not recommended for performance intensive use. Main usefullness as a type
-designator of the expected type in a TYPE-ERROR."
+    %%DOC
     `(and list (satisfies proper-list-p)))
   %%%)
 
