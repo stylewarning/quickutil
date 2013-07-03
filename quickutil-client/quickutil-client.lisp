@@ -47,31 +47,44 @@
            (category-utilities categories)
            (symbol-utilities symbols))))
 
-(defun utilize (&key utilities categories symbols)
-  (compile-and-load-from-url
-   (quickutil-query-url
-    (query-needed-utilities :utilities utilities
-                            :categories categories
-                            :symbols symbols))))
+;;; XXX: Just use SAVE-UTILS-AS to a temp file?
+(defun utilize (&key utilities categories symbols (package "QUICKUTIL"))
+  (unless (find-package package)
+    (error "The package ~S must exist in order to utilize utilities." package))
+  
+  (let ((file-contents (download-url-string
+                        (quickutil-query-url
+                         (query-needed-utilities :utilities utilities
+                                                 :categories categories
+                                                 :symbols symbols)))))
+    (load
+     (compile-file
+      (with-temp-file stream file
+        (format stream "(in-package ~S)~%~%" package)
+        (write-string file-contents stream))))))
 
-(defun utilize-utilities (&rest utilities)
-  "Load the utilities UTILITIES and their dependencies."
-  (utilize :utilities utilities))
+(defun utilize-utilities (utilities &key (package "QUICKUTIL"))
+  "Load the utilities UTILITIES and their dependencies into the
+package named PACKAGE."
+  (utilize :utilities utilities :package package))
 
-(defun utilize-categories (&rest categories)
-  "Load the utilities in the categories CATEGORIES."
-  (utilize :categories categories))
+(defun utilize-categories (categories &key (package "QUICKUTIL"))
+  "Load the utilities in the categories CATEGORIES into the package
+named PACKAGE."
+  (utilize :categories categories :package package))
 
-(defun utilize-symbols (&rest symbols)
-  "Load the utilities which provide the symbols SYMBOLS."
-  (utilize :symbols symbols))
+(defun utilize-symbols (symbols &key (package "QUICKUTIL"))
+  "Load the utilities which provide the symbols SYMBOLS into the
+package named PACKAGE."
+  (utilize :symbols symbols :package package))
 
 (defun print-lines (stream &rest strings)
   "Print the lines denoted by the strings STRINGS to the stream
 STREAM."
   (dolist (string strings)
-    (write-string string stream)
-    (terpri stream)))
+    (when string
+      (write-string string stream)
+      (terpri stream))))
 
 (defun ensure-keyword-list (list)
   "Ensure that LIST is a list of keywords."
@@ -81,7 +94,18 @@ STREAM."
               list)
       (ensure-keyword-list (list list))))
 
-(defun save-utils-as (filename &key utilities categories symbols)
+(defun save-utils-as (filename &key utilities categories symbols
+                                    (package "QUICKUTIL")
+                                    (package-nickname "QTL")
+                                    (ensure-package t))
+  "Save all of the utilities specified by the lists UTILITIES,
+CATEGORIES, and SYMBOLS to the file named FILENAME.
+
+The utilities will be put in the package named PACKAGE. If
+ENSURE-PACKAGE is true, then the package will be created if it has not
+already. If it has not been created, the package will be given the
+nickname PACKAGE-NICKNAME. If the nickname is NIL, then no nickname
+will be created."
   (with-open-file (file filename :direction :output
                                  :if-exists :supersede
                                  :if-does-not-exist :create)
@@ -105,22 +129,28 @@ STREAM."
                 (ensure-keyword-list symbols)))
       
       ;; Package definition
-      (print-lines file
-                   ;; Package Definition
-                   "(eval-when (:compile-toplevel :load-toplevel :execute)"
-                   "  (unless (find-package '#:quickutil)" 
-                   "    (defpackage quickutil"
-                   "      (:documentation \"Package that contains the actual utility functions.\")"
-                   "      (:nicknames #:qtl)"
-                   "      (:use #:cl))))"
-                   ""
-                   
-                   ;; Code
-                   file-contents
-                   ""
-                   
-                   ;; End of file
-                   (format nil ";;;; END OF ~A ;;;;" filename))
+      (when ensure-package
+        (print-lines file
+                     ;; Package Definition
+                     "(eval-when (:compile-toplevel :load-toplevel :execute)"
+                     (format nil "  (unless (find-package ~S)" package)
+                     (format nil "    (defpackage ~S" package)
+                     "      (:documentation \"Package that contains Quickutil utility functions.\")"
+                     (when package-nickname
+                       (format nil "      (:nicknames ~S)" package-nickname))
+                     "      (:use #:cl))))"
+                     ""
+                     
+                     ;; IN-PACKAGE form
+                     (format nil "(in-package ~S)" package)
+                     ""
+                     
+                     ;; Code
+                     file-contents
+                     ""
+                     
+                     ;; End of file
+                     (format nil ";;;; END OF ~A ;;;;" filename)))
 
       ;; Return the pathname
       (pathname filename))))

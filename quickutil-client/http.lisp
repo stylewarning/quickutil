@@ -9,16 +9,19 @@
   "Download the URL URL to a string."
   (nth-value 0 (drakma:http-request url)))
 
+(defmacro with-temp-file (stream-var file-var &body body)
+  `(let* ((,stream-var (cl-fad:open-temporary))
+          (,file-var (pathname ,stream-var)))
+     (unwind-protect (progn ,@body)
+       (close ,stream-var))
+     ,file-var))
+
 ;; XXX FIXME: Make error handling a little more robust.
 (defun download-url (url)
   "Download data from the URL URL and put it in a temporary
 file. Return the pathname of the temporary file."
-  (let* ((temp-stream (cl-fad:open-temporary))
-         (temp (pathname temp-stream)))
-    (unwind-protect (write-string (download-url-string url)
-                                  temp-stream)
-      (close temp-stream))
-    temp))
+  (with-temp-file stream file
+    (write-string (download-url-string url) stream)))
 
 (defun load-from-url (url)
   "Load into the Lisp image the data from the URL URL."

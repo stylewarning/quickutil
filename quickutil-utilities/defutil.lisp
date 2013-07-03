@@ -450,8 +450,8 @@ NIL, then emit all utility source code."
                               (copy-list (util.provides (lookup-util x))))
                           utilities)))
            (with-output-to-string (*standard-output*)
-             (write-string "(in-package #:quickutil)")
-             (terpri)
+             ;; (write-string "(in-package #:quickutil)")
+             ;; (terpri)
              (dolist (util load-order)
                (when util
                  (let ((compile-time? (member (util.name util) compilation-deps)))
