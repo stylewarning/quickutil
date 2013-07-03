@@ -15,6 +15,7 @@
         <li><a href="#utils-categories-syms">Utilities, Categories, and Symbols</a></li>
         <li><a href="#loading-quickutil">Loading <span class="logo">Quickutil</span></a></li>
         <li><a href="#generating">Generating a Utility File</a></li>
+        <li><a href="#package">Specifying the Package</a></li>
         <li><a href="#interactive">Interactive Development</a></li>
         <li><a href="#autoloading">Autoloading Utilities</a></li>
         <!-- <li><a href="#provides">Finding the Right Utility to Load</a></li> -->
@@ -34,7 +35,7 @@
 
       <p>Currently, <span class="logo">Quickutil</span> is in beta, and not a part of Quicklisp. The latest <span class="logo">Quickutil</span> tarball can be downloaded into a place Quicklisp can see it, and it can be loaded via:</p>
 
-      <pre class="example-code">
+      <pre class="example-code prettyprint lang-lisp">
         <code>(ql:quickload :quickutil)</code>
       </pre>
 
@@ -47,10 +48,10 @@
 
       <p>Generating the utilities file is done with <code>qtlc:save-utils-as</code>, which takes the utilities, categories, and symbols that you want to save.</p>
 
-      <pre class="example-code">
-        <code>(qtlc:save-utils-as "utils.lisp"</code></br>
+      <pre class="example-code prettyprint lang-lisp">
+        <code>(qtlc:save-utils-as "utils.lisp"</code><br/>
         <code>&nbsp;&nbsp;:utilities '(:iota :riffle)</code><br/>
-        <code>&nbsp;&nbsp;:categories '(:alexandria)</code><br>
+        <code>&nbsp;&nbsp;:categories '(:alexandria)</code><br/>
         <code>&nbsp;&nbsp;:symbols '(:split-sequence-if-not))</code>
       </pre>
 
@@ -58,15 +59,56 @@
 
       <p>To use it, simply add it as a dependency to your ASD file, or load it into the REPL. All of the utilities that you saved will be in the package <code>quickutil</code> or <code>qtl</code>.</p>
 
+      <a id="package"></a>
+      <h3>Specifying the Package</h3>
+      
+      <p>For stand-alone projects, having everything go into the canonical <code>quickutil</code> package is okay, however, when one creates libraries or uses dependencies, it is beneficial to create a dedicated package for generated utilities. If project X uses a generated <span class="logo">Quickutil</span> file, and also depends on project Y which also uses a generated file, then there is a clash between utility functions. In an ideal world, everyone would keep up-to-date utility files, but there is no guarantee both sets of coinciding utilities are actually the same.</p>
+      
+      <p><span class="logo">Quickutil</span> gives the user the option to specify the package in which he or she would like to put the utilities, and optionally, specify it to be created if it hasn't been already. The function <code>save-utils-as</code> takes three extra optional keyword arguments:</p>
+      
+      <dl>
+        <dt><code>:package </code><em>string</em></dt>
+        <dd>Specify that the utilities should be loaded into the package named by the string argument. By default it is <code>"QUICKUTIL"</code>.</dd>
+        <dt><code>:ensure-package </code><em>boolean</em></dt>
+        <dd>Ensure that the package has been created. If the package does not already exist, <span class="logo">Quickutil</span> will create it. By default this is <code>t</code>.</dd>
+        <dt><code>:package-nickname </code><em>string-or-nil</em></dt>
+        <dd>If a new package is created, specify that the nickname for the package should be the given string. If <code>NIL</code> is specified, do not create a nickname. By default, it is <code>"QTL"</code> <em>if</em> no package was explicitly specified. Otherwise it defaults to <code>nil</code>.</dd>
+      </dl>
+      
+      <p>So, for example, to save the following utilities and make them usable from the <code>"UTILITIES"</code> package, we issue the following command: </p>
+      
+      <pre class="example-code prettyprint lang-lisp">
+        <code>(qtlc:save-utils-as "utils.lisp"</code><br/>
+        <code>&nbsp;&nbsp;:utilities '(:iota :riffle)</code><br/>
+        <code>&nbsp;&nbsp;:categories '(:alexandria)</code><br/>
+        <code>&nbsp;&nbsp;:symbols '(:split-sequence-if-not)</code><br/>
+        <code>&nbsp;&nbsp;:package "UTILITIES"</code><br/>
+        <code>&nbsp;&nbsp;:ensure-package t</code><br/>
+        <code>&nbsp;&nbsp;:package-nickname "UTIL")</code>
+      </pre>
+
+      <p>Now when this file is loaded, we will be able to use <code>utilities:iota</code> or <code>util:iota</code>. Unless created by the user elsewhere, the <code>quickutil</code> package will not exist.</p>
+      
+      <p>If we do not want to create a new package, because it was created elsewhere in your project, we can specify it not to.</p>
+      
+      <pre class="example-code prettyprint lang-lisp">
+        <code>(qtlc:save-utils-as "utils.lisp"</code><br/>
+        <code>&nbsp;&nbsp;:utilities '(:iota :riffle)</code><br/>
+        <code>&nbsp;&nbsp;:categories '(:alexandria)</code><br/>
+        <code>&nbsp;&nbsp;:symbols '(:split-sequence-if-not)</code><br/>
+        <code>&nbsp;&nbsp;:package "UTILITIES"</code><br/>
+        <code>&nbsp;&nbsp;:ensure-package nil)</code>
+      </pre>
+
       <a id="interactive"></a>
       <h3>Interactive Development</h3>
 
       <p>Sometimes when interactively developing your program, you do not want to keep generating a new utility file every time you need a new function. <span class="logo">Quickutil</span> includes a function <code>qtlc:utilize</code> which is very similar to <code>save-utils-as</code> and allows one to directly download and install the utilities right into the running image.</p>
 
-      <pre class="example-code">
-        <code>(qtlc:utilize</code></br>
+      <pre class="example-code prettyprint lang-lisp">
+        <code>(qtlc:utilize</code><br/>
         <code>&nbsp;&nbsp;:utilities '(:iota :riffle)</code><br/>
-        <code>&nbsp;&nbsp;:categories '(:alexandria)</code><br>
+        <code>&nbsp;&nbsp;:categories '(:alexandria)</code><br/>
         <code>&nbsp;&nbsp;:symbols '(:split-sequence-if-not))</code>
       </pre>
 
@@ -74,19 +116,21 @@
       
       <p>For convenience, there are three functions with a subset of functionality for special cases:</p>
       <dl>
-        <dt><code>(qtlc:utilize-utilities :riffle :weave)</code></dt>
+        <dt><code>(qtlc:utilize-utilities '(:riffle :weave))</code></dt>
         <dd>Download and install the utilities <code>:riffle</code> and <code>:weave</code>.</dd>
-        <dt><code>(qtlc:utilize-categories :math :alexandria)</code></dt>
+        <dt><code>(qtlc:utilize-categories '(:math :alexandria))</code></dt>
         <dd>Download and install everything in the categories <code>math</code> and <code>alexandria</code>.</dd>
-        <dt><code>(qtlc:utilize-symbols :split-sequence-if-not)</code></dt>
+        <dt><code>(qtlc:utilize-symbols '(:split-sequence-if-not))</code></dt>
         <dd>Download and install the utility containing the function <code>split-sequence-if-not</code>.</dd>
       </dl>
+      
+      <p>Similar to <code>qtlc:save-utils-as</code>, all of these functions take a keyword argument, <code>:package</code>, which specifies the package in which they should be loaded. However, with the <code>utilize</code> family of functions, the package should exist prior to usage. By default, it will use the <code>quickutil</code> package, which is created when <code>quickutil-client</code> is loaded.</p>
       
       <a id="autoloading"></a>
       <h3>Autoloading Utilities</h3>
       <p>Especially for quick REPL interactions, it is nice to be able to use utilities without explicitly loading them simply because it is faster and requires less typing. <span class="logo">Quickutil</span> provides an optional <em>autoload syntax</em>, <code>#?</code>, which autoloads the symbol right after it. The syntax is disabled by default, and can be enabled with <code>qtlc:enable-autoload-syntax</code>. For example:</p>
 
-      <pre class="example-code">
+      <pre class="example-code prettyprint lang-lisp">
         <code>&gt; (qtlc:enable-autoload-syntax)</code><br/>
         <code>&gt; (#?implode (#?shuffle (#?explode "hello")))</code><br/>
         <code>"lolhe"</code>
