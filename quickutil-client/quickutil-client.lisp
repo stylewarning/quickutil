@@ -95,8 +95,8 @@ STREAM."
       (ensure-keyword-list (list list))))
 
 (defun save-utils-as (filename &key utilities categories symbols
-                                    (package "QUICKUTIL")
-                                    (package-nickname "QTL")
+                                    (package "QUICKUTIL" package-given-p)
+                                    (package-nickname nil)
                                     (ensure-package t))
   "Save all of the utilities specified by the lists UTILITIES,
 CATEGORIES, and SYMBOLS to the file named FILENAME.
@@ -136,8 +136,12 @@ will be created."
                      (format nil "  (unless (find-package ~S)" package)
                      (format nil "    (defpackage ~S" package)
                      "      (:documentation \"Package that contains Quickutil utility functions.\")"
-                     (when package-nickname
-                       (format nil "      (:nicknames ~S)" package-nickname))
+                     (when (or package-nickname (not package-given-p))
+                       (format nil "      (:nicknames ~S)"
+                               (cond
+                                 (package-nickname package-nickname)
+                                 (package-given-p nil)
+                                 (t "QTL"))))
                      "      (:use #:cl))))"
                      ""
                      
