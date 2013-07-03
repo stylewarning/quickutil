@@ -122,11 +122,17 @@ will be created."
                    ";;;; To regenerate:")
       (let ((*print-pretty* nil))
         (format file
-                ";;;; (qtlc:save-utils-as ~S :utilities '~S :categories '~S :symbols '~S)~%~%"
+                ";;;; (qtlc:save-utils-as ~S~@[ :utilities '~S~]~@[ :categories '~S~]~@[ :symbols '~S~] :ensure-package ~S :package ~S~@[ :package-nickname ~S~])~%~%"
                 filename
                 (ensure-keyword-list utilities)
                 (ensure-keyword-list categories)
-                (ensure-keyword-list symbols)))
+                (ensure-keyword-list symbols)
+                ensure-package
+                package
+                (cond
+                  (package-nickname package-nickname)
+                  (package-given-p nil)
+                  (t "QTL"))))
       
       ;; Package definition
       (when ensure-package
