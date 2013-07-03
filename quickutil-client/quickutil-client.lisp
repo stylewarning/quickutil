@@ -143,18 +143,19 @@ will be created."
                                  (package-given-p nil)
                                  (t "QTL"))))
                      "      (:use #:cl))))"
-                     ""
-                     
-                     ;; IN-PACKAGE form
-                     (format nil "(in-package ~S)" package)
-                     ""
-                     
-                     ;; Code
-                     file-contents
-                     ""
-                     
-                     ;; End of file
-                     (format nil ";;;; END OF ~A ;;;;" filename)))
+                     ""))
+      
+      (print-lines file
+                   ;; IN-PACKAGE form
+                   (format nil "(in-package ~S)" package)
+                   ""
+                   
+                   ;; Code
+                   file-contents
+                   ""
+                   
+                   ;; End of file
+                   (format nil ";;;; END OF ~A ;;;;" filename))
 
       ;; Return the pathname
       (pathname filename))))
