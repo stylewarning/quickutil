@@ -3,33 +3,7 @@
 
 (in-package #:quickutil-client)
 
-(defparameter *autoload-lookup-suffix* "/api/reverse-lookup?symbol="
-  "API call for autoloading.")
-
-(defun autoload-lookup (symbol)
-  (let* ((autoload-url (concatenate 'string *quickutil-host*
-                                    *autoload-lookup-suffix*
-                                    (symbol-name symbol)))
-         (str (download-url-string autoload-url)))
-    (if (string-equal "NIL" str)
-        (error "Could not find originating utility for symbol: ~A"
-               (symbol-name symbol))
-        str)))
-
-;;; XXX FIXME: This could use improved error handling.
-(defun who-provides (symbol)
-  "Which utility provides the symbol SYMBOL?"
-  (assert (or (symbolp symbol)
-              (stringp symbol)))
-  (let ((who (ignore-errors (autoload-lookup (if (symbolp symbol)
-                                                 symbol
-                                                 (make-symbol symbol))))))
-    (nth-value 0 (and who (intern who '#:keyword)))))
-
-(defun utilize-symbols (&rest symbols)
-  "Load the utilities which provide the symbols SYMBOLS."
-  (apply #'utilize
-         (remove nil (remove-duplicates (mapcar #'who-provides symbols)))))
+;;;; Syntax for automatically loading symbols.
 
 (defun |#?-reader| (stream subchar n)
   (declare (ignore subchar n))
@@ -38,13 +12,13 @@
       (error "#? requires a symbol to follow it."))
     ;; lookup the originating utility
     (let ((name (symbol-name symbol))
-          (originating-util (autoload-lookup symbol)))
+          (originating-util (who-provides symbol)))
       (multiple-value-bind (found type)
           (find-symbol name '#:quickutil)
         (if (and found (eql type :external))
             found
             (progn
-              (quickutil-client:utilize (intern originating-util '#:keyword))
+              (utilize-utilities (intern originating-util '#:keyword))
               (find-symbol name '#:quickutil)))))))
 
 (defun enable-autoload-syntax ()

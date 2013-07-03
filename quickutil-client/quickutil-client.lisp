@@ -3,68 +3,31 @@
 
 (in-package #:quickutil-client)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Internet ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; Client functions, including the public API, which handles the
+;;;; loading of utilities.
+;;;;
+;;;; Convention in this file: If a function name ends in an asterisk,
+;;;; then it takes a list as an argument. The same function without
+;;;; the asterisk takes &REST arguments.
 
-(defun download-url-string (url)
-  "Download the URL URL to a string."
-  (nth-value 0 (drakma:http-request url)))
+;;; XXX FIXME: This could use improved error handling.
+(defun who-provides (symbol)
+  "Which utility provides the symbol SYMBOL?"
+  (assert (or (symbolp symbol)
+              (stringp symbol)))
+  (flet ((autoload-lookup (symbol)
+           (let* ((autoload-url (reverse-lookup-url symbol))
+                  (str (download-url-string autoload-url)))
+             (if (string-equal "NIL" str)
+                 (error "Could not find originating utility for symbol: ~A"
+                        (symbol-name symbol))
+                 str))))
+    (let ((who (ignore-errors (autoload-lookup (if (symbolp symbol)
+                                                   symbol
+                                                   (make-symbol symbol))))))
+      (nth-value 0 (and who (intern who '#:keyword))))))
 
-;; XXX FIXME: Make error handling a little more robust.
-(defun download-url (url)
-  "Download data from the URL URL and put it in a temporary
-file. Return the pathname of the temporary file."
-  (let* ((temp-stream (cl-fad:open-temporary))
-         (temp (pathname temp-stream)))
-    (unwind-protect (write-string (download-url-string url)
-                                  temp-stream)
-      (close temp-stream))
-    temp))
-
-(defun load-from-url (url)
-  "Load into the Lisp image the data from the URL URL."
-  (load (download-url url)))
-
-(defun compile-and-load-from-url (url)
-  "Compile and load into the Lisp image the data from the URL URL."
-  (load (compile-file (download-url url))))
-
-(defvar *quickutil-query-suffix*
-  "/api/emit?"
-  "The API string used to query a utility.")
-
-(defvar *quickutil-query-argument*
-  "utility=")
-
-(defun quickutil-query-url (util-names)
-  "Construct the URL from which to query for the utilities named
-UTIL-NAMES."
-  (assert util-names (util-names) "UTIL-NAMES must be non-null.")
-  (flet ((format-argument (util-name &optional (ampersand? t))
-           (when ampersand?
-             (write-string "&"))
-           (write-string *quickutil-query-argument*)
-           (write-string (string-downcase (if (symbolp util-name)
-                                              (symbol-name util-name)
-                                              util-name)))))
-    (with-output-to-string (*standard-output*)
-      (write-string *quickutil-host*)
-      (write-string *quickutil-query-suffix*)
-      (format-argument (first util-names) nil)
-      (mapc #'format-argument (rest util-names)))))
-
-
-(defparameter *category-lookup-suffix* "/api/list/"
-  "API call for finding category symbols.")
-
-(defun category-url (category-name)
-  "Construct the url for querying the symbols in the category named
-CATEGORY-NAME."
-  (concatenate 'string
-               *quickutil-host*
-               *category-lookup-suffix*
-               (symbol-name category-name)))
-
-(defun category-utilities* (category-names)
+(defun category-utilities (category-names)
   "Query for the symbols in the categories CATEGORY-NAMES."
   (flet ((category-syms (category-name)
            (let ((str (ignore-errors (download-url-string (category-url category-name)))))
@@ -75,9 +38,33 @@ CATEGORY-NAME."
           :append (category-syms category) :into symbols
           :finally (return (remove-duplicates symbols)))))
 
-(defun category-utilities (&rest category-names)
-  "Query for the symbols in the categories CATEGORY-NAMES."
-  (category-utilities* category-names))
+(defun symbol-utilities (symbols)
+  (remove nil (remove-duplicates (mapcar #'who-provides symbols))))
+
+(defun query-needed-utilities (&key utilities categories symbols)
+  (remove-duplicates
+   (append utilities
+           (category-utilities categories)
+           (symbol-utilities symbols))))
+
+(defun utilize (&key utilities categories symbols)
+  (compile-and-load-from-url
+   (quickutil-query-url
+    (query-needed-utilities :utilities utilities
+                            :categories categories
+                            :symbols symbols))))
+
+(defun utilize-utilities (&rest utilities)
+  "Load the utilities UTILITIES and their dependencies."
+  (utilize :utilities utilities))
+
+(defun utilize-categories (&rest categories)
+  "Load the utilities in the categories CATEGORIES."
+  (utilize :categories categories))
+
+(defun utilize-symbols (&rest symbols)
+  "Load the utilities which provide the symbols SYMBOLS."
+  (utilize :symbols symbols))
 
 (defun print-lines (stream &rest strings)
   "Print the lines denoted by the strings STRINGS to the stream
@@ -86,36 +73,36 @@ STREAM."
     (write-string string stream)
     (terpri stream)))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Public API ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun ensure-keyword-list (list)
+  "Ensure that LIST is a list of keywords."
+  (if (listp list)
+      (mapcar #'(lambda (symb)
+                  (intern (symbol-name symb) '#:keyword))
+              list)
+      (ensure-keyword-list (list list))))
 
-;;; XXX FIXME: Error when utility is not found instead of just trying
-;;; to compile NIL.
-(defun utilize (&rest util-names)
-  "Load the utilities UTIL-NAMES and their dependencies."
-  (compile-and-load-from-url (quickutil-query-url util-names)))
-
-(defun utilize-categories (&rest category-names)
-  "Load the utilities in the categories CATEGORY-NAMES."
-  (apply #'utilize (category-utilities* category-names)))
-
-(defun save-utils-as (filename &rest util-names)
-  "Download the utilities listed in UTIL-NAMES to the file named
-  FILENAME."
+(defun save-utils-as (filename &key utilities categories symbols)
   (with-open-file (file filename :direction :output
                                  :if-exists :supersede
                                  :if-does-not-exist :create)
-    (let ((file-contents (download-url-string (quickutil-query-url util-names))))
+    (let ((file-contents (download-url-string
+                          (quickutil-query-url
+                           (query-needed-utilities :utilities utilities
+                                                   :categories categories
+                                                   :symbols symbols)))))
       ;; Header
       (print-lines file
                    ";;;; This file was automatically generated by Quickutil."
                    ";;;; See http://quickutil.org for details."
                    ""
                    ";;;; To regenerate:")
-      (format file ";;;; (qtlc:save-utils-as ~S ~{~S~^ ~})~%~%"
-              filename
-              (mapcar #'(lambda (symb)
-                          (intern (symbol-name symb) :keyword))
-                      util-names))
+      (let ((*print-pretty* nil))
+        (format file
+                ";;;; (qtlc:save-utils-as ~S :utilities '~S :categories '~S :symbols '~S)~%~%"
+                filename
+                (ensure-keyword-list utilities)
+                (ensure-keyword-list categories)
+                (ensure-keyword-list symbols)))
       
       ;; Package definition
       (print-lines file

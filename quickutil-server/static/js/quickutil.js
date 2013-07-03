@@ -67,6 +67,7 @@ Quickutil.init.done(function() {
                 var category = location.pathname.replace(/^\/list\//, '');
                 $('.category-filters ul li[data-category="' + category + '"]').addClass('active');
             }
+            prettyPrint();
         });
 
     var updateFilter = function() {
@@ -156,6 +157,8 @@ Quickutil.init.done(function() {
         var target = $(href == "#" || href == "" ? 'html' : href);
         Quickutil.smoothScrollTo(target, undefined);
     });
+
+    prettyPrint();
 });
 
 })($, Quickutil);

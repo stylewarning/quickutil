@@ -9,11 +9,11 @@
   (:export #:set-quickutil-host
            #:enable-autoload-syntax
            #:utilize
+           #:utilize-utilities
            #:utilize-categories
-           #:category-utilities
+           #:utilize-symbols
            #:save-utils-as
            #:who-provides
-           #:utilize-symbols
            #:utility-not-found-error))
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
