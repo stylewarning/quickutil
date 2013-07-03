@@ -51,7 +51,7 @@
         <code>(qtlc:save-utils-as "utils.lisp"</code></br>
         <code>&nbsp;&nbsp;:utilities '(:iota :riffle)</code><br/>
         <code>&nbsp;&nbsp;:categories '(:alexandria)</code><br>
-        <code>&nbsp;&nbsp;:symbols '(:split-sequence-if-not)</code>
+        <code>&nbsp;&nbsp;:symbols '(:split-sequence-if-not))</code>
       </pre>
 
       <p>Now, the file <code>utils.lisp</code> will be saved to disk and can be added to your project. <strong>This file does <em>not</em> depend on <span class="logo">Quickutil</span> or have any network dependencies!</strong> It is a completely self-contained, readable, and modifiable source file. (However, we don't recommend modifying it so it can be regenerated in the future.)</p>
@@ -67,17 +67,20 @@
         <code>(qtlc:utilize</code></br>
         <code>&nbsp;&nbsp;:utilities '(:iota :riffle)</code><br/>
         <code>&nbsp;&nbsp;:categories '(:alexandria)</code><br>
-        <code>&nbsp;&nbsp;:symbols '(:split-sequence-if-not)</code>
+        <code>&nbsp;&nbsp;:symbols '(:split-sequence-if-not))</code>
       </pre>
 
       <p>This has the same effect as downloading the utilities to a file as if by <code>save-utils-as</code> and compiling/loading it right away.</p>
       
       <p>For convenience, there are three functions with a subset of functionality for special cases:</p>
-      <ul>
-        <li><code>(qtlc:utilize-utilities :riffle :weave)</code>: download and install the utilities <code>:riffle</code> and <code>:weave</code>.</li>
-        <li><code>(qtlc:utilize-categories :math :alexandria)</code>: download and install everything in the categories <code>math</code> and <code>alexandria</code>.</li>
-        <li><code>(qtlc:utilize-symbols :split-sequence-if-not)</code>: download and install the utility containing the function <code>split-sequence-if-not</code>.</li>
-      </ul>
+      <dl>
+        <dt><code>(qtlc:utilize-utilities :riffle :weave)</code></dt>
+        <dd>download and install the utilities <code>:riffle</code> and <code>:weave</code>.</dd>
+        <dt><code>(qtlc:utilize-categories :math :alexandria)</code></dt>
+        <dd>download and install everything in the categories <code>math</code> and <code>alexandria</code>.</dd>
+        <dt><code>(qtlc:utilize-symbols :split-sequence-if-not)</code></dt>
+        <dd>download and install the utility containing the function <code>split-sequence-if-not</code>.</dd>
+      </dl>
       
       <a id="autoloading"></a>
       <h3>Autoloading Utilities</h3>
