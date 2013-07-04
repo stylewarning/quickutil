@@ -12,4 +12,7 @@
                (:file "web-api")
                (:file "quickutil-client")
                (:file "autoload"))
-  :depends-on ("drakma" "cl-fad"))
+  :depends-on ("drakma" "cl-fad")
+  :defsystem-depends-on ("quickutil-client-management"))
+
+

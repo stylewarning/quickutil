@@ -10,6 +10,23 @@
 ;;;; then it takes a list as an argument. The same function without
 ;;;; the asterisk takes &REST arguments.
 
+(defun qtl-utl (symbol)
+  (intern (symbol-name symbol) :quickutil-utilities))
+
+(defmacro funcall-qtl-utl (function &rest args)
+  `(funcall (intern (symbol-name ',function) :quickutil-utilities) ,@args))
+
+(defun utils (&rest util-names)
+  (prog2
+      (quickutil-client-management:load-quickutil-utilities)
+      (load
+       (compile-file
+        (with-temp-file stream file
+          (write-string
+           (funcall-qtl-utl emit-utility-code :utilities util-names)
+           stream))))
+    (quickutil-client-management:unload-quickutil-utilities)))
+
 ;;; XXX FIXME: This could use improved error handling.
 (defun who-provides (symbol)
   "Which utility provides the symbol SYMBOL?"
