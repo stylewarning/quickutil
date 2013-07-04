@@ -45,18 +45,23 @@
     (not (zerop n)))
   %%%)
 
-(defutil integral-length (:version (1 . 0)
-                          :category math)
-  "Compute the length of an integer (integral quantity) `n` in base
-`base`. By default, base-10 is used, *not* base-2 as in `integer-length`."
+(defutil digit-count (:version (2 . 0)
+                      :category (math integers))
+  "Compute the number of digits in the non-negative integer `n` in
+base `base`. By default, the base is 10."
   #>%%%>
-  (declaim (ftype (function (integer &optional (integer 2)) integer)
-                  integral-length))
-  (defun integral-length (n &optional (base 10))
+  (defun digit-count (n &optional (base 10))
     %%DOC
-    (declare (type integer n)
-             (type (integer 2) base))
-    (nth-value 0 (ceiling (integer-length n) (log base 2))))
+    (check-type n unsigned-byte)
+    (check-type base (integer 2))
+    (cond
+      ((zerop n) 1)
+      ((= base 2) (integer-length n))
+      (t (let* ((approx (ceiling (integer-length n) (log base 2)))
+                (exponent  (expt base (1- approx))))
+           (if (> exponent n)
+               (1- approx)
+               approx)))))
   %%%)
 
 (defutil range-product (:version (1 . 0)
