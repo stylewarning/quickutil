@@ -2,23 +2,29 @@
 
 (defutil digits (:version (1 . 0)
                  :category (math integers))
-  "Return a list of the decimal digits of the non-negative integer `n`."
+  "Return a list of the digits of the non-negative integer `n` in base
+`base`. By default, decimal digits are returned.
+
+The order of the digits is such that the `k`th element of the list refers to the coefficient of `base^k`. In other words, given the resulting list
+
+    (c0 c1 c2 ... ck)
+
+the following identity holds:
+
+    n = c0 + c1*base + c2*base^2 + ... + ck*base^k."
   #>%%%>
-  (defun digits (n)
+  (defun digits (n &optional (base 10))
     %%DOC
-    (declare (optimize speed))
     (check-type n (integer 0))
-    (labels ((rec (n digits)
-               (if (zerop n)
-                   (nreverse digits)
-                   (multiple-value-bind (quo rem) (floor n 10)
-                     (rec quo (cons rem digits))))))
-      (if (zerop n)
-          (list 0)
-          (rec n nil))))
+    (check-type base (integer 2))
+    (loop :with remainder
+          :do (setf (values n remainder) (truncate n base))
+          :collect remainder
+          :until (zerop integer)))
   %%%)
 
 ;;; Author: Goheeca (github: Goheeca)
+;;; Modified by: Stas Boukarev (stassats)
 (defutil nth-digit (:version (1 . 0)
                     :category (math setters))
   "Get the `n`th digit in a rational number `number` in base
@@ -29,10 +35,12 @@ decimal point, and if negative, to the right."
                   nth-digit))
   (defun nth-digit (n number &optional (base 10))
     %%DOC
-    (declare (type integer n)
-             (type rational number)
-             (type (integer 2) base))
-    (nth-value 0 (floor (/ (mod number (expt base (1+ n))) (expt base n)))))
+    (check-type n integer)
+    (check-type number rational)
+    (check-type base (integer 2))
+    (let* ((lower (expt base n))
+           (higher (* lower base)))
+    (values (floor (mod number higher) lower))))
   
   (define-setf-expander nth-digit (n number &optional (base 10) &environment env)
     "Set the `n`th digit of a rational number `number` in base `base`."
