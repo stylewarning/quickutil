@@ -6,8 +6,7 @@
   loading, and saving utilties.")
   (:nicknames #:qtlc)
   (:use #:cl)
-  (:export #:set-quickutil-host
-           #:enable-autoload-syntax
+  (:export #:enable-autoload-syntax
            #:utilize
            #:utilize-utilities
            #:utilize-categories
@@ -21,5 +20,6 @@
     (defpackage #:quickutil
       (:documentation "Package that contains the actual utility functions.")
       (:nicknames #:qtl)
-      (:use #:cl))))
+      (:use #:cl)
+      (:export #:*utilities*))))
 

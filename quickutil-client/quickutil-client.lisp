@@ -5,78 +5,63 @@
 
 ;;;; Client functions, including the public API, which handles the
 ;;;; loading of utilities.
-;;;;
-;;;; Convention in this file: If a function name ends in an asterisk,
-;;;; then it takes a list as an argument. The same function without
-;;;; the asterisk takes &REST arguments.
+
+(defmacro with-temp-file (stream-var file-var &body body)
+  `(let* ((,stream-var (cl-fad:open-temporary))
+          (,file-var (pathname ,stream-var)))
+     (unwind-protect (progn ,@body)
+       (close ,stream-var))
+     ,file-var))
+
+(defun qtl-utl (symbol)
+  (intern (symbol-name symbol) :quickutil-utilities))
+
+(defmacro funcall-qtl-utl (function &rest args)
+  `(funcall (intern (symbol-name ',function) :quickutil-utilities) ,@args))
 
 ;;; XXX FIXME: This could use improved error handling.
+;;; XXX: DELETE?
 (defun who-provides (symbol)
   "Which utility provides the symbol SYMBOL?"
-  (assert (or (symbolp symbol)
-              (stringp symbol)))
-  (flet ((autoload-lookup (symbol)
-           (let* ((autoload-url (reverse-lookup-url symbol))
-                  (str (download-url-string autoload-url)))
-             (if (string-equal "NIL" str)
-                 (error "Could not find originating utility for symbol: ~A"
-                        (symbol-name symbol))
-                 str))))
-    (let ((who (ignore-errors (autoload-lookup (if (symbolp symbol)
-                                                   symbol
-                                                   (make-symbol symbol))))))
-      (nth-value 0 (and who (intern who '#:keyword))))))
+  (check-type symbol (or symbol string))
+  (quickutil-client-management:with-quickutil-utilities
+    (funcall-qtl-utl reverse-lookup symbol)))
 
-(defun category-utilities (category-names)
-  "Query for the symbols in the categories CATEGORY-NAMES."
-  (flet ((category-syms (category-name)
-           (let ((str (ignore-errors (download-url-string (category-url category-name)))))
-             (if (null str)
-                 nil
-                 (nth-value 0 (read-from-string str))))))
-    (loop :for category :in category-names
-          :append (category-syms category) :into symbols
-          :finally (return (remove-duplicates symbols)))))
+(defun utility-source-code (&key utilities categories symbols (emit-in-package-form t))
+  (quickutil-client-management:with-quickutil-utilities
+    (let ((utils (funcall-qtl-utl utilities-for
+                                  :utilities utilities
+                                  :categories categories
+                                  :symbols symbols)))
+      (funcall-qtl-utl
+       pretty-print-utility-code
+       (funcall-qtl-utl
+        emit-utility-code :utilities utils
+                          :do-not-load qtl:*utilities*
+                          :emit-in-package-form emit-in-package-form)
+       nil))))
 
-(defun symbol-utilities (symbols)
-  (remove nil (remove-duplicates (mapcar #'who-provides symbols))))
-
-(defun query-needed-utilities (&key utilities categories symbols)
-  (remove-duplicates
-   (append utilities
-           (category-utilities categories)
-           (symbol-utilities symbols))))
-
-;;; XXX: Just use SAVE-UTILS-AS to a temp file?
-(defun utilize (&key utilities categories symbols (package "QUICKUTIL"))
-  (unless (find-package package)
-    (error "The package ~S must exist in order to utilize utilities." package))
-  
-  (let ((file-contents (download-url-string
-                        (quickutil-query-url
-                         (query-needed-utilities :utilities utilities
-                                                 :categories categories
-                                                 :symbols symbols)))))
+(defun utilize (&key utilities categories symbols)
+  (let ((src (utility-source-code :utilities utilities
+                                  :categories categories
+                                  :symbols symbols
+                                  :emit-in-package-form t)))
     (load
      (compile-file
       (with-temp-file stream file
-        (format stream "(in-package ~S)~%~%" package)
-        (write-string file-contents stream))))))
+        (write-string src stream))))))
 
-(defun utilize-utilities (utilities &key (package "QUICKUTIL"))
-  "Load the utilities UTILITIES and their dependencies into the
-package named PACKAGE."
-  (utilize :utilities utilities :package package))
+(defun utilize-utilities (utilities)
+  "Load the utilities UTILITIES and their dependencies."
+  (utilize :utilities utilities))
 
-(defun utilize-categories (categories &key (package "QUICKUTIL"))
-  "Load the utilities in the categories CATEGORIES into the package
-named PACKAGE."
-  (utilize :categories categories :package package))
+(defun utilize-categories (categories)
+  "Load the utilities in the categories CATEGORIES."
+  (utilize :categories categories))
 
-(defun utilize-symbols (symbols &key (package "QUICKUTIL"))
-  "Load the utilities which provide the symbols SYMBOLS into the
-package named PACKAGE."
-  (utilize :symbols symbols :package package))
+(defun utilize-symbols (symbols)
+  "Load the utilities which provide the symbols SYMBOLS."
+  (utilize :symbols symbols))
 
 (defun print-lines (stream &rest strings)
   "Print the lines denoted by the strings STRINGS to the stream
@@ -94,10 +79,11 @@ STREAM."
               list)
       (ensure-keyword-list (list list))))
 
-(defun save-utils-as (filename &key utilities categories symbols
-                                    (package "QUICKUTIL" package-given-p)
-                                    (package-nickname nil)
-                                    (ensure-package t))
+(defun save-utils-as (filename
+                      &key utilities categories symbols
+                           (package (error "Must specify a package for SAVE-UTILS-AS."))
+                           (package-nickname nil)
+                           (ensure-package t))
   "Save all of the utilities specified by the lists UTILITIES,
 CATEGORIES, and SYMBOLS to the file named FILENAME.
 
@@ -109,11 +95,10 @@ will be created."
   (with-open-file (file filename :direction :output
                                  :if-exists :supersede
                                  :if-does-not-exist :create)
-    (let ((file-contents (download-url-string
-                          (quickutil-query-url
-                           (query-needed-utilities :utilities utilities
-                                                   :categories categories
-                                                   :symbols symbols)))))
+    (let ((file-contents (utility-source-code :utilities utilities
+                                              :categories categories
+                                              :symbols symbols
+                                              :emit-in-package-form nil)))
       ;; Header
       (print-lines file
                    ";;;; This file was automatically generated by Quickutil."
@@ -129,10 +114,7 @@ will be created."
                 (ensure-keyword-list symbols)
                 ensure-package
                 package
-                (cond
-                  (package-nickname package-nickname)
-                  (package-given-p nil)
-                  (t "QTL"))))
+                package-nickname))
       
       ;; Package definition
       (when ensure-package
@@ -142,12 +124,8 @@ will be created."
                      (format nil "  (unless (find-package ~S)" package)
                      (format nil "    (defpackage ~S" package)
                      "      (:documentation \"Package that contains Quickutil utility functions.\")"
-                     (when (or package-nickname (not package-given-p))
-                       (format nil "      (:nicknames ~S)"
-                               (cond
-                                 (package-nickname package-nickname)
-                                 (package-given-p nil)
-                                 (t "QTL"))))
+                     (when package-nickname 
+                       (format nil "      (:nicknames ~S)" package-nickname))
                      "      (:use #:cl))))"
                      ""))
       
