@@ -445,14 +445,14 @@ an error if `sequence` is an improper list."
 (defutil map-combinations (:version (1 . 0)
                            :depends-on ensure-function
                            :category (alexandria sequences math))
-  "Calls FUNCTION with each combination of LENGTH constructable from the
-elements of the subsequence of SEQUENCE delimited by START and END. START
-defaults to 0, END to length of SEQUENCE, and LENGTH to the length of the
-delimited subsequence. (So unless LENGTH is specified there is only a single
+  "Calls `function` with each combination of `length` constructable from the
+elements of the subsequence of `sequence` delimited by `start` and `end`. `start`
+defaults to `0`, `end` to length of `sequence`, and `length` to the length of the
+delimited subsequence. (So unless `length` is specified there is only a single
 combination, which has the same elements as the delimited subsequence.) If
-COPY is true (the default) each combination is freshly allocated. If COPY is
-false all combinations are EQ to each other, in which case consequences are
-specified if a combination is modified by FUNCTION."
+`copy` is true (the default) each combination is freshly allocated. If `copy` is
+false all combinations are `eq` to each other, in which case consequences are
+specified if a combination is modified by `function`."
   #>%%%>
   (defun map-combinations (function sequence &key (start 0) end length (copy t))
     %%DOC
