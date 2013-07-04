@@ -1,4 +1,4 @@
-(in-package #:quickutil)
+(in-package #:quickutil-utilities.utilities)
 
 (defutil stream-direction (:version (1 . 0)
                            :category streams)

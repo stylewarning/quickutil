@@ -1,4 +1,4 @@
-(in-package #:quickutil)
+(in-package #:quickutil-utilities.utilities)
 
 (defutil sec (:version (1 . 0)
               :category (math orthogonality))

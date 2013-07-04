@@ -1,4 +1,4 @@
-(in-package #:quickutil)
+(in-package #:quickutil-utilities.utilities)
 
 (defutil split-sequence (:version (1 . 0)
                          :provides (split-sequence split-sequence-if split-sequence-if-not)

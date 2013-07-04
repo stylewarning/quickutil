@@ -1,4 +1,4 @@
-(in-package #:quickutil)
+(in-package #:quickutil-utilities.utilities)
 
 (defutil if-let (:version (1 . 0)
                  :category (binding alexandria))

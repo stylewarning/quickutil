@@ -1,4 +1,4 @@
-(in-package #:quickutil)
+(in-package #:quickutil-utilities.utilities)
 
 (defutil alist-to-hash-table (:version (1 . 0)
                               :category hash-tables)

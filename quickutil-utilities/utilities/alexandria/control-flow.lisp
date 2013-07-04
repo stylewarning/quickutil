@@ -1,4 +1,4 @@
-(in-package #:quickutil)
+(in-package #:quickutil-utilities.utilities)
 
 (defutil extract-function-name (:version (1 . 0)
                                 :category (alexandria control))

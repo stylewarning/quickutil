@@ -1,4 +1,4 @@
-(in-package #:quickutil)
+(in-package #:quickutil-utilities.utilities)
 
 (defutil reseed-random-state (:version (1 . 0)
                               :category random)

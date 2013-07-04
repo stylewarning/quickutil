@@ -1,4 +1,4 @@
-(in-package #:quickutil)
+(in-package #:quickutil-utilities.utilities)
 
 (defutil emptyp (:version (1 . 0)
                  :depends-on non-zero-p

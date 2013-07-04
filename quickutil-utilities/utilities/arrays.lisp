@@ -1,4 +1,4 @@
-(in-package #:quickutil)
+(in-package #:quickutil-utilities.utilities)
 
 #+#:ignore ;; Alexandria has a version of this
 (defutil copy-array (:version (1 . 0)

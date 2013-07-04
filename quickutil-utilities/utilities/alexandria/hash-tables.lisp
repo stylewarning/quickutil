@@ -1,4 +1,4 @@
-(in-package #:quickutil)
+(in-package #:quickutil-utilities.utilities)
 
 (defutil copy-hash-table (:version (1 . 0)
                           :category (alexandria hash-tables orthogonality))

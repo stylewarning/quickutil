@@ -1,4 +1,4 @@
-(in-package #:quickutil)
+(in-package #:quickutil-utilities.utilities)
 
 (defutil sort-copy (:version (1 . 0)
                     :provides (sort-copy stable-sort-copy)

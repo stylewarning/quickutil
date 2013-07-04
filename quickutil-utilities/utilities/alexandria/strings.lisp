@@ -1,4 +1,4 @@
-(in-package #:quickutil)
+(in-package #:quickutil-utilities.utilities)
 
 (defutil string-designator (:version (1 . 0)
                             :category (alexandria types strings))

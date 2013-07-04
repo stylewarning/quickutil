@@ -1,4 +1,4 @@
-(in-package #:quickutil)
+(in-package #:quickutil-utilities.utilities)
 
 (defutil required-argument (:version (1 . 0)
                             :category (alexandria conditions))

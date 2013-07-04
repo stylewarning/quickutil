@@ -1,4 +1,4 @@
-(in-package #:quickutil)
+(in-package #:quickutil-utilities.utilities)
 
 (defutil execution-time (:version (1 . 0)
                          :category instrumentation)

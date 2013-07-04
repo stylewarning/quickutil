@@ -1,4 +1,4 @@
-(in-package #:quickutil)
+(in-package #:quickutil-utilities.utilities)
 
 ;; Author: Takaya OCHIAI (github: tkych)
 (defutil primes-below (:version (1 . 0)

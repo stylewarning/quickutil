@@ -14,6 +14,6 @@
 
 
 ;;; All actual utilities get shoved into this package.
-(defpackage #:quickutil
+(defpackage #:quickutil-utilities.utilities
   (:use #:cl #:quickutil-utilities)
-  (:nicknames #:qtl))
+  (:nicknames #:qtl-utl.utl))

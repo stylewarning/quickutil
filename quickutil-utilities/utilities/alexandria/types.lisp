@@ -1,4 +1,4 @@
-(in-package #:quickutil)
+(in-package #:quickutil-utilities.utilities)
 
 (defutil array-bounds (:version (1 . 0)
                        :provides (array-index array-length)

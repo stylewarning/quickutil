@@ -1,4 +1,4 @@
-(in-package #:quickutil)
+(in-package #:quickutil-utilities.utilities)
 
 ;; Author: Matt Niemeir (github: m-n)
 (defutil syntax-bind (:version (1 . 0)

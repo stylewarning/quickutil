@@ -1,4 +1,4 @@
-(in-package #:quickutil)
+(in-package #:quickutil-utilities.utilities)
 
 (defutil string-append (:version (1 . 0)
                         :provides (string-append string-append*)

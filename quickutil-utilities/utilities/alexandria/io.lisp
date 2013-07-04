@@ -1,7 +1,7 @@
 ;; Copyright (c) 2002-2006, Edward Marco Baringer
 ;; All rights reserved.
 
-(in-package #:quickutil)
+(in-package #:quickutil-utilities.utilities)
 
 (defutil with-open-file* (:version (1 . 0)
                           :depends-on once-only
