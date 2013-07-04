@@ -48,8 +48,7 @@
 (defutil integral-length (:version (1 . 0)
                           :category math)
   "Compute the length of an integer (integral quantity) `n` in base
-`base`. By default, base-10 is compute, *not* base-2 as in
-`integral-length`."
+`base`. By default, base-10 is used, *not* base-2 as in `integer-length`."
   #>%%%>
   (declaim (ftype (function (integer &optional (integer 2)) integer)
                   integral-length))
