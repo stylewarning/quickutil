@@ -10,6 +10,7 @@
 (in-package #:quickutil-client-management)
 
 (defun unbind-symbol (symbol)
+  "Unbind the symbol denoting a variable, function, or macro."
   (cond
     ((boundp symbol) (makunbound symbol))
     ((fboundp symbol) (unless (special-operator-p symbol)
@@ -17,6 +18,8 @@
     (t nil)))
 
 (defun clean-and-delete-package (package-designator)
+  "Clean up the package designated by PACKAGE-DESIGNATOR (unbind all
+of the bound symbols), and delete the package, if it exists."
   (when (or (packagep package-designator)
             (find-package package-designator))
     (let ((package (if (packagep package-designator)
