@@ -5,9 +5,13 @@
   (:use #:cl #:asdf)
   (:export #:load-quickutil-utilities
            #:unload-quickutil-utilities
-           #:with-quickutil-utilities))
+           #:with-quickutil-utilities
+           #:*verbose*))
 
 (in-package #:quickutil-client-management)
+
+(defvar *verbose* nil
+  "Dictates whether loading should be verbose.")
 
 (defun unbind-symbol (symbol)
   "Unbind the symbol denoting a variable, function, or macro."
@@ -33,13 +37,13 @@ of the bound symbols), and delete the package, if it exists."
       ;; Delete the package.
       (delete-package package-designator))))
 
-(defun load-quickutil-utilities (&key (verbose t))
+(defun load-quickutil-utilities (&key (verbose *verbose*))
   (when verbose
     (format t "~&;;; Loading Quickutil utilities...~%"))
   (let ((*standard-output* (make-broadcast-stream)))
     (operate 'load-op :quickutil-utilities :force t :verbose nil)))
 
-(defun unload-quickutil-utilities (&key (verbose t))
+(defun unload-quickutil-utilities (&key (verbose *verbose*))
   (when verbose
     (format t "~&;;; Clearing system...~%"))
   (asdf:clear-system :quickutil-utilities)
