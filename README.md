@@ -15,3 +15,9 @@ Authors
 
   * Eitarow Fukamachi
   * Robert Smith
+
+Acknowledgements
+----------------
+
+Thanks to James M. Lawrence (@lmj) for the insightful discussions that
+had a major influence on the early development of Quickutil.
