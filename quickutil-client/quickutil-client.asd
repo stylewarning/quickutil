@@ -3,7 +3,7 @@
 
 (asdf:defsystem #:quickutil-client
   :serial t
-  :description "The Quickutil client for downloading utility code."
+  :description "The Quickutil client for loading utility code."
   :author "Robert Smith <quad@symbo1ics.com>"
   :license "BSD 3-clause. See LICENSE file."
   :components ((:file "package")

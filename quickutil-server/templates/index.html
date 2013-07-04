@@ -16,7 +16,7 @@
       
       <ul class="how-to-use">
         <li>
-          <h3>1. Installation</h3>
+          <h3>1. Install <span class="logo">Quickutil</span></h3>
 
           <pre class="example-code prettyprint lang-lisp">
             <code>&gt; (ql:quickload :quickutil)</code>
@@ -25,10 +25,10 @@
 
         <li>
           <div class="side-link"><a href="/list" data-pjax="#main">Find utilities</a></div>
-          <h3>2. Generate Your Utilities</h3>
+          <h3>2. Load Utilities</h3>
 
           <pre class="example-code prettyprint lang-lisp">
-            <code>&gt; (qtlc:save-utils-as "utils.lisp"{\n}
+            <code>&gt; (qtlc:utilize{\n}
             {sp}{sp}{sp}{sp}{sp}{sp}:utilities '(:iota :riffle){\n}
             {sp}{sp}{sp}{sp}{sp}{sp}:categories '(:alexandria){\n}
             {sp}{sp}{sp}{sp}{sp}{sp}:symbols '(:split-sequence-if-not))</code>
@@ -39,8 +39,7 @@
           <h3>3. Use Them</h3>
 
           <pre class="example-code prettyprint lang-lisp">
-            <code>&gt; (load "utils.lisp"){\n}
-            {sp}&gt; (qtl:riffle (qtl:iota 5) '--){\n}
+            <code>&gt; (qtl:riffle (qtl:iota 5) '--){\n}
             {sp}(0 -- 1 -- 2 -- 3 -- 4){\n}
             {sp}&gt; (qtl:split-sequence-if-not #'alphanumericp "3/14/1592"){\n}
             {sp}("3" "14" "1592")</code>
