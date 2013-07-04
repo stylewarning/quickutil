@@ -11,7 +11,5 @@
                (:file "conditions")
                (:file "quickutil-client")
                (:file "autoload"))
-  :depends-on ("cl-fad")
+  :depends-on ("cl-fad" "quickutil-utilities")
   :defsystem-depends-on ("quickutil-client-management"))
-
-

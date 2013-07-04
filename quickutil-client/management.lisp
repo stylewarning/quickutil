@@ -45,7 +45,7 @@ of the bound symbols), and delete the package, if it exists."
 
 (defun unload-quickutil-utilities (&key (verbose *verbose*))
   (when verbose
-    (format t "~&;;; Clearing system...~%"))
+    (format t "~&;;; Clearing QUICKUTIL-UTILITIES system...~%"))
   (asdf:clear-system :quickutil-utilities)
   
   (when verbose
@@ -68,9 +68,3 @@ the last result of BODY."
                      ,@body)
      (quickutil-client-management:unload-quickutil-utilities)))
 
-#+(or)
-(defmethod operate :after ((o load-op)
-                           (s (eql (find-system :quickutil-client)))
-                           &key &allow-other-keys)
-  (break "STOPPED")
-  (unload-quickutil-utilities))
