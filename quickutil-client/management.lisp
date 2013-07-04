@@ -9,10 +9,26 @@
 
 (in-package #:quickutil-client-management)
 
-(defun delete-package-if-exists (package-designator)
+(defun unbind-symbol (symbol)
+  (cond
+    ((boundp symbol) (makunbound symbol))
+    ((fboundp symbol) (unless (special-operator-p symbol)
+                        (fmakunbound symbol)))
+    (t nil)))
+
+(defun clean-and-delete-package (package-designator)
   (when (or (packagep package-designator)
             (find-package package-designator))
-    (delete-package package-designator)))
+    (let ((package (if (packagep package-designator)
+                       package-designator
+                       (find-package package-designator))))
+      ;; Clean up all the symbols.
+      (do-symbols (sym package-designator)
+        (when (eq (symbol-package sym) package)
+          (unbind-symbol sym)))
+      
+      ;; Delete the package.
+      (delete-package package-designator))))
 
 (defun load-quickutil-utilities (&key (verbose t))
   (when verbose
@@ -23,11 +39,11 @@
 (defun unload-quickutil-utilities (&key (verbose t))
   (when verbose
     (format t "~&;;; Unloading QUICKUTIL-UTILITIES.UTILITIES...~%"))
-  (delete-package-if-exists '#:quickutil-utilities.utilities)
+  (clean-and-delete-package '#:quickutil-utilities.utilities)
   
   (when verbose
     (format t "~&;;; Unloading QUICKUTIL-UTILITIES...~%"))
-  (delete-package-if-exists '#:quickutil-utilities)
+  (clean-and-delete-package '#:quickutil-utilities)
   
   (when verbose
     (format t "~&;;; Collecting trash...~%"))
