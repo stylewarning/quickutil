@@ -9,6 +9,7 @@
    #:all-utilities
    #:all-categories
    #:utils-in-category
+   #:utilities-for
    #:emit-utility-code
    #:pretty-print-utility-code))
 

@@ -10,40 +10,28 @@
 ;;;; then it takes a list as an argument. The same function without
 ;;;; the asterisk takes &REST arguments.
 
+(defmacro with-temp-file (stream-var file-var &body body)
+  `(let* ((,stream-var (cl-fad:open-temporary))
+          (,file-var (pathname ,stream-var)))
+     (unwind-protect (progn ,@body)
+       (close ,stream-var))
+     ,file-var))
+
 (defun qtl-utl (symbol)
   (intern (symbol-name symbol) :quickutil-utilities))
 
 (defmacro funcall-qtl-utl (function &rest args)
   `(funcall (intern (symbol-name ',function) :quickutil-utilities) ,@args))
 
-(defun utils (&rest util-names)
-  (prog2
-      (quickutil-client-management:load-quickutil-utilities)
-      (load
-       (compile-file
-        (with-temp-file stream file
-          (write-string
-           (funcall-qtl-utl emit-utility-code :utilities util-names)
-           stream))))
-    (quickutil-client-management:unload-quickutil-utilities)))
-
 ;;; XXX FIXME: This could use improved error handling.
+;;; XXX: DELETE?
 (defun who-provides (symbol)
   "Which utility provides the symbol SYMBOL?"
-  (assert (or (symbolp symbol)
-              (stringp symbol)))
-  (flet ((autoload-lookup (symbol)
-           (let* ((autoload-url (reverse-lookup-url symbol))
-                  (str (download-url-string autoload-url)))
-             (if (string-equal "NIL" str)
-                 (error "Could not find originating utility for symbol: ~A"
-                        (symbol-name symbol))
-                 str))))
-    (let ((who (ignore-errors (autoload-lookup (if (symbolp symbol)
-                                                   symbol
-                                                   (make-symbol symbol))))))
-      (nth-value 0 (and who (intern who '#:keyword))))))
+  (check-type symbol (or symbol string))
+  (quickutil-client-management:with-quickutil-utilities
+    (funcall-qtl-utl reverse-lookup symbol)))
 
+;;; XXX: DELETE?
 (defun category-utilities (category-names)
   "Query for the symbols in the categories CATEGORY-NAMES."
   (flet ((category-syms (category-name)
@@ -55,45 +43,43 @@
           :append (category-syms category) :into symbols
           :finally (return (remove-duplicates symbols)))))
 
+;;; XXX: DELETE?
 (defun symbol-utilities (symbols)
   (remove nil (remove-duplicates (mapcar #'who-provides symbols))))
 
+;;; XXX: DELETE
 (defun query-needed-utilities (&key utilities categories symbols)
   (remove-duplicates
    (append utilities
            (category-utilities categories)
            (symbol-utilities symbols))))
 
-;;; XXX: Just use SAVE-UTILS-AS to a temp file?
-(defun utilize (&key utilities categories symbols (package "QUICKUTIL"))
-  (unless (find-package package)
-    (error "The package ~S must exist in order to utilize utilities." package))
-  
-  (let ((file-contents (download-url-string
-                        (quickutil-query-url
-                         (query-needed-utilities :utilities utilities
-                                                 :categories categories
-                                                 :symbols symbols)))))
-    (load
-     (compile-file
-      (with-temp-file stream file
-        (format stream "(in-package ~S)~%~%" package)
-        (write-string file-contents stream))))))
+;;; FIXME: Add already-loaded bookkeeping.
+(defun utilize (&key utilities categories symbols)
+  (quickutil-client-management:with-quickutil-utilities
+    (let ((utils (funcall-qtl-utl utilities-for
+                                  :utilities utilities
+                                  :categories categories
+                                  :symbols symbols)))
+      (load
+       (compile-file
+        (with-temp-file stream file
+          (write-string
+           (funcall-qtl-utl emit-utility-code :utilities utils
+                                              :do-not-load qtl:*utilities*)
+           stream)))))))
 
-(defun utilize-utilities (utilities &key (package "QUICKUTIL"))
-  "Load the utilities UTILITIES and their dependencies into the
-package named PACKAGE."
-  (utilize :utilities utilities :package package))
+(defun utilize-utilities (utilities)
+  "Load the utilities UTILITIES and their dependencies."
+  (utilize :utilities utilities))
 
-(defun utilize-categories (categories &key (package "QUICKUTIL"))
-  "Load the utilities in the categories CATEGORIES into the package
-named PACKAGE."
-  (utilize :categories categories :package package))
+(defun utilize-categories (categories)
+  "Load the utilities in the categories CATEGORIES."
+  (utilize :categories categories))
 
-(defun utilize-symbols (symbols &key (package "QUICKUTIL"))
-  "Load the utilities which provide the symbols SYMBOLS into the
-package named PACKAGE."
-  (utilize :symbols symbols :package package))
+(defun utilize-symbols (symbols)
+  "Load the utilities which provide the symbols SYMBOLS."
+  (utilize :symbols symbols))
 
 (defun print-lines (stream &rest strings)
   "Print the lines denoted by the strings STRINGS to the stream

@@ -388,38 +388,22 @@ optimizing redundancy out."
   "Compute the order in which the utilities must be loaded."
   (sort-dependencies (generate-util-dependency-table :registry registry)))
 
-;;; XXX: This can be cleaned up and simplified.
-(defun flatten-progn (code)
-  "Flatten PROGN forms at depth 1. That is, flatten
-
-    (PROGN (PROGN A) (PROGN B))
-
-to
-
-    (PROGN A B)."
-  (labels ((ensure-progn (x)
-             (if (progn? x)
-                 x
-                 `(progn ,x)))
-           
-           (append-progn (a b)
-             `(progn ,@(append (cdr (ensure-progn a))
-                               (cdr (ensure-progn b)))))
-           
-           (progn? (code)
-             (and (listp code)
-                  (eql (car code) 'progn))))
-    (cond
-      ((and (progn? code)
-            (null (cdr code)))
-       '(progn))
-      
-      ((not (progn? code)) `(progn ,code))
-      
-      (t (reduce #'append-progn (cdr code))))))
+;;; XXX FIXME: better error handling
+(defun utilities-for (&key utilities categories symbols)
+  "Find all of the utilities corresponding to the utilities UTILITIES,
+the categories CATEGORIES, and the symbols SYMBOLS."
+  (remove-if #'null
+             (remove-duplicates
+              (append
+               utilities
+               (mapcan #'(lambda (cat)
+                           (copy-list (utils-in-category cat)))
+                       categories)
+               (mapcar #'reverse-lookup symbols)))))
 
 ;;; XXX: Do we want a WITH-COMPILATION-UNIT?
 (defun emit-utility-code (&key utilities
+                               do-not-load
                                (registry *utility-registry*))
   "Emit all of the source code for the utility (keyword) or
 utilities (keyword list) UTILITIES in order to use it. If UTILITY is
@@ -439,9 +423,12 @@ NIL, then emit all utility source code."
        "NIL")
       
       (t
-       (let* ((load-order (mapcar #'lookup-util (compute-combined-load-order
-                                                 (ensure-keyword-list utilities)
-                                                 registry)))
+       (let* ((load-order-symbols (remove-if #'(lambda (x)
+                                                 (member x do-not-load))
+                                             (compute-combined-load-order
+                                              (ensure-keyword-list utilities)
+                                              registry)))
+              (load-order (mapcar #'lookup-util load-order-symbols))
               (compilation-deps (loop :for util :in load-order
                                       :append (util.compilation-dependencies util) :into deps
                                       :finally (return (remove-duplicates deps)))))
@@ -450,8 +437,11 @@ NIL, then emit all utility source code."
                               (copy-list (util.provides (lookup-util x))))
                           utilities)))
            (with-output-to-string (*standard-output*)
-             ;; (write-string "(in-package #:quickutil)")
-             ;; (terpri)
+             (write-string "(in-package #:quickutil)") (terpri)
+             (write-string "(when (boundp '*utilities*)") (terpri)
+             (format t     "  (setf *utilities* (union *utilities* '~S)))~%"
+                     load-order-symbols)
+             
              (dolist (util load-order)
                (when util
                  (let ((compile-time? (member (util.name util) compilation-deps)))
