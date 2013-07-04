@@ -404,6 +404,7 @@ the categories CATEGORIES, and the symbols SYMBOLS."
 ;;; XXX: Do we want a WITH-COMPILATION-UNIT?
 (defun emit-utility-code (&key utilities
                                do-not-load
+                               (emit-in-package-form t)
                                (registry *utility-registry*))
   "Emit all of the source code for the utility (keyword) or
 utilities (keyword list) UTILITIES in order to use it. If UTILITY is
@@ -437,7 +438,8 @@ NIL, then emit all utility source code."
                               (copy-list (util.provides (lookup-util x))))
                           utilities)))
            (with-output-to-string (*standard-output*)
-             (write-string "(in-package #:quickutil)") (terpri)
+             (when emit-in-package-form
+               (write-string "(in-package #:quickutil)")) (terpri)
              (write-string "(when (boundp '*utilities*)") (terpri)
              (format t     "  (setf *utilities* (union *utilities* '~S)))~%"
                      load-order-symbols)
@@ -464,4 +466,6 @@ NIL, then emit all utility source code."
   (flet ((clean-up (string)
            (string-right-trim '(#\Space)
                               (string-trim '(#\Newline) string))))
-    (write-string (clean-up code-string) stream)))
+    (if (null stream)
+        (clean-up code-string)
+        (write-string (clean-up code-string) stream))))
