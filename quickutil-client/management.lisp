@@ -41,6 +41,10 @@ of the bound symbols), and delete the package, if it exists."
 
 (defun unload-quickutil-utilities (&key (verbose t))
   (when verbose
+    (format t "~&;;; Clearing system...~%"))
+  (asdf:clear-system :quickutil-utilities)
+  
+  (when verbose
     (format t "~&;;; Unloading QUICKUTIL-UTILITIES.UTILITIES...~%"))
   (clean-and-delete-package '#:quickutil-utilities.utilities)
   
@@ -53,6 +57,8 @@ of the bound symbols), and delete the package, if it exists."
   (trivial-garbage:gc :full t :verbose verbose))
 
 (defmacro with-quickutil-utilities (&body body)
+  "Load Quickutil utilities, execute BODY, and unload them, returning
+the last result of BODY."
   `(unwind-protect (progn
                      (quickutil-client-management:load-quickutil-utilities)
                      ,@body)
