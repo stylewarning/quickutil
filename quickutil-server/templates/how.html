@@ -72,9 +72,9 @@
       <a id="integration"></a>
       <h3>Integrating <span class="logo">Quickutil</span> into Your Project</h3>
       
-      <p>There are two ways to integrate utilities from <span class="logo">Quickutil</span> into your project: using <code>qtlc:utilize</code> wrapped in an <code>eval-hen</code> or <a href="#generating">generating a stand-alone utility file</a>. <strong>It is highly recommended that you use <code>qtlc:utilize</code> in order to keep utilities up-to-date!</strong></p>
+      <p>There are two ways to integrate utilities from <span class="logo">Quickutil</span> into your project: adding a compile-time evaluated <code>qtlc:utilize</code> to your project or <a href="#generating">generating a stand-alone utility file</a>. <strong>It is highly recommended that you use <code>qtlc:utilize</code> in order to keep utilities up-to-date!</strong></p>
       
-      <p>To integrate, simply add the appropriate <code>qtlc:utilize</code> form somewhere in the toplevel of a file in your project and ensure it gets evaluated at compile time. It is common to add it to one's <code>utilities.lisp</code> file, which contains project-specific helper functions in addition to the <code>utilize</code> form.</p>
+      <p>To integrate, simply add the appropriate <code>qtlc:utilize</code> form somewhere in the toplevel of a file in your project and wrap it in <code>eval-when (:compile-toplevel)<code> to ensure it gets evaluated at compile time. It is common to add it to one's <code>utilities.lisp</code> file, which contains project-specific helper functions in addition to the <code>utilize</code> form.</p>
       
       <p>For example, from the <a href="https://bitbucket.org/tarballs_are_good/qsolve/raw/a5f8a5f84f9ccac89726267829bfc668ff34d6eb/utilities/quickutil.lisp">Qsolve project</a>:</p>
       
