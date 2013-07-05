@@ -302,7 +302,8 @@ SML function of the same name."
   #>%%%>
   (defun list-to-vector (list)
     %%DOC
-    (make-array (length list) :initial-contents list))
+    (check-type list list)
+    (coerce list 'vector))
   %%%)
 
 (defutil sequence-to-list (:version (1 . 0)
@@ -311,7 +312,8 @@ SML function of the same name."
   #>%%%>
   (defun sequence-to-list (seq)
     %%DOC
-    (concatenate 'list seq))
+    (check-type seq sequence)
+    (coerce seq 'list))
   %%%)
 
 (defutil explode (:version (1 . 0)
