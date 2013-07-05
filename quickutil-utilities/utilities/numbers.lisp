@@ -24,23 +24,22 @@ the following identity holds:
   %%%)
 
 ;;; Author: Goheeca (github: Goheeca)
-;;; Modified by: Stas Boukarev (stassats)
+;;; Modified: Stas Boukarev (stassats)
 (defutil nth-digit (:version (1 . 0)
                     :category (math setters))
   "Get the `n`th digit in a rational number `number` in base
 `base`. If `n` is positive, it refers to digits to the left of the
-decimal point, and if negative, to the right."
+decimal point, and if negative, to the right. The digits of a negative
+number match that of its positive counterpart."
   #>%%%>
-  (declaim (ftype (function (integer rational &optional (integer 2)) integer)
-                  nth-digit))
   (defun nth-digit (n number &optional (base 10))
     %%DOC
     (check-type n integer)
     (check-type number rational)
     (check-type base (integer 2))
-    (let* ((lower (expt base n))
-           (higher (* lower base)))
-    (values (floor (mod number higher) lower))))
+    (mod (floor (abs number)
+                (expt base n))
+         base))
   
   (define-setf-expander nth-digit (n number &optional (base 10) &environment env)
     "Set the `n`th digit of a rational number `number` in base `base`."
@@ -49,12 +48,20 @@ decimal point, and if negative, to the right."
       (let ((store (gensym))
             (ntemp (gensym))
             (basetemp (gensym))
+            (access-once (gensym))
             (vartemp (first vars)))
         (if (cdr vars) (error "Can't expand this."))
         (values (append (list ntemp basetemp) temps)
                 (append (list n base) vals)
                 (list store)
-                `(let ((,vartemp (+ ,access-form (* (- ,store (nth-digit ,ntemp ,access-form ,basetemp)) (expt ,basetemp ,ntemp)))))
+                `(let* ((,access-once ,access-form)
+                        (,vartemp (* (if (plusp ,access-once) 1 -1) ; sign
+                                     (+ (abs ,access-once)
+                                        (* (- ,store
+                                              (nth-digit ,ntemp
+                                                         ,access-form
+                                                         ,basetemp))
+                                           (expt ,basetemp ,ntemp))))))
                    (assert (<= 0 ,store  (1- ,basetemp)))
                    ,store-form
                    ,store)
