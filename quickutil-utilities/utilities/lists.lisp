@@ -324,6 +324,7 @@ SML function of the same name."
   #>%%%>
   (defun explode (string)
     %%DOC
+    (check-type string string)
     (sequence-to-list string))
   %%%)
 
@@ -335,7 +336,8 @@ SML function of the same name."
   #>%%%>
   (defun implode (list-of-characters)
     %%DOC
-    (coerce (list-to-vector list-of-characters) 'string))
+    (check-type list-of-characters list)
+    (coerce list-of-characters 'string))
   %%%)
 
 (defutil inits (:version (1 . 0)
