@@ -40,7 +40,7 @@ Examples:
                               :initial-element 0))
            (cross-limit (the fixnum (ash (isqrt n) -1))))
       (declare (type fixnum sieve-bound cross-limit)
-               (type (simple-bit-vector *) sieve))
+               (type simple-bit-vector sieve))
       (loop :for i fixnum :from 1 :to cross-limit :do
         (when (zerop (the bit (sbit sieve i)))
           (loop :for j fixnum :from (the fixnum
@@ -66,7 +66,7 @@ Examples:
                               :element-type 'bit :initial-element 0))
            (cross-limit (the unsigned-byte (ash (isqrt n) -1))))
       (declare (type unsigned-byte sieve-bound cross-limit)
-               (type (simple-bit-vector *) sieve))
+               (type simple-bit-vector sieve))
       (loop :for i :of-type unsigned-byte :from 1 :to cross-limit :do
         (when (zerop (sbit sieve i))
           (loop :for j :of-type unsigned-byte
