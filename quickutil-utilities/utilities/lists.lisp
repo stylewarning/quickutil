@@ -184,9 +184,10 @@ tuples. Equivalent to `unzip`."
   #>%%%>
   (defun safe-nth (n list &optional if-out-of-bounds)
     %%DOC
-    (if (>= n (length list))
-        if-out-of-bounds
-        (nth n list)))
+    (let ((nthcdr (nthcdr n list)))
+      (if (endp nthcdr)
+          if-out-of-bounds
+          (car nthcdr))))
   %%%)
 
 (defutil mapply (:version (1 . 0)
