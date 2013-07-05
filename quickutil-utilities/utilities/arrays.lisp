@@ -17,7 +17,7 @@ elements."
                  (etypecase dimensions
                    (null 0)
                    (integer dimensions)
-                   (list (reduce #'* dimensions :initial-value 1))))
+                   (list (reduce #'* dimensions))))
               (dimensions array)
               "The given dimensions ~S and the dimensions ~S of the given ~
                array must have the same total number of elements, ~D."
@@ -94,21 +94,13 @@ method."
   #>%%%>
   (defun array-list (array)
     %%DOC
-    (labels ((collect-dimension (current-dim current-dims next-dims)
-               (if (null next-dims)
-                   (loop :for i :below current-dim
-                         :collect (apply #'aref array
-                                         (reverse
-                                          (cons i current-dims))))
-                   (loop :for i :below current-dim
-                         :collect (collect-dimension
-                                   (car next-dims)
-                                   (cons i current-dims)
-                                   (cdr next-dims))))))
-      (if (zerop (array-rank array))
-          (error "Cannot convert a rank-0 array to a list.")
-          (let ((dims (array-dimensions array)))
-            (collect-dimension (car dims)
-                               nil
-                               (cdr dims))))))
+    (let ((index -1))
+      (labels ((collect-dimension (dimensions)
+                 (if dimensions
+                     (loop :repeat (car dimensions)
+                           :collect (collect-dimension (cdr dimensions)))
+                     (row-major-aref array (incf index)))))
+        (if (zerop (array-rank array))
+            (error "Cannot convert a rank-0 array to a list.")
+            (collect-dimension (array-dimensions array))))))
   %%%)
