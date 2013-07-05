@@ -88,11 +88,13 @@ method."
       (reduce-aux 0 (1- (length vector)))))
   %%%)
 
-(defutil array-list (:version (1 . 0)
-                     :category (arrays lists))
-  "Convert a non-zero ranked array `array` to a list of the same shape."
+(defutil array-contents (:version (1 . 0)
+                         :category (arrays lists))
+  "Extract the contents of the array `array`, returning a value that
+would be suitable to pass to the `:initial-contents` keyword argument of
+`make-array`."
   #>%%%>
-  (defun array-list (array)
+  (defun array-contents (array)
     %%DOC
     (let ((index -1))
       (labels ((collect-dimension (dimensions)
@@ -100,7 +102,5 @@ method."
                      (loop :repeat (car dimensions)
                            :collect (collect-dimension (cdr dimensions)))
                      (row-major-aref array (incf index)))))
-        (if (zerop (array-rank array))
-            (error "Cannot convert a rank-0 array to a list.")
-            (collect-dimension (array-dimensions array))))))
+        (collect-dimension (array-dimensions array)))))
   %%%)
