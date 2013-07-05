@@ -37,6 +37,7 @@
                              (:file "random")
                              (:file "generic")
                              (:file "conses")
+                             (:file "conditions")
                              (:file "synonyms")
                              (:file "io")
                              (:file "syntax")
