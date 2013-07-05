@@ -368,9 +368,7 @@ Example
   #>%%%>
   (defun tails (list)
     %%DOC
-    (labels ((rec (list acc)
-               (if (null list)
-                   (nreverse (cons nil acc))
-                   (rec (cdr list) (cons list acc)))))
-      (rec list nil)))
+    (loop :collect list
+          :while list
+          :do (pop list)))
   %%%)
