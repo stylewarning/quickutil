@@ -30,8 +30,7 @@ provided, then apply it to each number."
     %%DOC
     (loop
       :for i :in indexes
-      :collect (nth i list) :into s
-      :finally (return s)))
+      :collect (nth i list)))
   %%%)
 
 (defutil transpose (:version (1 . 0)

@@ -75,12 +75,12 @@
     
     (etypecase sequence
       ;; Lists
-      (list (loop :for i :below (1+ (- (length sequence) n))
-                  :for seq := sequence :then (cdr seq)
+      (list (loop :repeat (1+ (- (length sequence) n))
+                  :for seq :on sequence
                   :collect (take n seq)))
       
       ;; General sequences
-      (sequence (loop :for i :below (1+ (- (length sequence) n))
+      (sequence (loop :for i :to (- (length sequence) n)
                       :collect (subseq sequence i (+ i n))))))
   %%%)
 
@@ -155,8 +155,8 @@ each element of the sequence and executing `body`. Return the value
   (defmacro doseq ((var seq &optional return) &body body)
     %%DOC
     `(progn
-       (map nil (lambda (,var)
-                  ,@body)
+       (map nil #'(lambda (,var)
+                    ,@body)
             ,seq)
        ,return))
   %%%)
