@@ -148,9 +148,10 @@ each element of the sequence and executing `body`. Return the value
   #>%%%>
   (defmacro doseq ((var seq &optional return) &body body)
     %%DOC
-    `(progn
+    `(block nil
        (map nil #'(lambda (,var)
-                    ,@body)
+                    (tagbody
+                       ,@body))
             ,seq)
        ,return))
   %%%)
