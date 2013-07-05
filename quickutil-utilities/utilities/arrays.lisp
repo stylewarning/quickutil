@@ -1,27 +1,36 @@
 (in-package #:quickutil-utilities.utilities)
 
-#+#:ignore ;; Alexandria has a version of this
-(defutil copy-array (:version (1 . 0)
-                     :category (arrays orthogonality))
-  "Make a copy of `array`."
-  (defun copy-array (array)
-    (let ((dims (array-dimensions array)))
-      (adjust-array
-       (make-array dims
-                   :element-type (array-element-type array)
-                   :displaced-to array)
-       dims))))
-
 (defutil rerank-array (:version (1 . 0)
-                       :depends-on copy-array
                        :category (arrays orthogonality))
-  "Reshape `array` to have dimensions specified by `dimensions`. This
-function makes a copy of `array`."
+  "Reshape `array` to have dimensions specified by `dimensions`,
+possibly with a different rank than the original. The dimensions of
+`array` and the given `dimensions` must have the same total number of
+elements."
   #>%%%>
   (defun rerank-array (dimensions array)
     %%DOC
-    (let ((copy (copy-array array)))
-      (make-array dimensions :displaced-to copy)))
+    (check-type array array)
+    (check-type dimensions (or list unsigned-byte))
+    (let ((total-size (array-total-size array)))
+      ;; Check that the dimensions are compatible.
+      (assert (= total-size
+                 (etypecase dimensions
+                   (null 0)
+                   (integer dimensions)
+                   (list (reduce #'* dimensions :initial-value 1))))
+              (dimensions array)
+              "The given dimensions ~S and the dimensions ~S of the given ~
+               array must have the same total number of elements, ~D."
+              dimensions
+              (array-dimensions array)
+              total-size)
+      
+      ;; Copy the array to the new one.
+      (let ((reshaped (make-array dimensions
+                                  :element-type (array-element-type array))))
+        (dotimes (i total-size reshaped)
+          (setf (row-major-aref reshaped i)
+                (row-major-aref array i))))))
   %%%)
 
 ;;; XXX: Make generic?
@@ -39,7 +48,7 @@ function makes a copy of `array`."
       (loop
         :for i :below len
         :for vi :from a :below b :by step
-        :do (setf (svref vec i) (funcall key vi))
+        :do (setf (aref vec i) (funcall key vi))
         :finally (return vec))))
   %%%)
 

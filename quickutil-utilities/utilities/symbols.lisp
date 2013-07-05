@@ -17,6 +17,5 @@
   #>%%%>
   (defun ensure-keyword (x)
     %%DOC
-    
     (values (intern (string x) :keyword)))
   %%%)
