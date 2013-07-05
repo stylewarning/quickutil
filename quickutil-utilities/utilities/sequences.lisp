@@ -94,10 +94,12 @@
 of which has elements that satisfy F, the second which do not."
     (let ((yes nil)
           (no nil))
-      (map nil #'(lambda (x)
-                   (if (funcall f x)
-                       (push x yes)
-                       (push x no))))
+      (map nil
+           #'(lambda (x)
+               (if (funcall f x)
+                   (push x yes)
+                   (push x no)))
+           seq)
       (values yes no)))
   
   (defun partition-if-not (f seq)
