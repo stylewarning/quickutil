@@ -50,12 +50,11 @@
       ;; Since lists have O(N) access time, we iterate through manually,
       ;; collecting each chunk as we pass through it. Using SUBSEQ would
       ;; be O(N^2).
-      (list (labels ((rec (sequence acc)
-                       (let ((rest (nthcdr chunk-size sequence)))
-                         (if (consp rest)
-                             (rec rest (cons (subseq sequence 0 chunk-size) acc))
-                             (nreverse (cons sequence acc))))))
-              (and sequence (rec sequence nil))))
+      (list (loop :while sequence
+                  :collect
+                  (loop :repeat chunk-size
+                        :while sequence
+                        :collect (pop sequence))))
       
       ;; For other sequences like strings or arrays, we can simply chunk
       ;; by repeated SUBSEQs.
