@@ -112,31 +112,25 @@ satisfy the predicate F, and the second whose elements do."
 
 (defutil equivalence-classes (:version (1 . 0)
                               :category (sequences functional))
-  "Partition the sequence `seq` into a vector of equivalence classes
+  "Partition the sequence `seq` into a list of equivalence classes
 defined by the equivalence relation `equiv`."
   #>%%%>
   (defun equivalence-classes (equiv seq)
     %%DOC
-    (let ((half-length (floor (length seq) 2))
-          (classes nil))
+    (let ((classes nil))
       (labels ((find-equivalence-class (x)
-                 (find-if (lambda (class)
-                            (funcall equiv (aref class 0) x))
-                          classes))
-               
-               (new-class (x)
-                 (make-array half-length
-                             :initial-element x
-                             :adjustable t
-                             :fill-pointer 1))
+                 (member-if (lambda (class)
+                              (funcall equiv x (car class)))
+                            classes))
                
                (add-to-class (x)
                  (let ((class (find-equivalence-class x)))
                    (if class
-                       (vector-push-extend x class)
-                       (push (new-class x) classes)))))
-        (declare (inline find-equivalence-class
-                         new-class
+                       (push x (car class))
+                       (push (list x) classes)))))
+        (declare (dynamic-extent (function find-equivalence-class)
+                                 (function add-to-class))
+                 (inline find-equivalence-class
                          add-to-class))
         
         ;; Partition into equivalence classes.
