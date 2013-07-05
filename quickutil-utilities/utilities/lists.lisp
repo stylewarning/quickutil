@@ -139,8 +139,7 @@ tuples. Equivalent to `unzip`."
   #>%%%>
   (defun ncycle (list)
     %%DOC
-    (and list
-         (setf (rest (last list)) list)))
+    (nconc list list))
   %%%)
 
 (defutil cycle (:version (1 . 0)
