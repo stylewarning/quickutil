@@ -19,8 +19,5 @@ Authors
 Acknowledgements
 ----------------
 
-Thanks to James M. Lawrence (@lmj) for the insightful discussions that
-had a major influence on the early development of Quickutil.
-
 Thanks to Stas Boukarev (stassats) for a nearly comprehensive review
 of all of the utilities, finding countless enhancements and many bugs.
