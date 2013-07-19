@@ -14,7 +14,7 @@
   (quickutil-server:stop)
   (quickutil-server:start :port 18081)
 
-  (quickutil-client:set-quickutil-host "localhost:18081")
+  ;;(quickutil-client:set-quickutil-host "localhost:18081")
 
   (loop :with i := 0
         :with log-stream := *standard-output*
