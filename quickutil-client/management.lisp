@@ -13,13 +13,32 @@
 (defvar *verbose* nil
   "Dictates whether loading should be verbose.")
 
+(defun symbol-accessible-from-package (symbol package)
+  "Is the symbol SYMBOL accessible from the package PACKAGE?"
+  (multiple-value-bind (found-symbol status)
+      (find-symbol (symbol-name symbol) package)
+    (and
+     (if (null symbol)
+         status
+         (eq symbol found-symbol))
+     t)))
+
 (defun unbind-symbol (symbol)
-  "Unbind the symbol denoting a variable, function, or macro."
+  "Ensure the symbol denoting a variable, function, or macro is unbound.
+
+A continuable error will be signaled if it is a symbol in the CL package."
   (cond
-    ((boundp symbol) (makunbound symbol))
-    ((fboundp symbol) (unless (special-operator-p symbol)
-                        (fmakunbound symbol)))
-    (t nil)))
+    ((symbol-accessible-from-package symbol :common-lisp)
+     (cerror "Continue, doing nothing with the symbol."
+             "The symbol ~S is in the CL package and cannot be ~
+              unbound."
+             symbol))
+    (t
+     (when (boundp symbol)
+       (makunbound symbol))
+     (when (fboundp symbol)
+       (unless (special-operator-p symbol)
+         (fmakunbound symbol))))))
 
 (defun clean-and-delete-package (package-designator)
   "Clean up the package designated by PACKAGE-DESIGNATOR (unbind all
