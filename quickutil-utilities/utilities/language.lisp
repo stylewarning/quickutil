@@ -56,3 +56,13 @@
                      :collect `(let ((,new ,gensym))
                                  ,setter)))))))
   %%%)
+
+(defutil let1 (:version (1 . 0)
+               :category language)
+  "Bind VAR to VAL within BODY. Equivalent to LET with one binding."
+  #>%%%>
+  (defmacro let1 (var val &body body)
+    %%DOC
+    `(let ((,var ,val))
+       ,@body))
+  %%%)
