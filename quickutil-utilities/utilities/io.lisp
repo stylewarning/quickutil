@@ -79,3 +79,39 @@ symbols `streams` in the code `body`."
                             *terminal-io*)
        ,@body))
   %%%)
+
+(defutil skip-if (:version (1 . 0)
+                  :category (io streams))
+  "Given a character predicate `char-predicate`, read past all of the characters of the character stream `stream` which satisfy that predicate. Optional arguments `eof-error-p`, `eof-value`, and `recursive-p` are the same as in `read-char`."
+  #>%%%>
+  (defun skip-if (char-predicate
+                  &optional
+                    (stream *standard-input*)
+                    (eof-error-p T)
+                    eof-value
+                    recursive-p)
+    %%DOC
+    (loop :while (funcall char-predicate
+                          (peek-char NIL
+                                     stream
+                                     eof-error-p
+                                     eof-value
+                                     recursive-p))
+          :do (read-char stream eof-error-p eof-value recursive-p)))
+  %%%)
+
+(defutil skip (:version (1 . 0)
+               :depends-on skip-if
+               :category (io streams))
+  "Read past all of the characters matching `char` in the character stream `stream`. Optional arguments `eof-error-p`, `eof-value`, and `recursive-p` are the same as in `read-char`."
+  #>%%%>
+  (defun skip (char
+               &optional
+                 (stream *standard-input*)
+                 (eof-error-p T)
+                 eof-value
+                 recursive-p)
+    %%DOC
+    (skip-if (lambda (c) (eql c char))
+             stream eof-error-p eof-value recursive-p))
+  %%%)
