@@ -5,6 +5,7 @@
 
 (defsystem quickutil-server
   :version "0.1"
+  :description "Implementation of the Quickutil server."
   :author "Eitarow Fukamachi <e.arrows@gmail.com>"
   :license "BSD 3-clause. See LICENSE file."
   :depends-on (:ningle

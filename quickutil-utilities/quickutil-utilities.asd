@@ -3,7 +3,7 @@
 (asdf:defsystem #:quickutil-utilities
   :serial t
   :description "The utilities and backend to Quickutil."
-  :author "Robert Smith <quad@symbo1ics.com>"
+  :author "Robert Smith <quad@symbo1ics.com> & contributors"
   :license "See LICENSE file."
   :depends-on ("cl-heredoc")
   :components (
