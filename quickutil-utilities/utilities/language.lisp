@@ -21,7 +21,7 @@
 
 (defutil letf* (:version (1 . 0)
                 :depends-on (appendf zip)
-                :category language)
+                :category (language binding))
   "Given a list of `bindings` whose keys are places and whose values are forms, set them for the duration of `body`, but restore their values (as visible upon evaluation of this macro) upon completion. The restoration is ensured with `unwind-protect`."
   #>%%%>
   (defmacro letf* (bindings &body body &environment env)
@@ -58,7 +58,7 @@
   %%%)
 
 (defutil let1 (:version (1 . 0)
-               :category language)
+               :category (language binding))
   "Bind VAR to VAL within BODY. Equivalent to LET with one binding."
   #>%%%>
   (defmacro let1 (var val &body body)
