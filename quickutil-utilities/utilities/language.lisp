@@ -66,3 +66,49 @@
     `(let ((,var ,val))
        ,@body))
   %%%)
+
+(defutil defaccessor (:version (1 . 0)
+                      :depends-on (parse-body with-gensyms)
+                      :provides (defaccessor accesses)
+                      :category language)
+  "Define the function named `name` just as with a normal `defun`. Also define the setter `(setf name)`. The form to be set (i.e., the place) should be wrapped in the local macro `accesses`. For example,
+
+```
+  CL-USER> (let ((x 0))
+             (defaccessor saved-x ()
+               (accesses x)))
+  SAVED-X
+  (SETF SAVED-X)
+  CL-USER> (saved-x)
+  0
+  CL-USER> (setf (saved-x) 5)
+  5
+  CL-USER> (saved-x)
+  5
+```
+"
+  #>%%%>
+  (defmacro defaccessor (name lambda-list &body body)
+    %%DOC
+    (multiple-value-bind (remaining-forms decls doc)
+        (parse-body body :documentation t)
+      (with-gensyms (new-value)
+        `(progn
+           (defun ,name ,lambda-list
+             ,doc
+             ,@decls
+             (macrolet ((accesses (form)
+                          form))
+               ,@remaining-forms))
+         
+           (defun (setf ,name) ,(cons new-value lambda-list)
+             ,(format nil "Setter for the function ~S." name)
+             ,@decls
+             (macrolet ((accesses (form)
+                          `(setf ,form ,',new-value)))
+               ,@remaining-forms
+               ,new-value))
+           (values
+            ',name
+            '(setf ,name))))))
+  %%%)
