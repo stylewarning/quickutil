@@ -51,5 +51,5 @@
               :if (funcall predicate item) collect item
                 :else
                   :if (listp item)
-                    :append (recursive-find/collect predicate item)))))
+                    :append (tree-collect predicate item)))))
   %%%)
