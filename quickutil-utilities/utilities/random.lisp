@@ -21,20 +21,22 @@
         (+ a (random (- (1+ b) a)))))
   %%%)
 
-(defutil random-from (:version (1 . 0)
-                      :depends-on bisect
+(defutil sample-from (:version (1 . 0)
+                      :depends-on find-sorted-position
                       :category random)
-  "Take N from CHOICES sampled according to :WEIGHTS if provided,
+  "Take N from the sequences of CHOICES sampled according to :WEIGHTS if provided,
 otherwise each of CHOICES is equally likely."
   #>%%%>
-  (defun random-from (choices &key weights (n 1))
+  (defun sample-from (choices &key (weights nil weights-provided-p) (n 1))
     %%DOC
-    (let* ((len (length choices))
-           (weights (or weights (make-list len :initial-element (float (/ len)))))
-           (cumm (loop for i in weights for c = i then (+ c i) collect c))
-           (total (first (last cumm))))
-      (loop repeat n
-            collect (nth (bisect cumm (random total) :low 0 :high (1- len))
-                         choices))))
+    (if weights-provided-p
+        (let* ((cumm (loop :for i :in weights :for c = i :then (+ c i) :collect c))
+               (total (first (last cumm))))
+          (loop :repeat n
+                :collect (elt choices
+                              (find-sorted-position cumm (random total)
+                                                    :start 0 :end (1- (length choices))))))
+        ;; Uniform sample
+        (loop :repeat n :collect (elt choices (random (length choices))))))
   %%%)
 
