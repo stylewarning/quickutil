@@ -30,13 +30,15 @@ otherwise each of CHOICES is equally likely."
   (defun sample-from (choices &key (weights nil weights-provided-p) (n 1))
     %%DOC
     (if weights-provided-p
-        (let* ((cumm (loop :for i :in weights :for c = i :then (+ c i) :collect c))
-               (total (first (last cumm))))
+        (let* ((cumm (coerce (loop :for i :in weights :for c := i :then (+ c i) :collect c)
+                             'vector))
+               (total (aref cumm (1- (length cumm)))))
           (loop :repeat n
                 :collect (elt choices
-                              (find-sorted-position cumm (random total)
-                                                    :start 0 :end (1- (length choices))))))
+                              (find-sorted-position cumm (random total)))))
         ;; Uniform sample
-        (loop :repeat n :collect (elt choices (random (length choices))))))
+        (loop :with len := (length choices)
+              :repeat n
+              :collect (elt choices (random len)))))
   %%%)
 
