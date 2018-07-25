@@ -158,13 +158,13 @@ each element of the sequence and executing `body`. Return the value
 
 (defutil find-sorted-position (:version (1 . 0)
                                :category sequences)
-  "Find a position in ordered LIST where ELT would be inserted such
-that the result remains ordered according to PREDICATE. The keyword
-arguments :START and :END are used to specify the region of LIST in
-which to search for the position.
+  "Find a position in ordered SEQ where ELT would be inserted such
+that the result remains ordered according to the binary function
+PREDICATE. The keyword arguments :START and :END are used to specify
+the region of SEQ in which to search for the position.
 
 Note that the position will be a number X such that all positions in
-LIST before X have (FUNCALL PREDICATE (NTH X LIST) ELT). This results
+SEQ before X have (FUNCALL PREDICATE (NTH X SEQ) ELT). This results
 in the position being _after_ any elements that match ELT. For example
     (FIND-SORTED-POSITION '(1 2 2 3) 2) => 3."
   #>%%%>
@@ -173,10 +173,10 @@ in the position being _after_ any elements that match ELT. For example
     (check-type seq sequence)
     (check-type start unsigned-byte)
     (check-type end unsigned-byte)
-    (assert (<= start end) () "The START must the END.")
+    (assert (<= start end) () "The START must be less than the END.")
     (labels ((bisect (start end)
-               (let* ((mid (floor (+ start end) 2)))
-                 (if (>= start end)
+               (let ((mid (floor (+ start end) 2)))
+                 (if (= start end)
                      start
                      (if (funcall predicate elt (elt seq mid))
                          (bisect start mid)

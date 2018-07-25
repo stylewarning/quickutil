@@ -24,21 +24,24 @@
 (defutil sample-from (:version (1 . 0)
                       :depends-on find-sorted-position
                       :category random)
-  "Take N from the sequences of CHOICES sampled according to :WEIGHTS if provided,
+  "Take COUNT from the sequence of CHOICES sampled according to WEIGHTS if provided,
 otherwise each of CHOICES is equally likely."
   #>%%%>
-  (defun sample-from (choices &key (weights nil weights-provided-p) (n 1))
+  (defun sample-from (choices &key (weights nil weights-provided-p) (count 1))
     %%DOC
+    ;; Assert that weights and choices are same length only if weights
+    ;; are provided
+    (assert (or (not weights-provided-p) (= (length weights) (length choices))))
     (if weights-provided-p
         (let* ((cumm (coerce (loop :for i :in weights :for c := i :then (+ c i) :collect c)
                              'vector))
                (total (aref cumm (1- (length cumm)))))
-          (loop :repeat n
+          (loop :repeat count
                 :collect (elt choices
                               (find-sorted-position cumm (random total)))))
         ;; Uniform sample
         (loop :with len := (length choices)
-              :repeat n
+              :repeat count
               :collect (elt choices (random len)))))
   %%%)
 
