@@ -31,25 +31,18 @@
       (rec tree)))
   %%%)
 
-(defutil tree-collect (:version (1 . 0)
+(defutil tree-collect (:version (1 . 1)
                        :category trees)
   "Returns a list of every node in the `tree` that satisfies the `predicate`. If there are any improper lists in the tree, the `predicate` is also applied to their dotted elements."
   #>%%%>
   (defun tree-collect (predicate tree)
     %%DOC
-    (let ((sentinel (gensym)))
-      (flet ((my-cdr (obj)
-               (cond ((consp obj)
-                      (let ((result (cdr obj)))
-                        (if (listp result)
-                            result
-                            (list result sentinel))))
-                     (t
-                      (list sentinel)))))
-        (loop :for (item . rest) :on tree :by #'my-cdr
-              :until (eq item sentinel)
-              :if (funcall predicate item) collect item
-                :else
-                  :if (listp item)
-                    :append (tree-collect predicate item)))))
+    (loop for (first . rest) on tree
+       if (funcall predicate first)
+       collect first into result
+       else if (consp first)
+       append (tree-collect predicate first) into result
+       unless (consp rest) return (if (and rest (funcall predicate rest))
+				      (append result (list rest))
+				      result)))
   %%%)
