@@ -20,7 +20,7 @@ the following identity holds:
     (loop :with remainder
           :do (setf (values n remainder) (truncate n base))
           :collect remainder
-          :until (zerop integer)))
+          :until (zerop n)))
   %%%)
 
 ;;; Author: Goheeca (github: Goheeca)
