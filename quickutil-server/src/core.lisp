@@ -2,10 +2,7 @@
 (defpackage quickutil-server
   (:use :cl
         :clack
-        :clack.builder
-        :clack.middleware.static
-        :clack.middleware.csrf
-        :clack.middleware.session
+        :lack.builder
         :closure-template)
   (:shadow :stop)
   (:import-from :alexandria
@@ -77,15 +74,15 @@
 
 (defun build (app)
   (builder
-   (<clack-middleware-static>
+   (:static
     :path (lambda (path)
             (when (ppcre:scan "^(?:/images/|/css/|/js/|/html/|/releases/|/robot\\.txt$|/favicon.ico$)" path)
               path))
     :root (merge-pathnames #p"static/"
                            (asdf:component-pathname
                             (asdf:find-system :quickutil-server))))
-   <clack-middleware-session>
-   <clack-middleware-csrf>
+   :session
+   :csrf
    #'(lambda (env)
        (let ((*db* (and (getf *config* :database-params)
                         (apply #'dbi:connect (getf *config* :database-params)))))
@@ -100,13 +97,14 @@
              (format nil "~A.~A"
                      (car (util.version utility))
                      (cdr (util.version utility))))
-            (result (dbi:execute query (string name) version))
+            (result (dbi:execute query (list (string name) version)))
             (record (dbi:fetch result)))
 
        (unless record
          (dbi:execute
           (dbi:prepare *db*
-           "INSERT INTO utility (name, version) VALUES (?, ?)") (string name) version))
+           "INSERT INTO utility (name, version) VALUES (?, ?)")
+          (list (string name) version)))
 
        ;; XXX: just for cleaning up
        (dbi:fetch result)))
@@ -119,14 +117,16 @@
      (when id
        (let ((query (dbi:prepare *db* "INSERT INTO utility_categories SET utility_id = ?, category_name = ?")))
          (loop for cat in (util.categories utility)
-               do (dbi:execute query id (string cat)))))))
+               do (dbi:execute query
+                               (list id (string cat))))))))
 
 (defun md5sum (file)
   (shell-command (format nil "md5sum ~A | awk '{print $1}'"
                          file)))
 
 @export
-(defun start (&rest args &key (debug t) (port 8080) &allow-other-keys)
+(defun start (&rest args &key debug port &allow-other-keys)
+  (declare (ignore debug port))
   (load-config)
 
   (setf *static-files*

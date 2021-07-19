@@ -3,11 +3,8 @@
   (:use :cl
         :ningle
         :dbi)
-  (:import-from :multival-plist
-                :getf-all)
   (:import-from :alexandria
                 :when-let
-                :ensure-list
                 :make-keyword)
   (:import-from :quickutil-server
                 :*db*)
@@ -25,8 +22,8 @@
                 :*api*)
   (:import-from :quickutil-server.error
                 :quickutil-server-api-error)
-  (:import-from :clack.response
-                :headers)
+  (:import-from :lack.response
+                :response-headers)
   (:import-from :yason
                 :encode))
 (in-package :quickutil-server.controller)
@@ -39,7 +36,7 @@
 (setf (route *api* "*")
       #'(lambda (params)
           (declare (ignore params))
-          (setf (headers *response* :content-type)
+          (setf (getf (response-headers *response*) :content-type)
                 "application/json")
           (next-route)))
 
@@ -75,7 +72,9 @@
 
 (setf (route *api* "/emit")
       #'(lambda (params)
-          (let ((utilities (ensure-list (getf-all params :|utility|))))
+          (let ((utilities (remove-if-not (lambda (k)
+                                            (equal k "utility"))
+                                          params)))
             (when *db*
               (loop for name in utilities
                     do

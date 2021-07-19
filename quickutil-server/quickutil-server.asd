@@ -9,7 +9,12 @@
   :author "Eitarow Fukamachi <e.arrows@gmail.com>"
   :license "BSD 3-clause. See LICENSE file."
   :depends-on (:ningle
-               :clack-middleware-csrf
+               :clack
+               :lack
+               :lack-component
+               :lack-request
+               :lack-response
+               :lack-middleware-csrf
                :cl-syntax
                :cl-syntax-annot
                :cl-ppcre
@@ -19,8 +24,8 @@
                :cl-fad
                :cl-markdown
                :dbi
-               :multival-plist
-               :trivial-shell)
+               :trivial-shell
+               :assoc-utils)
   :components ((:module "src"
                 :components
                 ((:file "app")

@@ -1,7 +1,7 @@
 (in-package :cl-user)
 (defpackage quickutil-server.app
   (:use :cl)
-  (:import-from :clack
+  (:import-from :lack.component
                 :call)
   (:import-from :ppcre
                 :scan)

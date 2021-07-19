@@ -2,8 +2,8 @@
 (defpackage quickutil-server.controller.web
   (:use :cl
         :ningle)
-  (:import-from :clack.response
-                :headers)
+  (:import-from :lack.response
+                :response-headers)
   (:import-from :quickutil-server
                 :*categories*)
   (:import-from :quickutil-server.constants
@@ -26,10 +26,12 @@
                 :render-submit)
   (:import-from :quickutil-server.app
                 :*web*)
-  (:import-from :clack.middleware.csrf
+  (:import-from :lack.middleware.csrf
                 :csrf-html-tag)
   (:import-from :cl-markdown
-                :markdown))
+                :markdown)
+  (:import-from :assoc-utils
+                :aget))
 (in-package :quickutil-server.controller.web)
 
 (cl-syntax:use-syntax :annot)
@@ -69,7 +71,7 @@
 (setf (route *web* "*")
       #'(lambda (params)
           (declare (ignore params))
-          (setf (headers *response* :content-type) "text/html")
+          (setf (getf (response-headers *response*) :content-type) "text/html")
           (or (next-route)
               (asdf:system-relative-pathname
                :quickutil-server
@@ -79,17 +81,17 @@
       #'(lambda (params)
           (render-index
            `(,@(common-template-arguments)
-             :is-pjax ,(getf params :|_pjax|)))))
+             :is-pjax ,(aget params "_pjax")))))
 
 (setf (route *web* "/list/?:category?")
       #'(lambda (params)
           (let ((*print-case* :downcase)
-                (category (getf params :category)))
+                (category (aget params :category)))
             (render-list
              `(,@(common-template-arguments)
-               :is-pjax ,(getf params :|_pjax|)
+               :is-pjax ,(aget params "_pjax")
                :category ,category
-               :q ,(getf params :|q|)
+               :q ,(aget params "q")
                :utilities
                ,(utility-plists
                  #'(lambda (name utility)
@@ -97,26 +99,26 @@
                      (or (not category)
                          (member category (util.categories utility)
                                  :test #'string-equal))))
-               :csrf-html-tag ,(clack.middleware.csrf:csrf-html-tag *session*))))))
+               :csrf-html-tag ,(lack.middleware.csrf:csrf-html-tag *session*))))))
 
 (setf (route *web* "/why")
       #'(lambda (params)
           (render-why
            `(,@(common-template-arguments)
-             :is-pjax ,(getf params :|_pjax|)))))
+             :is-pjax ,(aget params "_pjax")))))
 
 (setf (route *web* "/how")
       #'(lambda (params)
           (render-how
            `(,@(common-template-arguments)
-             :is-pjax ,(getf params :|_pjax|)))))
+             :is-pjax ,(aget params "_pjax")))))
 
 (setf (route *web* "/submit")
       #'(lambda (params)
           (render-submit
            `(,@(common-template-arguments)
-             :is-pjax ,(getf params :|_pjax|)
-             :csrf-html-tag ,(clack.middleware.csrf:csrf-html-tag *session*)))))
+             :is-pjax ,(aget params "_pjax")
+             :csrf-html-tag ,(lack.middleware.csrf:csrf-html-tag *session*)))))
 
 (setf (route *web* "/favorites")
       #'(lambda (params)
@@ -124,9 +126,9 @@
                 (favorites (gethash :favorites *session*)))
             (render-favorites
              `(,@(common-template-arguments)
-               :is-pjax ,(getf params :|_pjax|)
+               :is-pjax ,(aget params "_pjax")
                :favorites ,(utility-plists
                            #'(lambda (name utility)
                                (declare (ignore utility))
                                (member name favorites :test #'string-equal)))
-               :csrf-html-tag ,(clack.middleware.csrf:csrf-html-tag *session*))))))
+               :csrf-html-tag ,(lack.middleware.csrf:csrf-html-tag *session*))))))
