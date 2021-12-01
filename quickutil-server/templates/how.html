@@ -76,7 +76,7 @@
       
       <p>To integrate, simply add the appropriate <code>qtlc:utilize</code> form somewhere in the toplevel of a file in your project and wrap it in <code>eval-when</code> with <code>:compile-toplevel</code> to ensure it gets evaluated at compile time. It is common to add it to one's <code>utilities.lisp</code> file, which contains project-specific helper functions in addition to the <code>utilize</code> form.</p>
       
-      <p>For example, from the <a href="https://bitbucket.org/tarballs_are_good/qsolve/raw/a5f8a5f84f9ccac89726267829bfc668ff34d6eb/utilities/quickutil.lisp">Qsolve project</a>:</p>
+      <p>For example:</p>
       
       <pre class="example-code prettyprint lang-lisp">
         <code>(eval-when (:compile-toplevel)</code><br/>
